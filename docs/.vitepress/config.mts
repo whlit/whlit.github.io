@@ -9,6 +9,10 @@ export default defineConfig({
     nav: [{ text: "Home", link: "/" }],
     sidebar: [
       {
+        text: "Blog",
+        items: [
+          { text: "使用 VitePress 构建个人博客网站", link: "/blog/vitepress" },
+        ]
       },
     ],
 
