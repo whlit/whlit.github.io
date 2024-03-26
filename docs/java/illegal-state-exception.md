@@ -6,7 +6,7 @@ doc
 
 springboot在创建测试类进行测试时，出现了这个异常
 java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @Context
-![Illegal](illegal-1.png)
+![Illegal](/java/illegal-1.png)
 这个异常出现的原因是`@SpringBootTest`注释的测试类与`@SpringBootApplication`的启动类的路径不一致导致的，所以测试无法找到springboot的入口
 
 ## 解决方法
