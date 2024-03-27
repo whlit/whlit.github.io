@@ -1,3 +1,12 @@
-# 简介
+---
+layout: home
 
-使用 VitePress 构建的个人博客
+title: Whl's Blog
+
+hero:
+  name: Whl's Blog
+  tagline: Java
+
+  features: 
+    - title: 
+---
