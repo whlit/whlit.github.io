@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # 实体类与ResultMap中的属性顺序不一致的问题

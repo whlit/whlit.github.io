@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @Context

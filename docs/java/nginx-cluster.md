@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # nginx集群搭建

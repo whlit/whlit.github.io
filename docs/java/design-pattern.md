@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # 设计模式

@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # 无法加载xxx.ps1,因为在此系统上禁止运行脚本

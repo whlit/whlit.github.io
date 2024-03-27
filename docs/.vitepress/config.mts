@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress';
+import { DefaultTheme, defineConfig } from 'vitepress';
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -6,78 +6,137 @@ export default defineConfig({
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   themeConfig: {
     logo: '/favicon.svg',
-    nav: [
-      { text: 'Java', link: '/java/', activeMatch: '/java/' },
-      { text: 'Python', link: '/python/', activeMatch: '/python/' },
-      { text: 'Vue', link: '/vue/', activeMatch: '/vue/' },
-      { text: 'React', link: '/react/', activeMatch: '/react/' },
-      {
-        text: '数据库', items: [
-          { text: 'Mysql', link: '/mysql/', activeMatch: '/mysql/' },
-          { text: 'Neo4j', link: '/neo4j/', activeMatch: '/neo4j/' },
-        ]
-      },
-      { text: 'Git', link: '/git/', activeMatch: '/git/' },
-      { text: 'Linux', link: '/linux/', activeMatch: '/linux/' },
-      { text: '其他', link: '/blog/', activeMatch: '/blog/' },
-    ],
     search: {
       provider: 'local',
     },
-
-    sidebar: {
-      '/java/': [
-        { text: 'Cpu时间片段', link: '/java/cpu-time' },
-        { text: 'Idea gradle报错:Could not resolve all dependencies...', link: '/java/ex-idea-gradle' },
-        { text: '实体类与ResultMap中的属性顺序不一致的问题', link: '/java/result-map' },
-        { text: 'java.lang.IllegalStateException: Unable to find a...', link: '/java/illegal-state-exception' },
-        { text: 'Docker 部署 ElasticSearch + Kibana', link: '/java/docker-elasticsearch' },
-        { text: 'Spring boot validator', link: '/java/spring-boot-validator' },
-        { text: 'ArrayList序列化', link: '/java/arraylist-serialize' },
-        { text: 'ABA 问题', link: '/java/aba' },
-        { text: 'Spring中有两个相同id的bean会报错吗', link: '/java/spring-same-bean-id' },
-        { text: 'Spring Xml自动装配', link: '/java/spring-autowire' },
-        { text: '设计模式', link: '/java/design-pattern' },
-        { text: '双大括号初始化', link: '/java/double-brace-init' },
-        { text: 'transient 关键字', link: '/java/transient' },
-        { text: 'ESB 选型', link: '/java/esb' },
-        { text: 'Nginx 集群搭建', link: '/java/nginx-cluster' },
-        { text: 'Neo4j Elasticsearch NLP', link: '/java/neo4j-es-nlp' },
-      ],
-      '/python/': [
-        { text: '无法加载xxx.ps1,因为在此系统上禁止运行脚本', link: '/python/load-xxx-ps1' },
-        { text: 'Python 版本管理', link: '/python/py-version-manger' },
-      ],
-      '/vue/': [
-        { text: 'Vite+Ts+Vue+Electron+Mysql应用', link: '/vue/vite-ts-vue-electron-mysql' },
-        { text: 'Vue3与Vue2', link: '/vue/vue3-vs-vue2' }
-      ],
-      '/react/': [
-        { text: 'React 相关', link: '/react/react' }
-      ],
-      '/mysql/': [
-        { text: 'Mysql相关', link: '/mysql/mysql' },
-        { text: 'Docker构建MySQL服务', link: '/mysql/docker-mysql' }
-      ],
-      '/neo4j/': [
-        { text: 'Cypher', link: '/neo4j/cypher' }
-      ],
-      '/git/': [
-        { text: 'Git使用', link: '/git/git' }
-      ],
-      '/docker/': [
-        { text: 'Centos离线安装Docker', link: '/docker/centos-outline-install-docker' }
-      ],
-      '/linux/': [
-        { text: 'Shell相关', link: '/linux/shell' },
-        { text: 'Linux命令', link: '/linux/linux-command' },
-        { text: 'Ubuntu 修改软件源', link: '/linux/ubuntu-mirrors' }
-      ],
-      '/blog/': [
-        { text: '使用 VitePress 构建个人博客网站', link: '/blog/vitepress' },
-      ],
-    },
-
+    nav: nav(),
+    sidebar: sidebar(),
     socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
   },
 });
+
+function nav(): DefaultTheme.NavItem[] {
+  return [
+    { text: 'Java', link: '/java/spring-autowire', activeMatch: '/java/' },
+    { text: 'Python', link: '/python/py-version-manger', activeMatch: '/python/' },
+    {
+      text: '前端', items: [
+        { text: 'Vue', link: '/vue/vite-ts-vue-electron-mysql', activeMatch: '/vue/' },
+        { text: 'React', link: '/react/react', activeMatch: '/react/' },
+      ]
+    },
+    {
+      text: '数据库', items: [
+        { text: 'Mysql', link: '/mysql/mysql', activeMatch: '/mysql/' },
+        { text: 'Neo4j', link: '/neo4j/cypher', activeMatch: '/neo4j/' },
+      ]
+    },
+    { text: 'Git', link: '/git/git', activeMatch: '/git/' },
+    { text: 'Linux', link: '/linux/linux-command', activeMatch: '/linux/' },
+    {
+      text: '容器', items: [
+        { text: 'Docker', link: '/docker/centos-outline-install-docker', activeMatch: '/docker/' },
+      ]
+    },
+    {
+      text: '其他', items: [
+        { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }
+      ]
+    },
+  ]
+}
+
+function sidebar(): DefaultTheme.SidebarMulti {
+  return {
+    '/java/': { base: '/java/', items: sidebarJava() },
+    '/python/': { base: '/python/', items: sidebarPython() },
+    '/vue/': { base: '/vue/', items: sidebarVue() },
+    '/react/': { base: '/react/', items: sidebarReact() },
+    '/mysql/': { base: '/mysql/', items: sidebarMysql() },
+    '/neo4j/': { base: '/neo4j/', items: sidebarNeo4j() },
+    '/git/': { base: '/git/', items: sidebarGit() },
+    '/docker/': { base: '/docker/', items: sidebarDocker() },
+    '/linux/': { base: '/linux/', items: sidebarLinux() },
+    '/blog/': { base: '/blog/', items: sidebarBlog() },
+  }
+}
+
+function sidebarJava(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Cpu时间片段', link: 'cpu-time' },
+    { text: 'Idea gradle报错:Could not resolve all dependencies...', link: 'ex-idea-gradle' },
+    { text: '实体类与ResultMap中的属性顺序不一致的问题', link: 'result-map' },
+    { text: 'java.lang.IllegalStateException: Unable to find a...', link: 'illegal-state-exception' },
+    { text: 'Docker 部署 ElasticSearch + Kibana', link: 'docker-elasticsearch' },
+    { text: 'Spring boot validator', link: 'spring-boot-validator' },
+    { text: 'ArrayList序列化', link: 'arraylist-serialize' },
+    { text: 'ABA 问题', link: 'aba' },
+    { text: 'Spring中有两个相同id的bean会报错吗', link: 'spring-same-bean-id' },
+    { text: 'Spring Xml自动装配', link: 'spring-autowire' },
+    { text: '设计模式', link: 'design-pattern' },
+    { text: '双大括号初始化', link: 'double-brace-init' },
+    { text: 'transient 关键字', link: 'transient' },
+    { text: 'ESB 选型', link: 'esb' },
+    { text: 'Nginx 集群搭建', link: 'nginx-cluster' },
+    { text: 'Neo4j Elasticsearch NLP', link: 'neo4j-es-nlp' },
+  ]
+}
+
+function sidebarPython(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: '无法加载xxx.ps1,因为在此系统上禁止运行脚本', link: 'load-xxx-ps1' },
+    { text: 'Python 版本管理', link: 'py-version-manger' },
+  ]
+}
+
+function sidebarVue(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Vite+Ts+Vue+Electron+Mysql应用', link: 'vite-ts-vue-electron-mysql' },
+    { text: 'Vue3与Vue2', link: 'vue3-vs-vue2' }
+  ]
+}
+
+function sidebarReact(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'React', link: 'react' }
+  ]
+}
+
+function sidebarMysql(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Mysql相关', link: 'mysql' },
+    { text: 'Docker构建MySQL服务', link: 'docker-mysql' }
+  ]
+}
+
+function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Cypher', link: 'cypher' }
+  ]
+}
+
+function sidebarGit(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Git 相关', link: 'git' }
+  ]
+}
+
+function sidebarDocker(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Centos离线安装Docker', link: 'centos-outline-install-docker' }
+  ]
+}
+
+function sidebarLinux(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: 'Shell相关', link: 'shell' },
+    { text: 'Linux命令', link: 'linux-command' },
+    { text: 'Ubuntu 修改软件源', link: 'ubuntu-mirrors' }
+  ]
+}
+
+function sidebarBlog(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: '使用 VitePress 构建个人博客网站', link: 'vitepress' },
+  ]
+}

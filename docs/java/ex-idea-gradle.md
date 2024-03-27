@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # Idea gradle报错：Could not resolve all dependencies for configuration '':testCompileClasspath'

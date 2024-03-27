@@ -1,5 +1,6 @@
 ---
-doc
+layout: doc
+outline: deep
 ---
 
 # Vite+Ts+Vue+Electron+Mysql应用
