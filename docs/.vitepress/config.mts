@@ -18,6 +18,7 @@ export default defineConfig({
         ]
       },
       { text: 'Git', link: '/git/', activeMatch: '/git/' },
+      { text: 'Linux', link: '/linux/', activeMatch: '/linux/' },
       { text: '其他', link: '/blog/', activeMatch: '/blog/' },
     ],
     search: {
@@ -39,6 +40,9 @@ export default defineConfig({
         { text: '设计模式', link: '/java/design-pattern' },
         { text: '双大括号初始化', link: '/java/double-brace-init' },
         { text: 'transient 关键字', link: '/java/transient' },
+        { text: 'ESB 选型', link: '/java/esb' },
+        { text: 'Nginx 集群搭建', link: '/java/nginx-cluster' },
+        { text: 'Neo4j Elasticsearch NLP', link: '/java/neo4j-es-nlp' },
       ],
       '/python/': [
         { text: '无法加载xxx.ps1,因为在此系统上禁止运行脚本', link: '/python/load-xxx-ps1' },
@@ -67,6 +71,7 @@ export default defineConfig({
       '/linux/': [
         { text: 'Shell相关', link: '/linux/shell' },
         { text: 'Linux命令', link: '/linux/linux-command' },
+        { text: 'Ubuntu 修改软件源', link: '/linux/ubuntu-mirrors' }
       ],
       '/blog/': [
         { text: '使用 VitePress 构建个人博客网站', link: '/blog/vitepress' },
