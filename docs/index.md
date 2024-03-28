@@ -6,7 +6,7 @@ title: Whl's Blog
 hero:
   name: Whl's Blog
   text: 记录日常开发及学习中遇到的问题
-  tagline: Java
+  tagline: Java, Linux....
 
   image: 
     src: /program.svg
