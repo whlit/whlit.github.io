@@ -109,6 +109,7 @@ function sidebarReact(): DefaultTheme.SidebarItem[] {
 function sidebarMysql(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Mysql相关', link: 'mysql' },
+    { text: 'Mysql删除不存在的数据', link: 'del-not-exist' },
   ]
 }
 
