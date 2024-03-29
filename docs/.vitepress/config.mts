@@ -1,19 +1,22 @@
 import { DefaultTheme, defineConfig } from 'vitepress';
+import { withMermaid } from 'vitepress-plugin-mermaid';
 
-export default defineConfig({
-  lang: 'zh-CN',
-  title: `whlit's blog`,
-  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
-  themeConfig: {
-    logo: '/favicon.svg',
-    search: {
-      provider: 'local',
+export default withMermaid(
+  defineConfig({
+    lang: 'zh-CN',
+    title: `whlit's blog`,
+    head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+    themeConfig: {
+      logo: '/favicon.svg',
+      search: {
+        provider: 'local',
+      },
+      nav: nav(),
+      sidebar: sidebar(),
+      socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
     },
-    nav: nav(),
-    sidebar: sidebar(),
-    socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
-  },
-});
+  })
+);
 
 function nav(): DefaultTheme.NavItem[] {
   return [
@@ -29,6 +32,7 @@ function nav(): DefaultTheme.NavItem[] {
       text: '数据库', items: [
         { text: 'Mysql', link: '/mysql/mysql', activeMatch: '/mysql/' },
         { text: 'Neo4j', link: '/neo4j/cypher', activeMatch: '/neo4j/' },
+        { text: 'Redis', link: '/redis/redis-cache', activeMatch: '/redis/' },
       ]
     },
     { text: 'Git', link: '/git/git', activeMatch: '/git/' },
@@ -54,6 +58,7 @@ function sidebar(): DefaultTheme.SidebarMulti {
     '/react/': { base: '/react/', items: sidebarReact() },
     '/mysql/': { base: '/mysql/', items: sidebarMysql() },
     '/neo4j/': { base: '/neo4j/', items: sidebarNeo4j() },
+    '/redis/': { base: '/redis/', items: sidebarRedis() },
     '/git/': { base: '/git/', items: sidebarGit() },
     '/docker/': { base: '/docker/', items: sidebarDocker() },
     '/linux/': { base: '/linux/', items: sidebarLinux() },
@@ -113,10 +118,16 @@ function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
   ]
 }
 
+function sidebarRedis(): DefaultTheme.SidebarItem[] {
+  return [
+    { text: '使用Redis进行数据缓存', link: 'redis-cache' },
+  ]
+}
+
 function sidebarGit(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Git 相关', link: 'git' },
-    { text: 'Git Rebase使用', link: 'git-rebase'}
+    { text: 'Git Rebase使用', link: 'git-rebase' }
   ]
 }
 
