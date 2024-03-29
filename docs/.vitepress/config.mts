@@ -115,7 +115,8 @@ function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
 
 function sidebarGit(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Git 相关', link: 'git' }
+    { text: 'Git 相关', link: 'git' },
+    { text: 'Git Rebase使用', link: 'git-rebase'}
   ]
 }
 
