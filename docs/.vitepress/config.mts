@@ -67,7 +67,6 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: 'Idea gradle报错:Could not resolve all dependencies...', link: 'ex-idea-gradle' },
     { text: '实体类与ResultMap中的属性顺序不一致的问题', link: 'result-map' },
     { text: 'java.lang.IllegalStateException: Unable to find a...', link: 'illegal-state-exception' },
-    { text: 'Docker 部署 ElasticSearch + Kibana', link: 'docker-elasticsearch' },
     { text: 'Spring boot validator', link: 'spring-boot-validator' },
     { text: 'ArrayList序列化', link: 'arraylist-serialize' },
     { text: 'ABA 问题', link: 'aba' },
@@ -105,7 +104,6 @@ function sidebarReact(): DefaultTheme.SidebarItem[] {
 function sidebarMysql(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Mysql相关', link: 'mysql' },
-    { text: 'Docker构建MySQL服务', link: 'docker-mysql' }
   ]
 }
 
@@ -123,7 +121,9 @@ function sidebarGit(): DefaultTheme.SidebarItem[] {
 
 function sidebarDocker(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Centos离线安装Docker', link: 'centos-outline-install-docker' }
+    { text: 'Centos离线安装Docker', link: 'centos-outline-install-docker' },
+    { text: 'Docker构建MySQL服务', link: 'docker-mysql' },
+    { text: 'Docker 部署 ElasticSearch + Kibana', link: 'docker-elasticsearch' },
   ]
 }
 
