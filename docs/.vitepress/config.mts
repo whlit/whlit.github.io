@@ -122,6 +122,7 @@ function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
 function sidebarRedis(): DefaultTheme.SidebarItem[] {
   return [
     { text: '使用Redis进行数据缓存', link: 'redis-cache' },
+    { text: 'Redis 数据类型', link: 'redis-data-type' }
   ]
 }
 
