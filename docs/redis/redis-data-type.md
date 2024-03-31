@@ -420,11 +420,1198 @@ System.out.println(len); // 6
 
 ## List
 
+List 列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）。
+
+::: details 实现队列 FIFO
+
+使用LPUSH和RPOP可以实现一个FIFO队列。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush fifo a
+(integer) 1
+127.0.0.1:6379> lpush fifo b
+(integer) 2
+127.0.0.1:6379> lpush fifo c
+(integer) 3
+127.0.0.1:6379> rpop fifo
+"a"
+127.0.0.1:6379> rpop fifo
+"b"
+127.0.0.1:6379> rpop fifo
+"c"
+```
+
+```java [java]
+jedis.lpush("fifo", "a");
+jedis.lpush("fifo", "b");
+jedis.lpush("fifo", "c");
+String res1 = jedis.rpop("fifo");
+System.out.println(res1);  // a
+String res2 = jedis.rpop("fifo");
+System.out.println(res2);  // b
+String res3 = jedis.rpop("fifo");
+System.out.println(res3);  // c
+```
+
+:::
+
+::: details 实现堆栈 FILO
+
+使用LPUSH和LPOP可以实现一个堆栈。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush filo a
+(integer) 1
+127.0.0.1:6379> lpush filo b
+(integer) 2
+127.0.0.1:6379> lpush filo c
+(integer) 3
+127.0.0.1:6379> lpop filo
+"c"
+127.0.0.1:6379> lpop filo
+"b"
+127.0.0.1:6379> lpop filo
+"a"
+```
+
+```java [java]
+jedis.lpush("filo", "a");
+jedis.lpush("filo", "b");
+jedis.lpush("filo", "c");
+String res1 = jedis.lpop("filo");
+System.out.println(res1);  // c
+String res2 = jedis.lpop("filo");
+System.out.println(res2);  // b
+String res3 = jedis.lpop("filo");
+System.out.println(res3);  // a
+```
+
+:::
+
+### LPUSH RPUSH <Badge>常用</Badge>
+
+将一个或多个值插入到列表的头部（左边）或者尾部（右边）。LPUSH: 从左边插入，RPUSH: 从右边插入。如果key不存在，则会创建一个空列表，并插入值。如果push的值类型不是列表，则会报错。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> exists list
+(integer) 0
+127.0.0.1:6379> lpush list a b c
+(integer) 3
+127.0.0.1:6379> exists list
+(integer) 1
+127.0.0.1:6379> lrange list 0 -1
+1) "c"
+2) "b"
+3) "a"
+127.0.0.1:6379> rpush list d e f
+(integer) 6
+127.0.0.1:6379> lrange list 0 -1
+1) "c"
+2) "b"
+3) "a"
+4) "d"
+5) "e"
+6) "f"
+```
+
+```java [java]
+boolean exists = jedis.exists("list");
+System.out.println(exists); // false
+jedis.lpush("list", "a", "b", "c");
+boolean exists2 = jedis.exists("list");
+System.out.println(exists2); // true
+List<String> list = jedis.lrange("list", 0, -1);
+System.out.println(list);  // [c, b, a]
+jedis.rpush("list", "d", "e", "f");
+List<String> list2 = jedis.lrange("list", 0, -1);
+System.out.println(list2);  // [c, b, a, d, e, f]
+```
+
+:::
+
+
+
+### LPOP RPOP <Badge>常用</Badge>
+
+删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
+
+::: tip 可选参数
+
+count：删除多少个元素。
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush list a b c d f
+(integer) 5
+127.0.0.1:6379> lpop list
+"f"
+127.0.0.1:6379> lpop list 2
+1) "d"
+2) "c"
+```
+
+```java [java]
+jedis.lpush("list", "a", "b", "c", "d", "f");
+String res1 = jedis.lpop("list");
+System.out.println(res1);  // f
+List<String> res2 = jedis.lpop("list", 2);
+System.out.println(res2);  // [d, c]
+```
+
+:::
+
+### LLEN <Badge>常用</Badge>
+
+获取列表的长度。
+
+::: code-group  
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush list a b c
+(integer) 3
+127.0.0.1:6379> llen list
+(integer) 3
+```
+
+```java [java]
+jedis.lpush("list", "a", "b", "c");
+long len = jedis.llen("list");
+System.out.println(len); // 3
+```
+
+:::
+
+### LMOVE
+
+### LTRIM
+
+裁剪现有的列表使其只保留指定范围的元素。
+
+::: tip 一般用法
+
+一般和[LPUSH/RPUSH](#lpush-rpush-常用)一起使用，将一个或多个值插入到列表的头部（左边）或者尾部（右边），同时确保列表不会超过指定的长度。
+
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush list a b c d e f g
+(integer) 7
+127.0.0.1:6379> ltrim list 0 3
+OK
+127.0.0.1:6379> lrange list 0 -1
+1) "g"
+2) "f"
+3) "e"
+4) "d"
+127.0.0.1:6379> lpush list h
+(integer) 5
+127.0.0.1:6379> lrange list 0 -1
+1) "h"
+2) "g"
+3) "f"
+4) "e"
+5) "d"
+```
+
+```java [java]
+jedis.lpush("list", "a", "b", "c", "d", "e", "f", "g");
+jedis.ltrim("list", 0, 3);
+List<String> list = jedis.lrange("list", 0, -1);
+System.out.println(list);  // [g, f, e, d]
+jedis.lpush("list", "h");
+List<String> list2 = jedis.lrange("list", 0, -1);
+System.out.println(list2);  // [h, g, f, e, d]
+```
+
+:::
+
+### LRANGE <Badge>常用</Badge>
+
+返回列表中指定区间内的元素，区间以偏移量表示，如：0表示列表的第一个元素，1表示列表的第二个元素，-1表示列表的最后一个元素。偏移量可以是负数，表示倒数第几个元素。如果偏移量超出列表的长度，则视为列表的最后一个元素。如果开始索引大于末尾索引，则返回空列表。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush list a b c d
+(integer) 4
+127.0.0.1:6379> lrange list 1 3
+1) "c"
+2) "b"
+3) "a"
+127.0.0.1:6379> lrange list -3 -1
+1) "c"
+2) "b"
+3) "a"
+127.0.0.1:6379> lrange list 1 10
+1) "c"
+2) "b"
+3) "a"
+127.0.0.1:6379> lrange list 4 5
+(empty array)
+```
+
+```java [java]
+jedis.lpush("list", "a", "b", "c", "d");
+List<String> list = jedis.lrange("list", 1, 3);
+System.out.println(list);  // [c, b, a]
+List<String> list2 = jedis.lrange("list", -3, -1);
+System.out.println(list2);  // [c, b, a]
+List<String> list3 = jedis.lrange("list", 1, 10);
+System.out.println(list3);  // [c, b, a]
+List<String> list4 = jedis.lrange("list", 4, 5);
+System.out.println(list4);  // []
+```
+
+:::
+
+
+### BLPOP BRPOP <Badge>常用</Badge>
+
+### BLMOVE
+
+### BLMPOP
+
+### BRPOPLPUSH
+
+### LINSERT
+
+### LINDEX
+
+### LMPOP
+
+### LPOS
+
+### LPUSHX RPUSHX
+
+### LREM
+
+### LSET
+
+### RPOPLPUSH
+
+
+
+
+
 ## Set
+
+Set 是无序的不重复元素的集合。
+
+### SADD  <Badge>常用</Badge>
+
+向集合中添加一个或多个元素，返回添加成功的元素的个数。如果value的类型不是集合时返回错误。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> smembers set
+1) "a"
+2) "b"
+3) "c"
+4) "d"
+127.0.0.1:6379> sadd set a c e f
+(integer) 2
+127.0.0.1:6379> smembers set
+1) "a"
+2) "b"
+3) "c"
+4) "d"
+5) "e"
+6) "f"
+```
+
+```java [java]
+long count = jedis.sadd("set", "a", "b", "c", "d");
+System.out.println(count);  // 4
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [a, b, c, d]
+long count2 = jedis.sadd("set", "a", "c", "e", "f");
+System.out.println(count2);  // 2
+Set<String> set2 = jedis.smembers("set");
+System.out.println(set2);  // [a, b, c, d, e, f]
+```
+
+:::
+
+
+
+### SREM <Badge>常用</Badge>
+
+从集合中移除指定的元素。返回移除的元素个数。如果不是集合中的元素，则返回0。如果不是集合，则返回错误。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> srem set a
+(integer) 1
+127.0.0.1:6379> smembers set
+1) "b"
+2) "c"
+3) "d"
+127.0.0.1:6379> srem set c d
+(integer) 2
+127.0.0.1:6379> smembers set
+1) "b"
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+long count = jedis.srem("set", "a");
+System.out.println(count);  // 1
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [b, c, d]
+long count2 = jedis.srem("set", "c", "d");
+System.out.println(count2);  // 2
+Set<String> set2 = jedis.smembers("set");
+System.out.println(set2);  // [b]
+```
+
+:::
+
+### SMEMBERS <Badge>常用</Badge>
+
+返回集合中的所有元素。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> smembers set
+1) "a"
+2) "b"
+3) "c"
+4) "d"
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [a, b, c, d]
+```
+
+:::
+
+
+### SCARD <Badge>常用</Badge>
+
+返回集合中元素的个数。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> scard set
+(integer) 4
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+long count = jedis.scard("set");
+System.out.println(count);  // 4
+```
+
+:::
+
+### SISMEMBER <Badge>常用</Badge>
+
+判断元素是否在集合中。存在返回1，不存在返回0。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> sismember set a
+(integer) 1
+127.0.0.1:6379> sismember set e
+(integer) 0
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+boolean b = jedis.sismember("set", "a");
+System.out.println(b);  // true
+b = jedis.sismember("set", "e");
+System.out.println(b);  // false
+```
+
+:::
+
+### SRANDMEMBER <Badge>常用</Badge>
+
+随机返回集合中的一个元素。
+
+::: tip 可选参数
+
+- `count`: 返回指定个数的元素
+
+:::
+
+::: warning 返回的多个元素可以重复
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set
+1) "a"
+2) "b"
+3) "c"
+4) "d"
+127.0.0.1:6379> srandmember set
+"b"
+127.0.0.1:6379> srandmember set 2
+1) "b"
+2) "c"
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+String member = jedis.srandmember("set");
+System.out.println(member);  // b
+List<String> members = jedis.srandmember("set", 2);
+System.out.println(members);  // [b, c]
+```
+
+### SPOP <Badge>常用</Badge>
+
+随机返回集合中的一个元素，并删除。类似于[SRANDMEMBER](#srandmember-常用)，只不过SRANDMEMBER只是返回元素但不删除。而且SRANDMEMBER返回的元素可以重复，SPOP不会重复。
+
+::: tip 可选参数
+
+- `count`: 随机返回指定个数的元素，并删除
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> spop set
+"d"
+127.0.0.1:6379> spop set 2
+1) "a"
+2) "c"
+127.0.0.1:6379> smembers set
+1) "b"
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+String member = jedis.spop("set");
+System.out.println(member);  // d
+Set<String> members = jedis.spop("set", 2);
+System.out.println(members);  // [a, c]
+Set<String> members2 = jedis.smembers("set");
+System.out.println(members2);  // [b]
+```
+
+:::
+
+### SINTER <Badge>常用</Badge>
+
+返回多个集合的交集。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+1) "c"
+2) "d"
+127.0.0.1:6379> smembers set3
+1) "a"
+2) "c"
+127.0.0.1:6379> sinter set set2 set3
+1) "c"
+```
+
+```java [java]
+jedis.sadd("set", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+Set<String> set = jedis.sinter("set", "set2", "set3");
+System.out.println(set);  // [c]
+```
+
+:::
+
+### SINTERSTORE <Badge>常用</Badge>
+
+此命令等同于[SINTER](#sinter-常用)，返回多个集合的交集，但是SINTERSTORE会将结果保存到指定集合中。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+1) "c"
+2) "d"
+127.0.0.1:6379> smembers set3
+1) "a"
+2) "c"
+127.0.0.1:6379> sinterstore set set1 set2 set3
+(integer) 1
+127.0.0.1:6379> smembers set
+1) "c"
+```
+
+```java [java]
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+jedis.sinterstore("set", "set1", "set2", "set3");
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [c]
+```
+
+:::
+
+### SUNION <Badge>常用</Badge>
+
+返回多个集合的并集。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+1) "c"
+2) "d"
+127.0.0.1:6379> smembers set3
+1) "a"
+2) "c"
+127.0.0.1:6379> sunion set1 set2 set3
+1) "a"
+2) "c"
+3) "d"
+```
+
+```java [java]
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+Set<String> set = jedis.sunion("set1", "set2", "set3");
+System.out.println(set);  // [a, b, c, d]
+```
+
+:::
+
+### SUNIONSTORE <Badge>常用</Badge>
+
+此命令等同于[SUNION](#sunion-常用)，返回多个集合的并集，但是SUNIONSTORE会将结果保存到指定集合中。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+1) "c"
+2) "d"
+127.0.0.1:6379> smembers set3
+1) "a"
+2) "c"
+127.0.0.1:6379> sunionstore set set1 set2 set3
+(integer) 3
+127.0.0.1:6379> smembers set
+1) "a"
+2) "c"
+3) "d"
+```
+
+```java [java]
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+jedis.sunionstore("set", "set1", "set2", "set3");
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [a, b, c, d]
+```
+
+:::
+
+### SDIFF <Badge>常用</Badge>
+
+返回第一个集合和多个集合的差集。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+1) "c"
+2) "d"
+127.0.0.1:6379> smembers set3
+1) "c"
+127.0.0.1:6379> sdiff set1 set2 set3
+1) "a"
+```
+
+```java [java]
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+Set<String> set = jedis.sdiff("set1", "set2", "set3");
+System.out.println(set);  // [b]
+```
+
+:::
+
+### SDIFFSTORE <Badge>常用</Badge>
+
+此命令等同于[SDIFF](#sdiff-常用)，返回第一个集合和多个集合的差集，但是SDIFFSTORE会将结果保存到指定集合中。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set2
+2) "c"
+3) "d"
+127.0.0.1:6379> smembers set3
+1) "c"
+127.0.0.1:6379> sdiffstore set set1 set2 set3
+(integer) 1
+127.0.0.1:6379> smembers set
+1) "a"
+```
+
+```java [java]
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d");
+jedis.sadd("set3", "a", "c");
+jedis.sdiffstore("set", "set1", "set2", "set3");
+Set<String> set = jedis.smembers("set");
+System.out.println(set);  // [b]
+```
+
+
+### SMOVE
+
+### SSCAN
+
+### SMISMEMBER
+
+### SINTERCARD
+
+
 
 ## Hash
 
-## Sorted Sets
+哈希是存储结构化数据的类型，用来表示对象很方便
+
+### HDEL <Badge>常用</Badge>
+
+从哈希中删除一个或多个字段。如果字段不存在则被忽略。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hset doc title test size 200
+(integer) 2
+127.0.0.1:6379> hdel doc title
+(integer) 1
+127.0.0.1:6379> hget doc title
+(integer) 0
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+long res1 = jedis.hdel("doc", "title");
+System.out.println(res1);  // 1
+long res2 = jedis.hdel("doc", "title");
+System.out.println(res2);  // 0
+```
+
+:::
+
+
+### HEXISTS
+
+### HGET HSET <Badge>常用</Badge>
+
+获取哈希的字段值，如果字段不存在则返回nil。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hset doc title test size 200
+(integer) 2
+127.0.0.1:6379> hget doc title
+"test"
+127.0.0.1:6379> hget doc number
+(nil)
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+String res1 = jedis.hget("doc", "title");
+System.out.println(res1);  // test
+String res2 = jedis.hget("doc", "number");
+System.out.println(res2);  // null
+```
+
+:::
+
+### HGETALL <Badge>常用</Badge>
+
+获取哈希的所有字段和值。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hset doc title test size 200
+(integer) 2
+127.0.0.1:6379> hgetall doc
+1) "title"
+2) "test"
+3) "size"
+4) "200"
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+jedis.hset("doc", "number", "200");
+Map<String, String> map = jedis.hgetAll("doc");
+System.out.println(map);  // {title=test, number=200}
+```
+
+:::
+
+### HINCRBY <Badge>常用</Badge>
+
+递增哈希指定字段的值。如果字段不存在，则初始化为0，然后再递增。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hset doc title test size 200
+(integer) 2
+127.0.0.1:6379> hincrby doc number 10
+(integer) 10
+127.0.0.1:6379> hget doc number
+"10"
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+long res1 = jedis.hincrBy("doc", "number", 10);
+System.out.println(res1);  // 10
+String res2 = jedis.hget("doc", "number");
+System.out.println(res2);  // 10
+```
+
+:::
+
+### HINCRBYFLOAT
+
+### HKEYS
+
+### HLEN <Badge>常用</Badge>
+
+返回哈希中字段的数量。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hset doc title test size 200
+(integer) 2
+127.0.0.1:6379> hlen doc
+(integer) 2
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+long res = jedis.hlen("doc");
+System.out.println(res);  // 1
+```
+
+:::
+
+### HMGE HMSET <Badge>常用</Badge>
+
+HMSET同时设置多个字段，HMGET同时获取多个字段。
+
+::: warning HMSET
+
+**HMSET**已经废弃，直接使用[HSET](#hget-hset-常用)
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hmset doc title test size 200
+"OK"
+127.0.0.1:6379> hmget doc title size number
+1) "test"
+2) "200"
+3) (nil)
+```
+
+```java [java]
+jedis.hset("doc", "title", "test");
+List<String> list = jedis.hmget("doc", "title", "size", "number");
+System.out.println(list);  // [test, null, null]
+```
+
+:::
+
+### HSCAN
+
+### HSTRLEN
+
+### HVALS
+
+### HSETNX
+
+### HRANDFIELD
+
+
+
+
+
+## Sorted Set
+
+有序集合类型，相比于Set多了排序的score属性，同时也是唯一的，但是分值可以相同，也可以安装分值排序。
+
+### BZMPOP
+
+### BZPOPMAX
+
+### BZPOPMIN
+
+### ZADD <Badge>常用</Badge>
+
+向排序集合中添加指定分数的元素。可以同时添加多个分数/元素对。如果元素已经存在，则会更新分数，并重新插入到正确的位置。分数为双精度浮点数。
+
+::: tip 可选参数
+
+- `XX`: 只更新已存在的元素
+- `NX`: 只添加不存在的元素，不更新已存在的元素
+- `LT`: 只有当分数小于当前元素的分数时才更新，不存在的元素会插入
+- `GT`: 只有当分数大于当前元素的分数时才更新，不存在的元素会插入
+- `CH`: 将返回值从新添加的元素数修改为更改的元素数，更改的元素指新添加的元素和已更新分数的元素。
+- `INCR`: 类似于[ZINCRBY](#zincrby-常用)，让元素增加指定的分数，但只能指定一个分数/元素对。
+
+::: warning 
+
+GT、LT和NX选项互斥
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a
+(integer) 1
+127.0.0.1:6379> zadd zset 2 b 3 c
+(integer) 2
+127.0.0.1:6379> zadd zset XX 4 d
+(integer) 0
+127.0.0.1:6379> zadd zset NX 5 e
+(integer) 1
+127.0.0.1:6379> zadd zset LT 6 f
+(integer) 1
+127.0.0.1:6379> zadd zset incr 2 g
+"2"
+127.0.0.1:6379> zadd zset incr 2 g
+"4"
+127.0.0.1:6379> zrange zset 0 -1 withscores
+ 1) "a"
+ 2) "1"
+ 3) "b"
+ 4) "2"
+ 5) "c"
+ 6) "3"
+ 7) "g"
+ 8) "4"
+ 9) "e"
+10) "5"
+11) "f"
+12) "6"
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", Map.of("b", 2.0, "c", 3.0));
+jedis.zadd("zset", 4, "d", ZAddParams.zAddParams().xx());
+jedis.zadd("zset", 5, "e", ZAddParams.zAddParams().nx());
+jedis.zadd("zset", 6, "f", ZAddParams.zAddParams().lt());
+jedis.zaddIncr("zset", 7, "g", ZAddParams.zAddParams().nx());
+jedis.zaddIncr("zset", 7, "g", ZAddParams.zAddParams().xx());
+List<Tuple> zset = jedis.zrangeWithScores("zset", 0, -1);
+System.out.println(zset);  //[[a,1.0], [b,2.0], [c,3.0], [e,5.0], [f,6.0], [g,14.0]]
+```
+
+:::
+
+
+
+### ZCARD <Badge>常用</Badge>
+
+返回排序集合中的元素数。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zcard zset
+(integer) 3
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+System.out.println(jedis.zcard("zset"));  // 3
+```
+
+:::
+ 
+
+### ZCOUNT
+
+返回在指定分数范围的元素个数。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zcount zset 2 3
+(integer) 2
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+System.out.println(jedis.zcount("zset", 2, 3));  // 2
+```
+
+:::
+
+### ZDIFF
+
+### ZDIFFSTORE
+
+### ZINCRBY <Badge>常用</Badge>
+
+为指定元素增加指定的分数。如果元素不存在，则会创建一个新的元素并添加指定的分数。提供负数来减少分数。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zincrby zset 2 d
+"3"
+127.0.0.1:6379> zrange zset 0 -1 withscores
+ 1) "a"
+ 2) "1"
+ 3) "b"
+ 4) "2"
+ 5) "c"
+ 6) "3"
+ 7) "d"
+ 8) "2"
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+System.out.println(jedis.zincrby("zset", 2, "d"));  // 2.0
+List<Tuple> zset = jedis.zrangeWithScores("zset", 0, -1);
+System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
+```
+
+:::
+
+### ZINTER
+
+### ZINTERSTORE <Badge>常用</Badge>
+
+
+
+### ZINTERCARD
+
+### ZLEXCOUNT
+
+### ZMPOP
+
+### ZMSCORE
+
+### ZPOPMAX
+
+### ZPOPMIN
+
+### ZRANDMEMBER
+
+### ZRANGE <Badge>常用</Badge>
+
+返回排序集合中指定范围的元素。
+
+::: tip 语法
+
+`ZRANGE key start stop [BYSCORE | BYLEX] [REV] [LIMIT offset count] [WITHSCORES]`
+
+:::
+
+::: info 
+
+从Redis6.2.0开始，此命令可以替换以下命令：[ZREVRANGE](#zrevrange-常用) [ZRANGEBYSCORE](#zrangebyscore-常用) [ZREVRANGEBYSCORE](#zrevrangebyscore-常用) [ZRANGEBYLEX](#zrangebylex-常用) [ZREVRANGEBYLEX](#zrevrangebylex-常用)
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zrange zset 0 -1
+ 1) "a"
+ 2) "b"
+ 3) "c"
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+List<String> zset = jedis.zrange("zset", 0, -1);
+System.out.println(zset);  // [a, b, c]
+```
+
+:::
+
+### ZRANGEBYLEX  <Badge type="danger">废弃</Badge>
+
+
+
+### ZRANGEBYSCORE
+
+### ZRANGESTORE
+
+### ZRANK
+
+### ZREM <Badge>常用</Badge>
+
+从指定的排序集合中删除指定的元素。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zrem zset a
+(integer) 1
+127.0.0.1:6379> zrange zset 0 -1
+ 1) "b"
+ 2) "c"
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+jedis.zrem("zset", "a");
+List<String> zset = jedis.zrange("zset", 0, -1);
+System.out.println(zset);  // [b, c]
+```
+
+:::
+
+### ZREMRANGEBYLEX
+
+### ZREMRANGEBYRANK
+
+### ZREMRANGEBYSCORE
+
+### ZREVRANGE <Badge type="danger">废弃</Badge>
+
+### ZREVRANGEBYLEX <Badge>常用</Badge>
+
+### ZREVRANGEBYSCORE <Badge>常用</Badge>
+
+### ZREVRANK
+
+### ZSCAN
+
+### ZSCORE <Badge>常用</Badge>
+
+返回排序集合中元素的分数。
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zscore zset a
+"1"
+```
+
+```java [java]
+jedis.zadd("zset", 1, "a");
+jedis.zadd("zset", 2, "b");
+jedis.zadd("zset", 3, "c");
+double zset = jedis.zscore("zset", "a");
+System.out.println(zset);  // 1
+```
+
+:::
+
+### ZUNIONSTORE <Badge>常用</Badge>
+
+### ZUNION
+
+
+
+
+
+
+
+
 
 ## Streams
 
@@ -435,6 +1622,12 @@ System.out.println(len); // 6
 ## Bitfields
 
 ## HyperLogLog
+
+
+
+
+
+
 
 ## 通用命令
 
