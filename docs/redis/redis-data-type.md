@@ -10,7 +10,7 @@ outline: deep
 
 String 类型是基础的`key:value`类型，key是字符串类型，value可以是bytes、string、序列化对象、字节数组。value最大不可超过512MB.
 
-### SET GET <Badge>常用</Badge>
+### SET & GET <Badge>常用</Badge>
 
 SET和GET是两个最基础的操作，也是Redis的基础，set操作是设置值，get操作是获取值。
 
@@ -34,7 +34,7 @@ System.out.println(res2);  // 小红
 
 
 
-### MSET MGET  <Badge>常用</Badge>
+### MSET & MGET  <Badge>常用</Badge>
 
 MSET和MGET是两个最基础的操作的批量操作，可以同时设置多个key，也可以同时获取多个key。
 
@@ -94,7 +94,7 @@ System.out.println(res2);  // null
 
 
 
-### GETRANGESETRANGE {#getrange-and-setrange}
+### GETRANGE & SETRANGE {#getrange-and-setrange}
 
 GETRANGE 和 SETRANGE 用于获取和设置字符串的一部分。
 `getrange key start end`：返回字符串key的值从start到end的子串，包括start和end。
@@ -278,7 +278,7 @@ System.out.println(res);  // 小红小红
 :::
 
 
-### INCR DECR <Badge>常用</Badge>
+### INCR & DECR <Badge>常用</Badge>
 
 将key的值增加1或者减少1，并返回值，如果key不存在，则会创建一个key为key，值为1。如果值不可以转为整数，则会报错。
 
@@ -308,7 +308,7 @@ System.out.println(age); // 1
 
 :::
 
-### INCRBY DECRBY <Badge>常用</Badge>
+### INCRBY & DECRBY <Badge>常用</Badge>
 
 将key的值增加或者减少指定的值，并返回值，如果key不存在，则会创建一个key为key，值为指定的值。如果值不可以转为整数，则会报错。
 
@@ -492,7 +492,7 @@ System.out.println(res3);  // a
 
 :::
 
-### LPUSH RPUSH <Badge>常用</Badge>
+### LPUSH & RPUSH <Badge>常用</Badge>
 
 将一个或多个值插入到列表的头部（左边）或者尾部（右边）。LPUSH: 从左边插入，RPUSH: 从右边插入。如果key不存在，则会创建一个空列表，并插入值。如果push的值类型不是列表，则会报错。
 
@@ -537,7 +537,7 @@ System.out.println(list2);  // [c, b, a, d, e, f]
 
 
 
-### LPOP RPOP <Badge>常用</Badge>
+### LPOP & RPOP <Badge>常用</Badge>
 
 删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
 
@@ -677,7 +677,7 @@ System.out.println(list4);  // []
 :::
 
 
-### BLPOP BRPOP <Badge>常用</Badge>
+### BLPOP & BRPOP <Badge>常用</Badge>
 
 ### BLMOVE
 
@@ -693,7 +693,7 @@ System.out.println(list4);  // []
 
 ### LPOS
 
-### LPUSHX RPUSHX
+### LPUSHX & RPUSHX
 
 ### LREM
 
@@ -1166,7 +1166,7 @@ System.out.println(res2);  // 0
 
 ### HEXISTS
 
-### HGET HSET <Badge>常用</Badge>
+### HGET & HSET <Badge>常用</Badge>
 
 获取哈希的字段值，如果字段不存在则返回nil。
 
@@ -1266,7 +1266,7 @@ System.out.println(res);  // 1
 
 :::
 
-### HMGE HMSET <Badge>常用</Badge>
+### HMGE & HMSET <Badge>常用</Badge>
 
 HMSET同时设置多个字段，HMGET同时获取多个字段。
 

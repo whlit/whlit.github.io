@@ -89,14 +89,21 @@ c
 
 在日常开发中经常是多条分支开发，在进行合并时不可避免的发生提交记录的分叉
 
-```
-*   ae0549b: Fri Mar 29 14:28:49 2024 +0800 Merge branch 'master' into feature_a
-|\
-| * d43146e: Fri Mar 29 14:28:22 2024 +0800 uc
-* | 1daad5e: Fri Mar 29 14:27:46 2024 +0800 d
-|/
-* aee944c: Fri Mar 29 14:09:40 2024 +0800 c
-* 3bc8ee4: Fri Mar 29 14:08:30 2024 +0800 a
+
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    branch dev
+    checkout dev
+    commit id:"commit C"
+    checkout main
+    commit id:"commit D"
+    checkout dev
+    commit id:"commit E"
+    checkout main
+    merge dev
+    commit id:"commit F"
 ```
 
 例如上面这样的情况，就是直接merge形成的，有了分叉既看着不美观，同时如果后面对代码进行回滚也不好操作
@@ -111,14 +118,19 @@ $ git rebase master
 
 上面的示例如果使用这种方式的话，结果就是这样的
 
-```
-* f0dca0c: Fri Mar 29 14:38:07 2024 +0800 d
-* d43146e: Fri Mar 29 14:28:22 2024 +0800 uc
-* aee944c: Fri Mar 29 14:09:40 2024 +0800 c
-* 3bc8ee4: Fri Mar 29 14:08:30 2024 +0800 a
+
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit D"
+    commit id:"commit F"
+    branch dev
+    commit id:"commit C"
+    commit id:"commit E"
 ```
 
-可以看到d出现在了uc之后，提交信息的hash值变了，但是整个分支的提交记录简洁了
+可以看到C和E出现在了F之后，提交信息的hash值变了，但是整个分支的提交记录简洁了
 
 - 如果有冲突解决冲突
 
@@ -130,11 +142,14 @@ $ git merge feature
 
 merge后的master分支的提交记录如下
 
-```
-* f0dca0c: Fri Mar 29 14:38:07 2024 +0800 d
-* d43146e: Fri Mar 29 14:28:22 2024 +0800 uc
-* aee944c: Fri Mar 29 14:09:40 2024 +0800 c
-* 3bc8ee4: Fri Mar 29 14:08:30 2024 +0800 a
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit D"
+    commit id:"commit F"
+    commit id:"commit C"
+    commit id:"commit E"
 ```
 
 这样就保持了master分支的整洁，以及开发顺序的查看也都很容易地看出来，即便后面进行回滚也容易了
