@@ -1,8 +1,7 @@
 import { DefaultTheme, defineConfig } from 'vitepress';
-import { withMermaid } from 'vitepress-plugin-mermaid';
+import mermaidPlugin from './script/mermaid';
 
-export default withMermaid(
-  defineConfig({
+ export default defineConfig({
     lang: 'zh-CN',
     title: `whlit's blog`,
     head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
@@ -15,8 +14,13 @@ export default withMermaid(
       sidebar: sidebar(),
       socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
     },
+    markdown: {
+      config: (md) => {
+        md.use(mermaidPlugin)
+      }
+    }
   })
-);
+
 
 function nav(): DefaultTheme.NavItem[] {
   return [
