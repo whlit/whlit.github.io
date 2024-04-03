@@ -157,5 +157,6 @@ function sidebarLinux(): DefaultTheme.SidebarItem[] {
 function sidebarBlog(): DefaultTheme.SidebarItem[] {
   return [
     { text: '使用 VitePress 构建个人博客网站', link: 'vitepress' },
+    { text: 'VitePress 支持 Mermaid', link: 'vitepress-mermaid' }
   ]
 }
