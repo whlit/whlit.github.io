@@ -86,7 +86,6 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: 'transient 关键字', link: 'transient' },
     { text: 'ESB 选型', link: 'esb' },
     { text: 'Nginx 集群搭建', link: 'nginx-cluster' },
-    { text: 'Neo4j Elasticsearch NLP', link: 'neo4j-es-nlp' },
     { text: 'Java 集合', link: 'collections' },
   ]
 }
@@ -120,7 +119,8 @@ function sidebarMysql(): DefaultTheme.SidebarItem[] {
 
 function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Cypher', link: 'cypher' }
+    { text: 'Cypher', link: 'cypher' },
+    { text: 'Neo4j Elasticsearch NLP', link: 'neo4j-es-nlp' },
   ]
 }
 
