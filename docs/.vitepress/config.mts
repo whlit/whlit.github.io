@@ -87,6 +87,7 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: 'ESB 选型', link: 'esb' },
     { text: 'Nginx 集群搭建', link: 'nginx-cluster' },
     { text: 'Java 集合', link: 'collections' },
+    { text: '分布式事务', link: 'distributed-transactions' },
   ]
 }
 
@@ -157,6 +158,7 @@ function sidebarLinux(): DefaultTheme.SidebarItem[] {
 function sidebarBlog(): DefaultTheme.SidebarItem[] {
   return [
     { text: '使用 VitePress 构建个人博客网站', link: 'vitepress' },
-    { text: 'VitePress 支持 Mermaid', link: 'vitepress-mermaid' }
+    { text: 'VitePress 支持 Mermaid', link: 'vitepress-mermaid' },
+    { text: '常用特殊Ascii字符', link: 'special-ascii' },
   ]
 }
