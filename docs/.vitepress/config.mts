@@ -135,7 +135,8 @@ function sidebarRedis(): DefaultTheme.SidebarItem[] {
 function sidebarGit(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Git 相关', link: 'git' },
-    { text: 'Git Rebase使用', link: 'git-rebase' }
+    { text: 'Git Rebase使用', link: 'git-rebase' },
+    { text: 'Git 删除已经push的commit记录', link: 'git-delete-push' }
   ]
 }
 
