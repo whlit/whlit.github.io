@@ -1,25 +1,25 @@
 import { DefaultTheme, defineConfig } from 'vitepress';
 import mermaidPlugin from './script/mermaid';
 
- export default defineConfig({
-    lang: 'zh-CN',
-    title: `whlit's blog`,
-    head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
-    themeConfig: {
-      logo: '/favicon.svg',
-      search: {
-        provider: 'local',
-      },
-      nav: nav(),
-      sidebar: sidebar(),
-      socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
+export default defineConfig({
+  lang: 'zh-CN',
+  title: `whlit's blog`,
+  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  themeConfig: {
+    logo: '/favicon.svg',
+    search: {
+      provider: 'local',
     },
-    markdown: {
-      config: (md) => {
-        md.use(mermaidPlugin)
-      }
+    nav: nav(),
+    sidebar: sidebar(),
+    socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(mermaidPlugin)
     }
-  })
+  }
+})
 
 
 function nav(): DefaultTheme.NavItem[] {
