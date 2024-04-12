@@ -7,10 +7,14 @@ outline: deep
 
 《设计模式》中一共归纳了23中设计模式，而这23中设计模式又可以分为：创建型、结构型和行为型
 
-# 设计模式六大原则
-## 单一职责原则
+## 设计模式六大原则
+
+### 单一职责原则
+
 单一职责的定义是：一个类应该有且仅有一个原因引起类的变更
-## 里氏替换原则
+
+### 里氏替换原则
+
 里氏替换原则为良好的继承定义了一个规范，包含了四层含义
 
 1. 子类必须完全实现父类的方法
@@ -28,7 +32,9 @@ outline: deep
 4. 覆盖或者实现父类的方法时返回参数可以被缩小
 
 子类覆盖或者实现父类的方法时，方法的返回参数可以与父类一致，也可以是父类方法返回参数范围更小的类型，例如：父类方法的返回参数类型为Map类型时，子类方法的返回类型可以为Map或者HashMap类型，这样的好处时子类方法的返回类型的方法都存在父类入参类型中。
-## 依赖倒置原则
+
+### 依赖倒置原则
+
 依赖倒置原则包含三层含义
 
 1. 高层模块不应该依赖底层模块，两者都应该依赖其抽象
@@ -42,13 +48,16 @@ outline: deep
 3. 实现类依赖接口或者抽象类
 
 依赖倒置原则的本质是通过抽象使各个类或者模块的实现彼此独立，不互相影响，实现模块间的松耦合。
-## 接口隔离原则
+
+### 接口隔离原则
 
 1. 客户端不应该依赖它不需要的接口
 2. 类间的依赖关系应该建立在最小的接口上
 
 总结起来就是，建立单一接口，不要建立臃肿庞大的接口。也就是说接口尽量细化，同时接口中的方法尽量少。
-## 迪米特法则
+
+### 迪米特法则
+
 一个对象应该对其他对象有最少的了解。通俗的讲，一个类应该对自己需要耦合或者调用的类知道得最少。
 迪米特法则对类的低耦合提出了明确的要求，其中包含了四层含义：
 
@@ -63,13 +72,19 @@ outline: deep
 
 4. 谨慎使用Serializable
 
-## 开闭原则
+### 开闭原则
+
 一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。也就是尽量通过扩展软件实体的行为来实现变化，而不是通过修改已有的代码来完成变化，他是为软件实体的未来事件而制定的对现行开发设计进行约束的一个原则。
-# 创建型
-## 工厂方法模式
+
+## 创建型
+
+### 工厂方法模式
+
 定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682647736027-491b6f76-28f8-41b7-b92b-52173167c91e.jpeg)
-```java
+
+::: code-group
+
+```java [Product]
 //抽象产品类
 public abstract class Product {
     public void method1(){
@@ -77,6 +92,8 @@ public abstract class Product {
     }
     public abstract void methond2();
 }
+```
+```java [ConcreteProduct]
 //具体产品类
 public class ConcreteProduct1 extends Product {
     public void methond2(){
@@ -88,11 +105,15 @@ public class ConcreteProduct2 extends Product {
         //业务处理逻辑
     }
 }
+```
+```java [Creator]
 //抽象工厂类
 public abstract class Creator {
     //创建一个产品对象，输入参数类型可以任意设置
     public abstract <T extends Product> T createProduct(Class<T> c);
 }
+```
+```java [ConcreteCreator]
 //具体工厂类
 public class ConcreteCreator extends Creator {
     public <T extends Product> T createProduct(Class<T> c) {
@@ -107,10 +128,27 @@ public class ConcreteCreator extends Creator {
 }
 ```
 
-## 抽象工厂模式
+:::
+
+```mermaid
+classDiagram
+Product<|--ConcreteProduct
+Creator<|--ConcreteCreator
+ConcreteProduct<..ConcreteCreator
+
+class Creator {
+    + FactoryMethod()
+}
+
+```
+
+### 抽象工厂模式
+
 为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682652109730-3f877e21-2581-4460-a276-fe29ff1a1cea.jpeg)
-```java
+
+::: code-group
+
+```java [AbstractProduct]
 //抽象产品A类
 public abstract class AbstractProductA {
     //共有的方法
@@ -120,6 +158,17 @@ public abstract class AbstractProductA {
     //特有的相同方法，不同实现
     public abstract void method2();
 }
+//抽象产品B类
+public abstract class AbstractProductB {
+    //共有的方法
+    public void method1(){
+        //业务逻辑
+    }
+    //特有的相同方法，不同实现
+    public abstract void method2();
+}
+```
+```java [Product]
 //产品A类1种
 public class ProductA1 extends AbstractProductA{
     @Override
@@ -133,15 +182,6 @@ public class ProductA2 extends AbstractProductA{
     public void method2() {
         //业务逻辑
     }
-}
-//抽象产品B类
-public abstract class AbstractProductB {
-    //共有的方法
-    public void method1(){
-        //业务逻辑
-    }
-    //特有的相同方法，不同实现
-    public abstract void method2();
 }
 //产品B类1种
 public class ProductB1 extends AbstractProductB{
@@ -157,11 +197,15 @@ public class ProductB2 extends AbstractProductB{
         //业务逻辑
     }
 }
+```
+```java [AbstractCreator]
 //抽象工厂类
 public abstract class AbstractCreator {
     public abstract AbstractProductA createAbstractProductA();
     public abstract AbstractProductB createAbstractProductB();
 }
+```
+```java [Creator]
 //1类产品工厂
 public class Creator1 extends AbstractCreator{
     @Override
@@ -184,6 +228,8 @@ public class Creator2 extends AbstractCreator{
         return new ProductB2();
     }
 }
+```
+```java [Main]
 //场景类
 public class Main {
     public static void main(String[] args) {
@@ -196,11 +242,38 @@ public class Main {
     }
 }
 ```
-### 
-## 单例模式
+
+:::
+
+```mermaid
+classDiagram
+
+direction TB
+
+AbstractProductA<|--ProductA1
+AbstractProductA<|--ProductA2
+AbstractProductB<|--ProductB1
+AbstractProductB<|--ProductB2
+
+AbstractCreator<|--Creator1
+
+ProductA1<..Creator1
+ProductA2<..Creator2
+ProductB1<..Creator1
+ProductB2<..Creator2
+
+AbstractCreator<|--Creator2
+
+```
+
+### 单例模式
+
 单例模式是指在我们的系统程序当中保证该类的实例有且只有一个。
-### 饿汉式
+
+#### 饿汉式
+
 饿汉式，在类加载时就进行初始化
+
 ```java
 //饿汉式
 public class SingleDemo{
@@ -211,7 +284,9 @@ public class SingleDemo{
     }
 }
 ```
-### 懒汉式
+
+#### 懒汉式
+
 懒汉式，在第一次需要进行调用时进行初始化
 ```java
 public class SingleDemo{
@@ -226,7 +301,9 @@ public class SingleDemo{
 }
 ```
 这是最简单的一种懒汉式的写法，但是会出现线程安全问题，解决方案一般有三种：双重加锁、静态内部类、枚举；
-#### 双重加锁
+
+##### 双重加锁
+
 ```java
 public class SingleDemo{
 	private volatile static SingleDemo singleDemo;//保证多线程情况下singleDemo对象线程间可见
@@ -243,7 +320,9 @@ public class SingleDemo{
     }
 }
 ```
-#### 静态内部类
+
+##### 静态内部类
+
 ```java
 public class SingleDemo{
     private SingleDemo{}
@@ -255,17 +334,22 @@ public class SingleDemo{
     }
 }
 ```
-#### 枚举
+
+##### 枚举
+
 ```java
 public enum SingleDemo{
 	INSTANCE;
 }
 ```
 
-## 建造者模式
+### 建造者模式
+
 将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682662509871-fbb6d509-c2cf-4fd2-86bc-742d555f2208.jpeg)
-```java
+
+::: code-group
+
+```java [Director]
 //导演类
 public class Director {
     private Builder builder = new ConcreteBuilder();
@@ -274,6 +358,8 @@ public class Director {
         return builder.buildProduct();
     }
 }
+```
+```java [ConcreteBuilder]
 //具体建造者
 public class ConcreteBuilder extends Builder{
     private Product product = new Product();
@@ -286,11 +372,15 @@ public class ConcreteBuilder extends Builder{
         return product;
     }
 }
+```
+```java [Builder]
 //抽象建造者
 public abstract class Builder {
     public abstract void setPart();
     public abstract Product buildProduct();
 }
+```
+```java [Product]
 //产品类
 public class Product {
     public void doSomething(){
@@ -298,11 +388,28 @@ public class Product {
     }
 }
 ```
-### 建造者模式与工厂模式的区别
+
+:::
+
+```mermaid
+classDiagram
+Director --> Builder : builder()
+Builder-->ConcreteBuilder
+ConcreteBuilder..>Product
+
+class Director{
+    + Construct()
+}
+```
+
+
+#### 建造者模式与工厂模式的区别
+
 建造者模式最主要的功能是基本方法的调用顺序安排，也就是这些基本方法已经实现了，通俗的讲就是零件的装配，顺序不同产生的对象也不同；而工厂方法则重点是创建，创建零件是他们的主要职责，组装顺序则不是它关心的。
-## 原型模式
+
+### 原型模式
+
 用原型实例指定创建对象的种类，并通过拷贝这些原型对象创建新的对象。
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682687533680-be6b8e5d-277c-4cc1-95cd-2107242da991.jpeg)
 ```java
 //实现Cloneable接口，重写clone方法
 public class Prototype implements Cloneable {
@@ -318,11 +425,26 @@ public class Prototype implements Cloneable {
     }
 }
 ```
+
+```mermaid
+classDiagram
+
+ConcretePrototype --|> Prototype
+Prototype --> Client
+
+class Prototype{
+    + clone()
+}
+```
+
 原型模式是在内存二进制流的拷贝，要比直接new一个对象性能要好很多。但是直接在内存中进行拷贝，构造函数是不会执行的。还有clone方法是继承于Object类的，这个方法只是拷贝对象本身，对其内部的数组、应用对象等都不拷贝，还是指向原生对象的内部地址，这种拷贝叫做浅拷贝。解决方法是重写clone方法，自行拷贝。
-# 结构型
-## 适配器模式
+
+## 结构型
+
+### 适配器模式
+
 将一个类的接口变成客户端所期待的另一种接口，从而使因接口不匹配而无法在一起工作的两个类能够在一起工作。
-![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683080079938-6d26a9a0-9f3d-46ce-9309-d614afc61d2a.jpeg)
+
 ```java
 //目标角色
 public interface Target {
@@ -360,8 +482,8 @@ public class Main {
 }
 ```
 
+### 装饰者模式
 
-## 装饰者模式
 动态地给一个对象添加一些额外的职责。就增加功能来说，装饰者比生成子类更加灵活。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682934410106-4b3da85c-504f-46c3-8d41-4e30f7b018fd.jpeg)
 ```java
@@ -430,9 +552,13 @@ public class Main {
     }
 }
 ```
-## 代理模式 
+
+### 代理模式 
+
 代理模式是一个类为其他对象提供一种代理以控制对这个对象的访问。
-### 静态代理
+
+#### 静态代理
+
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1681824015331-b5c76b04-0029-431b-93da-cb3a23aad7b0.jpeg)
 
 1. User用户抽象类或者接口，抽象了用户的相关方法是实际类和代理类的共同方法，在使用时就可以无缝的以使用实际类的方式去使用代理类。实际调用的时候只需要对User类进行编程即可
@@ -467,9 +593,13 @@ public class AdminProxy implements User{
 }
 
 ```
-### 动态代理
+
+#### 动态代理
+
 动态代理是在实现阶段不用关心代理谁，而在运行阶段才指定代理哪一个对象
-#### JDK动态代理
+
+##### JDK动态代理
+
 JDK自身提供的动态代理，主要原理是利用反射创建代理类，是基于接口层面的代理
 **被代理类必须至少实现一个接口**
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682675952869-474b57bb-ad29-4533-9bfa-b34c228693cb.jpeg)
@@ -528,7 +658,8 @@ public class Client{
 }
 ```
 
-#### CGLIB动态代理
+##### CGLIB动态代理
+
 通过动态的生成一个子类去覆盖所要代理的类。Enhancer允许为非接口类型创建一个JAVA代理，Enhancer动态的创建给定类的子类并且拦截代理类的所有的方法
 **被代理的类可以是接口也可以是类**
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682680921023-32009ac0-87de-4a7f-aeb1-0714b440407f.jpeg)
@@ -564,10 +695,12 @@ public class ProxyFactory {
 }
 ```
 
-## 外观模式
+### 外观模式
 
-## 桥接模式
-## 组合模式
+### 桥接模式
+
+### 组合模式
+
 将对象组合成树性结构以表示“部分-整体”的层次结构，使得用户**对单个对象和组合对象的使用具有一致性**。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683380635459-4881c3f7-24de-4c39-b1e6-bf73cb6b7be1.jpeg)
 ```java
@@ -618,10 +751,14 @@ public class Main {
 }
 ```
 
-## 享元模式
-# 行为型
-## 策略模式
-## 模板方法模式
+### 享元模式
+
+## 行为型
+
+### 策略模式
+
+### 模板方法模式
+
 定义一个操作中的算法的框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682659720075-c58e3ce3-462c-42fa-a2ad-46568015294b.jpeg)
 ```java
@@ -661,7 +798,8 @@ public class ConcreteClass2 extends AbstractClass{
 }
 ```
 
-## 观察者模式
+### 观察者模式
+
 观察者模式也叫做发布订阅模式，定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖它的对象都会得到通知并被自动更新。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683386837427-000ceeb7-1972-43b5-8a59-ab32ce1a40e9.jpeg)
 ```java
@@ -716,7 +854,8 @@ public class Main {
 }
 ```
 
-## 迭代器模式
+### 迭代器模式
+
 它提供一种方法去访问一个容器对象中各个元素，而不需要暴露该对象的内部细节
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683377190280-8582e2ef-962e-4066-b7c0-bb5bfd6bd8f4.jpeg)
 ```java
@@ -785,8 +924,8 @@ public class Main{
 }
 ```
 
+### 责任链模式
 
-## 责任链模式
 使多个对象都有机会处理请求，从而避免了请求的发送者和处理者之间的耦合关系。将这些对象连成一条链，并沿着这条链传递请求，直到有对象处理它为止。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682931162887-0fbfcb2f-91ae-4f15-a6d4-80c77efa09a4.jpeg)
 ```java
@@ -888,7 +1027,8 @@ public class Main {
 }
 ```
 
-## 命令模式
+### 命令模式
+
 将一个请求封装成一个对象，从而让你使用不同的请求吧客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682849735547-5fc1feaf-b740-45df-9007-12ce85e8fb80.jpeg)
 ```java
@@ -974,7 +1114,8 @@ public class Main {
 }
 ```
 
-## 备忘录模式
+### 备忘录模式
+
 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683449160308-31049fd0-9c23-4467-9b2f-6812a58e5f4e.jpeg)
 ```java
@@ -1037,7 +1178,8 @@ public class Main {
 }
 ```
 
-## 状态模式
+### 状态模式
+
 当一个对象内在状态改变时允许其改变行为，这个对象看起来像改变了其类。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683553317083-f5431a59-c8c7-4a2b-8a34-41a1943998f7.jpeg)
 ```java
@@ -1110,7 +1252,9 @@ public class Main {
     }
 }
 ```
-## 访问者模式
+
+### 访问者模式
+
 封装一些作用于某种数据结构中的各个元素的操作，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683534976584-89b6cd11-506f-49ca-b097-9ed86c9ec6a5.jpeg)
 ```java
@@ -1183,7 +1327,9 @@ public class Main {
     }
 }
 ```
-## 中介者模式
+
+### 中介者模式
+
 用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示地相互作用，从而使其耦合松散，而且可以独立地改变它们之间的交互。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682693035461-e60e7cbc-9a60-42f4-a2ce-8bc9406f9acf.jpeg)
 ```java
@@ -1255,5 +1401,5 @@ public class ConcreteColleague2 extends Colleague{
 }
 ```
 
-## 解释器模式
+### 解释器模式
 
