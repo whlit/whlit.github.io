@@ -160,5 +160,7 @@ function sidebarBlog(): DefaultTheme.SidebarItem[] {
     { text: '使用 VitePress 构建个人博客网站', link: 'vitepress' },
     { text: 'VitePress 支持 Mermaid', link: 'vitepress-mermaid' },
     { text: '常用特殊Ascii字符', link: 'special-ascii' },
+    { text: 'Windows 系统删除 WindowsApps 文件夹', link: 'del-windows-apps-dir' },
+    { text: '免激活使用Typora', link: 'typora' },
   ]
 }
