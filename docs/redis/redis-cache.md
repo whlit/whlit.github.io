@@ -14,8 +14,8 @@ outline: deep
 ```mermaid
 graph TD
     Client[客户端] --> C[读取缓存] --> T{{是否命中缓存}}
-    T --|是|--> Client
-    T --|否|--> DB[数据库] --> Cache[更新缓存] --> Client
+    T --是--> Client
+    T --否--> DB[数据库] --> Cache[更新缓存] --> Client
 ```
 
 
