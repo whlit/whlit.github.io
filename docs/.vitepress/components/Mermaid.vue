@@ -3,7 +3,7 @@
 </template>
 <script setup ts>
 import { ref, onMounted } from 'vue'
-import { render } from '../docs/.vitepress/script/mermaid'
+import { render } from '../script/mermaid'
 
 const props = defineProps({
     id: String,
