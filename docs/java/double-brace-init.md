@@ -78,4 +78,3 @@ public class AnonymousClassesTest{
 
 user1和user2类型是不是很像？其实是一样的道理，就是双大括号形式的类初始化实例就是使用了匿名内部类的，而里面的大括号就很容易解释了，它就是一个代码块而已，在其中我们可以调用外部类的方法
 ![image.png](/java/double-brace-init-2.png)
-

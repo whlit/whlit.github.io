@@ -5,7 +5,6 @@ outline: deep
 
 # Python 版本管理
 
-
 在日常的学习和工作中经常会在系统中安装多个版本的 python，其中pyenv就是一个python版本管理的工具，但是它并不支持windows，不过有pyenv-win的代替版本
 
 [GitHub - pyenv/pyenv](https://github.com/pyenv/pyenv)
@@ -20,11 +19,11 @@ outline: deep
 
 2. 设置环境变量
 
-| PYENV | 安装目录 |  |
-| --- | --- | --- |
-| PYENV_ROOT | 安装目录 |  |
-| PYENV_HOME | 安装目录 |  |
-| PATH | %PYENV%\\bin;%PYENV%\\shims | 将bin和shims中的添加到path中 |
+| PYENV      | 安装目录                    |                              |
+| ---------- | --------------------------- | ---------------------------- |
+| PYENV_ROOT | 安装目录                    |                              |
+| PYENV_HOME | 安装目录                    |                              |
+| PATH       | %PYENV%\\bin;%PYENV%\\shims | 将bin和shims中的添加到path中 |
 
 3. 测试
 
@@ -58,10 +57,9 @@ echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
 echo 'eval "$(pyenv init -)"' >> ~/.profile
 ```
 
- 
 ## pyenv使用
 
-pyenv install 
+pyenv install
 
 ![image.png](/python/pvm-2.png)
 
@@ -95,6 +93,7 @@ C:\>pyenv global 3.11.5 ## 表示全局的python版本为3.11.5
 ```shell
 C:\>pyenv version
 ```
+
 ## 可能出现的问题
 
 ### no acceptable C compiler found in $PATH
@@ -102,7 +101,7 @@ C:\>pyenv version
 在安装python版本时会出现该问题，意思是安装的过程中需要c/c++的编辑环境，所以可以安装gcc来解决
 
 ```shell
-apt-get install gcc 
+apt-get install gcc
 apt-get install build-essential
 ```
 

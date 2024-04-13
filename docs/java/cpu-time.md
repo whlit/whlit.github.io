@@ -16,19 +16,19 @@ public static void main(String args[]) throws Exception
            threads[i] = new Thread(()->doSomething(10));
            threads[i].start();
        }
-       for(Thread t : threads){ 
-           t.join(); 
+       for(Thread t : threads){
+           t.join();
        }
        long endTime = System.currentTimeMillis();
        System.out.println("Time taken "+(endTime - startTime)/1000);
    }
-   
+
    public static int doSomething(int seconds){
     long st = System.currentTimeMillis();
     long usageTimeInMillis = seconds*1000L;
     long startTime = System.currentTimeMillis();
     int i = 0;
-    while ((System.currentTimeMillis() - startTime) < usageTimeInMillis) { i++; } 
+    while ((System.currentTimeMillis() - startTime) < usageTimeInMillis) { i++; }
     long lt = System.currentTimeMillis();
     System.out.println("Done "+Thread.currentThread().getId()+" in "+(lt-st)/1000+" seconds ");
     return i;

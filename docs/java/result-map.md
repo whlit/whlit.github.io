@@ -5,7 +5,7 @@ outline: deep
 
 # 实体类与ResultMap中的属性顺序不一致的问题
 
-> org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.executor.result.ResultMapException: Error attempting to get column 'name' from result set.  Cause: java.lang.IllegalArgumentException: No enum constant cn.demo.ItemType.Apple
+> org.mybatis.spring.MyBatisSystemException: nested exception is org.apache.ibatis.executor.result.ResultMapException: Error attempting to get column 'name' from result set. Cause: java.lang.IllegalArgumentException: No enum constant cn.demo.ItemType.Apple
 
 ## 问题重现
 
@@ -121,6 +121,3 @@ public class Item {
     private String name;
 }
 ```
-
-
-

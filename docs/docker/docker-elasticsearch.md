@@ -14,6 +14,7 @@ outline: deep
 ```shell
 docker network create es
 ```
+
 ### 创建逻辑卷
 
 创建两个volume，用于数据及插件
@@ -22,6 +23,7 @@ docker network create es
 docker volume create es-dev-data
 docker volume create es-dev-plugins
 ```
+
 ### 部署单节点elastcisearch
 
 这里我使用的版本是8.11.1，并且由于是本地开发学习使用，就禁用了xpack

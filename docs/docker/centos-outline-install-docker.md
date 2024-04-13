@@ -62,7 +62,7 @@ docker-ce-selinux.noarch : SELinux Policies for the open-source application cont
 ```powershell
 [root@04ce67faeaee local]# cd /etc/yum.repos.d
 [root@04ce67faeaee local]# vi docker.repo
-[root@04ce67faeaee local]# more docker.repo 
+[root@04ce67faeaee local]# more docker.repo
 [docker-yum]
 name=dockeryum
 baseurl=file:///usr/local/yumrepo

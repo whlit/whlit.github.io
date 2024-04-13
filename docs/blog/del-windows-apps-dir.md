@@ -1,4 +1,4 @@
---- 
+---
 outline: deep
 ---
 
@@ -34,8 +34,6 @@ outline: deep
 
 ![image.png](/blog/del-windows-apps-dir-10.png)
 
-
 ## 参考文档
 
 [如何删除 Windows 10 系统生成的 WindowsApps 文件夹](https://blog.csdn.net/WPwalter/article/details/79394709)
-

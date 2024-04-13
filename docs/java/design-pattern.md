@@ -62,13 +62,16 @@ outline: deep
 迪米特法则对类的低耦合提出了明确的要求，其中包含了四层含义：
 
 1. 只和朋友交流
-> 类鱼类之间的关系是建立在类间的，而不是方法间，因此一个方法尽量不引入一个类中不存在的对象。
+
+   > 类鱼类之间的关系是建立在类间的，而不是方法间，因此一个方法尽量不引入一个类中不存在的对象。
 
 2. 朋友之间也是有距离的
-> 尽量不对外公布太多的public方法和非静态的public变量，尽量内敛，多使用private、package-private、protected等访问权限
+
+   > 尽量不对外公布太多的public方法和非静态的public变量，尽量内敛，多使用private、package-private、protected等访问权限
 
 3. 自己的就是自己的
-> 如果一个方法放在本类中，既不增加类间关系，也对本类不产生负面影响，那就放在本类中
+
+   > 如果一个方法放在本类中，既不增加类间关系，也对本类不产生负面影响，那就放在本类中
 
 4. 谨慎使用Serializable
 
@@ -93,6 +96,7 @@ public abstract class Product {
     public abstract void methond2();
 }
 ```
+
 ```java [ConcreteProduct]
 //具体产品类
 public class ConcreteProduct1 extends Product {
@@ -106,6 +110,7 @@ public class ConcreteProduct2 extends Product {
     }
 }
 ```
+
 ```java [Creator]
 //抽象工厂类
 public abstract class Creator {
@@ -113,6 +118,7 @@ public abstract class Creator {
     public abstract <T extends Product> T createProduct(Class<T> c);
 }
 ```
+
 ```java [ConcreteCreator]
 //具体工厂类
 public class ConcreteCreator extends Creator {
@@ -168,6 +174,7 @@ public abstract class AbstractProductB {
     public abstract void method2();
 }
 ```
+
 ```java [Product]
 //产品A类1种
 public class ProductA1 extends AbstractProductA{
@@ -198,6 +205,7 @@ public class ProductB2 extends AbstractProductB{
     }
 }
 ```
+
 ```java [AbstractCreator]
 //抽象工厂类
 public abstract class AbstractCreator {
@@ -205,6 +213,7 @@ public abstract class AbstractCreator {
     public abstract AbstractProductB createAbstractProductB();
 }
 ```
+
 ```java [Creator]
 //1类产品工厂
 public class Creator1 extends AbstractCreator{
@@ -229,6 +238,7 @@ public class Creator2 extends AbstractCreator{
     }
 }
 ```
+
 ```java [Main]
 //场景类
 public class Main {
@@ -288,6 +298,7 @@ public class SingleDemo{
 #### 懒汉式
 
 懒汉式，在第一次需要进行调用时进行初始化
+
 ```java
 public class SingleDemo{
 	private static SingleDemo singleDemo;
@@ -300,6 +311,7 @@ public class SingleDemo{
     }
 }
 ```
+
 这是最简单的一种懒汉式的写法，但是会出现线程安全问题，解决方案一般有三种：双重加锁、静态内部类、枚举；
 
 ##### 双重加锁
@@ -359,6 +371,7 @@ public class Director {
     }
 }
 ```
+
 ```java [ConcreteBuilder]
 //具体建造者
 public class ConcreteBuilder extends Builder{
@@ -373,6 +386,7 @@ public class ConcreteBuilder extends Builder{
     }
 }
 ```
+
 ```java [Builder]
 //抽象建造者
 public abstract class Builder {
@@ -380,6 +394,7 @@ public abstract class Builder {
     public abstract Product buildProduct();
 }
 ```
+
 ```java [Product]
 //产品类
 public class Product {
@@ -402,7 +417,6 @@ class Director{
 }
 ```
 
-
 #### 建造者模式与工厂模式的区别
 
 建造者模式最主要的功能是基本方法的调用顺序安排，也就是这些基本方法已经实现了，通俗的讲就是零件的装配，顺序不同产生的对象也不同；而工厂方法则重点是创建，创建零件是他们的主要职责，组装顺序则不是它关心的。
@@ -410,6 +424,7 @@ class Director{
 ### 原型模式
 
 用原型实例指定创建对象的种类，并通过拷贝这些原型对象创建新的对象。
+
 ```java
 //实现Cloneable接口，重写clone方法
 public class Prototype implements Cloneable {
@@ -486,6 +501,7 @@ public class Main {
 
 动态地给一个对象添加一些额外的职责。就增加功能来说，装饰者比生成子类更加灵活。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682934410106-4b3da85c-504f-46c3-8d41-4e30f7b018fd.jpeg)
+
 ```java
 //抽象构件
 public abstract class Component {
@@ -553,7 +569,7 @@ public class Main {
 }
 ```
 
-### 代理模式 
+### 代理模式
 
 代理模式是一个类为其他对象提供一种代理以控制对这个对象的访问。
 
@@ -564,6 +580,7 @@ public class Main {
 1. User用户抽象类或者接口，抽象了用户的相关方法是实际类和代理类的共同方法，在使用时就可以无缝的以使用实际类的方式去使用代理类。实际调用的时候只需要对User类进行编程即可
 2. AdminProxy是Admin用户的代理类，其中包含了Admin类实例的引用，由于都实现了User类的方法，所以可以在任何时候代替实际类。而且代理类还可以控制实际类的创建和删除，以及对实际类的方法进行加强，或者对实际类的调用进行权限的控制等。
 3. Admin是执行业务逻辑的实际类。
+
 ```java
 public interface User{
     public void write();
@@ -603,6 +620,7 @@ public class AdminProxy implements User{
 JDK自身提供的动态代理，主要原理是利用反射创建代理类，是基于接口层面的代理
 **被代理类必须至少实现一个接口**
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682675952869-474b57bb-ad29-4533-9bfa-b34c228693cb.jpeg)
+
 ```java
 //抽象主题
 public interface Subject{
@@ -663,6 +681,7 @@ public class Client{
 通过动态的生成一个子类去覆盖所要代理的类。Enhancer允许为非接口类型创建一个JAVA代理，Enhancer动态的创建给定类的子类并且拦截代理类的所有的方法
 **被代理的类可以是接口也可以是类**
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682680921023-32009ac0-87de-4a7f-aeb1-0714b440407f.jpeg)
+
 ```java
 //被代理类
 public class Subject {
@@ -703,6 +722,7 @@ public class ProxyFactory {
 
 将对象组合成树性结构以表示“部分-整体”的层次结构，使得用户**对单个对象和组合对象的使用具有一致性**。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683380635459-4881c3f7-24de-4c39-b1e6-bf73cb6b7be1.jpeg)
+
 ```java
 //抽象构件
 public abstract class Component {
@@ -761,6 +781,7 @@ public class Main {
 
 定义一个操作中的算法的框架，而将一些步骤延迟到子类中。使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682659720075-c58e3ce3-462c-42fa-a2ad-46568015294b.jpeg)
+
 ```java
 //抽象模板类
 public abstract class AbstractClass {
@@ -773,7 +794,7 @@ public abstract class AbstractClass {
         this.doAnything();
         this.doSomething();
     }
-    
+
 }
 //具体模板类
 public class ConcreteClass1 extends AbstractClass{
@@ -802,6 +823,7 @@ public class ConcreteClass2 extends AbstractClass{
 
 观察者模式也叫做发布订阅模式，定义对象间一种一对多的依赖关系，使得每当一个对象改变状态，则所有依赖它的对象都会得到通知并被自动更新。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683386837427-000ceeb7-1972-43b5-8a59-ab32ce1a40e9.jpeg)
+
 ```java
 //抽象被观察者
 public abstract class Subject {
@@ -858,6 +880,7 @@ public class Main {
 
 它提供一种方法去访问一个容器对象中各个元素，而不需要暴露该对象的内部细节
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683377190280-8582e2ef-962e-4066-b7c0-bb5bfd6bd8f4.jpeg)
+
 ```java
 //抽象迭代器
 public interface Iterator {
@@ -928,6 +951,7 @@ public class Main{
 
 使多个对象都有机会处理请求，从而避免了请求的发送者和处理者之间的耦合关系。将这些对象连成一条链，并沿着这条链传递请求，直到有对象处理它为止。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682931162887-0fbfcb2f-91ae-4f15-a6d4-80c77efa09a4.jpeg)
+
 ```java
 //请求类，包含了请求的处理级别
 public class Request {
@@ -1031,6 +1055,7 @@ public class Main {
 
 将一个请求封装成一个对象，从而让你使用不同的请求吧客户端参数化，对请求排队或者记录请求日志，可以提供命令的撤销和恢复功能。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682849735547-5fc1feaf-b740-45df-9007-12ce85e8fb80.jpeg)
+
 ```java
 //抽象接收者
 public abstract class Receiver {
@@ -1118,6 +1143,7 @@ public class Main {
 
 在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。这样以后就可将该对象恢复到原先保存的状态。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683449160308-31049fd0-9c23-4467-9b2f-6812a58e5f4e.jpeg)
+
 ```java
 //备忘录对象
 public class Memento {
@@ -1182,6 +1208,7 @@ public class Main {
 
 当一个对象内在状态改变时允许其改变行为，这个对象看起来像改变了其类。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683553317083-f5431a59-c8c7-4a2b-8a34-41a1943998f7.jpeg)
+
 ```java
 //抽象状态对象
 public abstract class State {
@@ -1257,6 +1284,7 @@ public class Main {
 
 封装一些作用于某种数据结构中的各个元素的操作，它可以在不改变数据结构的前提下定义作用于这些元素的新的操作。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1683534976584-89b6cd11-506f-49ca-b097-9ed86c9ec6a5.jpeg)
+
 ```java
 //抽象元素
 public abstract class Element {
@@ -1332,6 +1360,7 @@ public class Main {
 
 用一个中介对象封装一系列的对象交互，中介者使各对象不需要显示地相互作用，从而使其耦合松散，而且可以独立地改变它们之间的交互。
 ![](https://cdn.nlark.com/yuque/0/2023/jpeg/2853593/1682693035461-e60e7cbc-9a60-42f4-a2ce-8bc9406f9acf.jpeg)
+
 ```java
 //抽象中介类
 public abstract class Mediator {
@@ -1402,4 +1431,3 @@ public class ConcreteColleague2 extends Colleague{
 ```
 
 ### 解释器模式
-

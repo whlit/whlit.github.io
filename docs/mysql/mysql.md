@@ -7,7 +7,6 @@ outline: deep
 
 ## 数据库管理
 
-
 ### 命令行连接数据库
 
 本地连接
@@ -17,7 +16,7 @@ outline: deep
 root@local:~$ mysql -u root -p
 Enter password: # 此时需要输入密码
 # 登录成功后会进入mysql的命令窗口
-mysql> 
+mysql>
 ```
 
 指定端口连接，安装时修改了端口
@@ -27,7 +26,7 @@ mysql>
 root@local:~$ mysql -u root -p -P 33060
 Enter password: # 此时需要输入密码
 # 登录成功后会进入mysql的命令窗口
-mysql> 
+mysql>
 ```
 
 指定ip及端口连接，不连接本地的mysql，但是本地安装有mysql，即拥有mysql-cli
@@ -37,7 +36,7 @@ mysql>
 root@local:~$ mysql -h 192.168.1.5 -u root -p -P 33060
 Enter password: # 此时需要输入密码
 # 登录成功后会进入mysql的命令窗口
-mysql> 
+mysql>
 ```
 
 ### 创建用户

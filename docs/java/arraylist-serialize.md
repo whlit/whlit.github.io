@@ -5,7 +5,6 @@ outline: deep
 
 # ArrayList序列化
 
-
 ArrayList的`elementData`是以`transient`修饰的，所以`elementData`是不可以被序列化的
 
 **为什么elementData不可以直接被序列化**

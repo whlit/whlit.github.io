@@ -32,9 +32,7 @@ System.out.println(res2);  // 小红
 
 :::
 
-
-
-### MSET & MGET  <Badge>常用</Badge>
+### MSET & MGET <Badge>常用</Badge>
 
 MSET和MGET是两个最基础的操作的批量操作，可以同时设置多个key，也可以同时获取多个key。
 
@@ -57,7 +55,7 @@ System.out.println(list);  // [小红, 小明]
 
 :::
 
-### GETSET  <Badge type="danger">废弃</Badge>
+### GETSET <Badge type="danger">废弃</Badge>
 
 以原子的方式将一个值设置为另一个值，并返回旧的值。
 
@@ -91,8 +89,6 @@ System.out.println(res2);  // null
 ```
 
 :::
-
-
 
 ### GETRANGE & SETRANGE {#getrange-and-setrange}
 
@@ -142,13 +138,12 @@ String res6 = jedis.get("xiaohong");
 System.out.println(res6);  // heabc world
 jedis.setrange("xiaohong", 20, "TEST");
 String res7 = jedis.get("xiaohong");
-System.out.println(res7);  // heabc worldTEST 
+System.out.println(res7);  // heabc worldTEST
 ```
 
 :::
 
 这里java代码最后打印的值其实是`heabc world\x00\x00\x00\x00\x00\x00\x00\x00\x00TEST` 中间填充有`\x00`。
-
 
 ### SETEX <Badge type="danger">废弃</Badge>
 
@@ -162,7 +157,7 @@ OK
 127.0.0.1:6379> GET xiaohong
 "hello world"
 # 等待10秒。。。
-127.0.0.1:6379> GET xiaohong  
+127.0.0.1:6379> GET xiaohong
 (nil)
 ```
 
@@ -226,7 +221,6 @@ System.out.println(ttl2);  // 10
 
 PSETEX和SETEX一样，只是这个单位是毫秒。
 
-
 ### MSETNX
 
 批量设置键值，如果key已经存在，则不设置。但只要有一个值已经存在就不会执行操作。也就是要么都成功，要么都失败。
@@ -276,7 +270,6 @@ System.out.println(res);  // 小红小红
 ```
 
 :::
-
 
 ### INCR & DECR <Badge>常用</Badge>
 
@@ -392,7 +385,7 @@ System.out.println(lcs.getMatchString()); // ""
 
 :::
 
-### STRLEN  <Badge>常用</Badge>
+### STRLEN <Badge>常用</Badge>
 
 获取值的**字节长度**。
 
@@ -416,7 +409,6 @@ System.out.println(len); // 6
 ### SUBSTR <Badge type="danger">废弃</Badge>
 
 获取值的子串。此命令已被废弃替换为[GETRANGE](#getrange-and-setrange)。
-
 
 ## List
 
@@ -535,8 +527,6 @@ System.out.println(list2);  // [c, b, a, d, e, f]
 
 :::
 
-
-
 ### LPOP & RPOP <Badge>常用</Badge>
 
 删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
@@ -573,7 +563,7 @@ System.out.println(res2);  // [d, c]
 
 获取列表的长度。
 
-::: code-group  
+::: code-group
 
 ```sh [redis-cli]
 127.0.0.1:6379> lpush list a b c
@@ -599,7 +589,6 @@ System.out.println(len); // 3
 ::: tip 一般用法
 
 一般和[LPUSH/RPUSH](#lpush-rpush-常用)一起使用，将一个或多个值插入到列表的头部（左边）或者尾部（右边），同时确保列表不会超过指定的长度。
-
 
 :::
 
@@ -676,7 +665,6 @@ System.out.println(list4);  // []
 
 :::
 
-
 ### BLPOP & BRPOP <Badge>常用</Badge>
 
 ### BLMOVE
@@ -701,15 +689,11 @@ System.out.println(list4);  // []
 
 ### RPOPLPUSH
 
-
-
-
-
 ## Set
 
 Set 是无序的不重复元素的集合。
 
-### SADD  <Badge>常用</Badge>
+### SADD <Badge>常用</Badge>
 
 向集合中添加一个或多个元素，返回添加成功的元素的个数。如果value的类型不是集合时返回错误。
 
@@ -746,8 +730,6 @@ System.out.println(set2);  // [a, b, c, d, e, f]
 ```
 
 :::
-
-
 
 ### SREM <Badge>常用</Badge>
 
@@ -807,7 +789,6 @@ System.out.println(set);  // [a, b, c, d]
 ```
 
 :::
-
 
 ### SCARD <Badge>常用</Badge>
 
@@ -1123,7 +1104,6 @@ Set<String> set = jedis.smembers("set");
 System.out.println(set);  // [b]
 ```
 
-
 ### SMOVE
 
 ### SSCAN
@@ -1131,8 +1111,6 @@ System.out.println(set);  // [b]
 ### SMISMEMBER
 
 ### SINTERCARD
-
-
 
 ## Hash
 
@@ -1162,7 +1140,6 @@ System.out.println(res2);  // 0
 ```
 
 :::
-
 
 ### HEXISTS
 
@@ -1305,10 +1282,6 @@ System.out.println(list);  // [test, null, null]
 
 ### HRANDFIELD
 
-
-
-
-
 ## Sorted Set
 
 有序集合类型，相比于Set多了排序的score属性，同时也是唯一的，但是分值可以相同，也可以安装分值排序。
@@ -1332,7 +1305,7 @@ System.out.println(list);  // [test, null, null]
 - `CH`: 将返回值从新添加的元素数修改为更改的元素数，更改的元素指新添加的元素和已更新分数的元素。
 - `INCR`: 类似于[ZINCRBY](#zincrby-常用)，让元素增加指定的分数，但只能指定一个分数/元素对。
 
-::: warning 
+::: warning
 
 GT、LT和NX选项互斥
 
@@ -1384,8 +1357,6 @@ System.out.println(zset);  //[[a,1.0], [b,2.0], [c,3.0], [e,5.0], [f,6.0], [g,14
 
 :::
 
-
-
 ### ZCARD <Badge>常用</Badge>
 
 返回排序集合中的元素数。
@@ -1407,7 +1378,6 @@ System.out.println(jedis.zcard("zset"));  // 3
 ```
 
 :::
- 
 
 ### ZCOUNT
 
@@ -1472,8 +1442,6 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 ### ZINTERSTORE <Badge>常用</Badge>
 
-
-
 ### ZINTERCARD
 
 ### ZLEXCOUNT
@@ -1498,7 +1466,7 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 :::
 
-::: info 
+::: info
 
 从Redis6.2.0开始，此命令可以替换以下命令：[ZREVRANGE](#zrevrange-常用) [ZRANGEBYSCORE](#zrangebyscore-常用) [ZREVRANGEBYSCORE](#zrevrangebyscore-常用) [ZRANGEBYLEX](#zrangebylex-常用) [ZREVRANGEBYLEX](#zrevrangebylex-常用)
 
@@ -1525,9 +1493,7 @@ System.out.println(zset);  // [a, b, c]
 
 :::
 
-### ZRANGEBYLEX  <Badge type="danger">废弃</Badge>
-
-
+### ZRANGEBYLEX <Badge type="danger">废弃</Badge>
 
 ### ZRANGEBYSCORE
 
@@ -1605,14 +1571,6 @@ System.out.println(zset);  // 1
 
 ### ZUNION
 
-
-
-
-
-
-
-
-
 ## Streams
 
 ## Geospatial indexes
@@ -1622,12 +1580,6 @@ System.out.println(zset);  // 1
 ## Bitfields
 
 ## HyperLogLog
-
-
-
-
-
-
 
 ## 通用命令
 
@@ -1822,7 +1774,6 @@ System.out.println(ttl);  // 1710094923364
 
 :::
 
-
 ### EXPIRETIME
 
 返回过期的unix时间戳。
@@ -2000,4 +1951,3 @@ System.out.println(jedis.type("xiaoming"));  // hash
 ### WAIT
 
 ### WAITAOF
-

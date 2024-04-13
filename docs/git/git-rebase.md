@@ -11,7 +11,7 @@ layout: doc
 将最近的三次提交合并：
 
 ```sh
-$ git rebase -i HEAD~~~ 
+$ git rebase -i HEAD~~~
 $ git rebase -i HEAD~3
 ```
 
@@ -89,7 +89,6 @@ c
 
 在日常开发中经常是多条分支开发，在进行合并时不可避免的发生提交记录的分叉
 
-
 ```mermaid
 gitGraph
     commit id:"commit A"
@@ -117,7 +116,6 @@ $ git rebase master
 ```
 
 上面的示例如果使用这种方式的话，结果就是这样的
-
 
 ```mermaid
 gitGraph

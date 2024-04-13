@@ -77,7 +77,7 @@ Changes not staged for commit:
 
 可以看到`修改d文件`和`创建e文件`这两次修改的内容以及退到`创建d文件`的状态，这是因为`git reset --soft`是将已经提交的版本中的修改回退到暂存区，工作区的修改不会改变。
 
- ### --mixed
+### --mixed
 
 `--mixed`参数指定回退到某一个版本，是将已经提交的版本中的修改回退到工作区。这个也是默认参数，可以不指定。
 
@@ -115,7 +115,6 @@ Untracked files:
 
 `git reset --hard HEAD^^`
 
-
 ```mermaid
 gitGraph
     commit
@@ -135,7 +134,6 @@ nothing to commit, working tree clean
 ::: danger
 `--hard`会删除所有回退的提交。所以要谨慎使用, 除非你确定这之后的提交一点用都没有了。
 :::
-
 
 ## 重新提交
 

@@ -32,7 +32,7 @@ npm i -D electron electron-builder cuncurrently
   "compilerOptions": {
     "target": "esnext",
     "useDefineForClassFields": true,
-    "module": "commonjs",//commonjs规范
+    "module": "commonjs", //commonjs规范
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
@@ -42,14 +42,15 @@ npm i -D electron electron-builder cuncurrently
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
-    "outDir": "dist/electron"//文件输出的地址
+    "outDir": "dist/electron" //文件输出的地址
   },
-  "include": ["src/electron/**/*"],//electron文件的路径
-  "references": [{
-    "path": "./tsconfig.node.json"
-  }]
+  "include": ["src/electron/**/*"], //electron文件的路径
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
-
 ```
 
 ### 修改package.json
@@ -59,7 +60,7 @@ npm i -D electron electron-builder cuncurrently
   "name": "项目名称",
   "private": true,
   "version": "0.0.0",
-  "main": "dist/electron/main/main.js",//改为electron的main的位置
+  "main": "dist/electron/main/main.js", //改为electron的main的位置
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -78,22 +79,16 @@ npm i -D electron electron-builder cuncurrently
       "buildResources": "assets",
       "output": "release/${version}"
     },
-    "files": [
-      "dist"
-    ],
+    "files": ["dist"],
     "mac": {
       "artifactName": "${productName}_${version}.${ext}",
-      "target": [
-        "dmg"
-      ]
+      "target": ["dmg"]
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
       ],
       "artifactName": "${productName}_${version}.${ext}"
@@ -120,7 +115,6 @@ npm i -D electron electron-builder cuncurrently
     "vue-tsc": "^1.8.5"
   }
 }
-
 ```
 
 ### electron入口文件
@@ -135,24 +129,19 @@ import path from 'path'
 
 const isDev = process.env.npm_lifecycle_event === 'app:dev'
 
-function createWindow(){
-
+function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
       //preload文件地址
-      preload: path.join(__dirname, '../preload/preload.js')
-    }
+      preload: path.join(__dirname, '../preload/preload.js'),
+    },
   })
 
-  mainWindow.loadURL(
-    isDev ? 
-    'http://localhost:5173' :
-    path.join(__dirname, '../../../index.html')
-  )
+  mainWindow.loadURL(isDev ? 'http://localhost:5173' : path.join(__dirname, '../../../index.html'))
 
-  if(isDev){
+  if (isDev) {
     //开启控制台
     mainWindow.webContents.openDevTools()
   }
@@ -161,18 +150,17 @@ function createWindow(){
 app.whenReady().then(() => {
   createWindow()
   app.on('activate', function () {
-    if(BrowserWindow.getAllWindows().length === 0){
+    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
     }
   })
 })
 
 app.on('window-all-closed', () => {
-  if(process.platform != 'darwin'){
+  if (process.platform != 'darwin') {
     app.quit()
   }
 })
-
 ```
 
 **preload.ts**
@@ -216,7 +204,7 @@ export const query = function(sql: string, callback: queryCallback){
             callback(err, null, [])
         }else{
             con.query( sql, function(err: MysqlError | null, results?: any, fields?: FieldInfo[]){
-                //事件驱动回调    
+                //事件驱动回调
                 callback(err,results,fields);
             })
         }
@@ -235,15 +223,14 @@ Electron主进程与渲染进程的通信方式有多种，此处只列出本项
 ### 向preload.ts中添加要暴露的api
 
 ```typescript
-import { contextBridge, ipcRenderer } from "electron"
+import { contextBridge, ipcRenderer } from 'electron'
 //electronAPI是暴露在window上的属性
 contextBridge.exposeInMainWorld('electronAPI', {
   //getAll是暴露出去的方法，可以通过window.electronAPI.getAll()进行调用
   getAll: () => {
     //使用invoke方法
-    return ipcRenderer.invoke('executeSql'/*这个参数是ipcRenderer与ipcMain通信的标识*/, 
-                              'select id, title, path, src, img from tab'/*传递的参数*/)
-  }
+    return ipcRenderer.invoke('executeSql' /*这个参数是ipcRenderer与ipcMain通信的标识*/, 'select id, title, path, src, img from tab' /*传递的参数*/)
+  },
 })
 ```
 
@@ -254,12 +241,12 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { query } from '../utils/db'
 //使用handle与渲染线程进行通信
 ipcMain.handle('executeSql', (event, sql) => {
-    //此处是将callback转换成了Promise，也可以自行处理
-    return new Promise((resolve) => {
-        query(sql, (err, results, files) => {
-            resolve(results)
-        })
+  //此处是将callback转换成了Promise，也可以自行处理
+  return new Promise((resolve) => {
+    query(sql, (err, results, files) => {
+      resolve(results)
     })
+  })
 })
 ```
 
@@ -270,13 +257,13 @@ ipcMain.handle('executeSql', (event, sql) => {
   <button type="button" @click="onClick"></button>
 </template>
 <script setup lang="ts">
-  import { ref } from 'vue'
-  const onClick = () => {
-    //直接通过window.electronAPI.getAtlas()进行通信
-    window.electronAPI.getAtlas().then((data: any) => {
-      console.log('res', data);
-    })
-  }
+import { ref } from 'vue'
+const onClick = () => {
+  //直接通过window.electronAPI.getAtlas()进行通信
+  window.electronAPI.getAtlas().then((data: any) => {
+    console.log('res', data)
+  })
+}
 </script>
 ```
 
@@ -286,12 +273,12 @@ ipcMain.handle('executeSql', (event, sql) => {
 
 ```typescript
 export interface IElectronAPI {
-  getAtlas: () => Promise<any>;//在preload中定义的其他方法也需要在这里添加上
+  getAtlas: () => Promise<any> //在preload中定义的其他方法也需要在这里添加上
 }
 
 declare global {
   interface Window {
-    electronAPI: IElectronAPI;
+    electronAPI: IElectronAPI
   }
 }
 ```

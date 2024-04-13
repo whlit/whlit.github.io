@@ -5,7 +5,6 @@ outline: deep
 
 # transient 关键字
 
-
 Java语言关键字，在对对象进行持久化存储时，用**transient**进行修饰的变量不参与序列化处理
 
 ## 序列化
@@ -21,7 +20,7 @@ Java语言关键字，在对对象进行持久化存储时，用**transient**进
 public class User implements Serializable {
 	private String username;
     private transient String password;
-    
+
     public String getUsername() {
         return username;
     }
@@ -90,4 +89,3 @@ public class TransientTest {
 注：不要使用双大括号进行初始化，Gson进行序列化会失效，即使后面又对其进行重新赋值也不可以，还是会失效，原因是Gson不可以对匿名内部类进行序列化操作，而双大括号形式的类初始化就是使用的匿名内部类的方式
 
 [双大括号初始化](/java/double-brace-init)
-

@@ -10,8 +10,6 @@
 
 - 安装vitepress
 
-
-
 ::: code-group
 
 ```sh [npm]
@@ -75,7 +73,6 @@ $ bunx vitepress init
 
 - 运行项目
 
-
 ::: code-group
 
 ```sh [npm]
@@ -95,7 +92,6 @@ $ bun run docs:dev
 ```
 
 :::
-
 
 ## 创建github工作流自动部署
 
@@ -193,5 +189,3 @@ jobs:
 - 提交并推送代码
 
 向main分支推送代码，github会自动触发actions进行构建并发布
-
-

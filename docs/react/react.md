@@ -5,7 +5,6 @@ outline: deep
 
 # React 相关
 
-
 ### 列表渲染中key的位置
 
 列表项的key是写在组件本身上的，不是组件内部返回的标签上
@@ -37,7 +36,7 @@ function Demo(){
 `<>`的示例
 
 ```jsx
-function Demo(){
+function Demo() {
   return (
     <>
       <h1>Demo</h1>
@@ -51,7 +50,7 @@ function Demo(){
 
 ```jsx
 function Demo(){
-  return data.map(item => 
+  return data.map(item =>
   	<Fragment key={item.id}>
       <h1>{item.name}</h1>
       <p>This is a Demo</p>

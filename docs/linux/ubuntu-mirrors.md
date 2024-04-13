@@ -11,7 +11,7 @@ Ubuntu 的软件源配置文件是 `/etc/apt/sources.list`
 # 对默认源文件进行备份
 sudo cp /etc/apt/sources.list /etc/apt/sources.list.back
 # 编辑配置文件为对应的软件源
-sudo vim /etc/apt/sources.list 
+sudo vim /etc/apt/sources.list
 # 更新
 sudo apt-get update
 sudo apt-get upgrade

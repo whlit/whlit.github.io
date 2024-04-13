@@ -7,7 +7,7 @@ outline: deep
 
 ## GraphAware Neo4j Elasticsearch
 
-[![GitHub](<https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github>)](<https://github.com/graphaware/neo4j-to-elasticsearch>)
+[![GitHub](https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github)](https://github.com/graphaware/neo4j-to-elasticsearch)
 
 ```
 neo4j-to-elasticsear是chNeo4j和Elasticsearch集成的插件
@@ -26,7 +26,7 @@ GraphAware Elasticsearch Integration是Neo4j和Elasticsearch之间的企业级�
 
 ## neo4j-nlp-stanfordnlp
 
-[![GitHub](<https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github>)](<https://github.com/graphaware/neo4j-nlp-stanfordnlp>)
+[![GitHub](https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github)](https://github.com/graphaware/neo4j-nlp-stanfordnlp)
 
 ```
 GraphAware NLP使用StanfordNLP
@@ -35,7 +35,7 @@ GraphAware NLP使用StanfordNLP
 
 ## Stanford CoreNLP
 
-[![GitHub](<https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github>)](<https://github.com/stanfordnlp/CoreNLP>)
+[![GitHub](https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github)](https://github.com/stanfordnlp/CoreNLP)
 
 ```
 Stanford CoreNLP提供了一套用Java编写的自然语言分析工具。它可以采用原始的人类语言文本输入，并提供单词的基本形式，它们的词性，它们是公司名称，人物等，标准化和解释日期，时间和数字量，标记句子的结构在短语或单词依赖性方面，并指出哪些名词短语指的是相同的实体。它最初是为英语开发的，但现在也为（现代标准）阿拉伯语，（大陆）中文斯坦福CoreNLP是一个集成框架，可以很容易地将一堆语言分析工具应用于一段文本。从纯文本开始，您只需使用两行代码即可运行，法语，德语和西班牙语提供不同程度的支持。所有工具。其分析为更高级别和特定领域的文本理解应用程序提供了基础构建块。斯坦福CoreNLP是一套稳定且经过良好测试的自然语言处理工具，广泛应用于学术界，工业界和政府部门。这些工具以各种方式使用基于规则的概 机器学习和深度学习组件。
@@ -45,7 +45,7 @@ Stanford CoreNLP代码是用Java编写的，并根据GNU通用公共许可证（
 
 ## HanLP
 
-[![GitHub](<https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github>)](<https://github.com/hankcs/HanLP>)
+[![GitHub](https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github)](https://github.com/hankcs/HanLP)
 
 HanLP是一系列模型与算法组成的NLP工具包，由大快搜索主导并完全开源，目标是普及自然语言处理在生产环境中的应用。HanLP具备功能完善、性能高效、架构清晰、语料时新、可自定义的特点。
 
@@ -100,9 +100,8 @@ HanLP提供下列功能：
 
 ## Word
 
-[![GitHub](<https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github>)](<https://github.com/ysc/word>)
+[![GitHub](https://img.shields.io/badge/GitHub--yellow.svg?style=social&logo=github)](https://github.com/ysc/word)
 
 ```
 word分词是一个Java实现的分布式的中文分词组件，提供了多种基于词典的分词算法，并利用ngram模型来消除歧义。能准确识别英文、数字，以及日期、时间等数量词，能识别人名、地名、组织机构名等未登录词。能通过自定义配置文件来改变组件行为，能自定义用户词库、自动检测词库变化、支持大规模分布式环境，能灵活指定多种分词算法，能使用refine功能灵活控制分词结果，还能使用词频统计、词性标注、同义标注、反义标注、拼音标注等功能。提供了10种分词算法，还提供了10种文本相似度算法，同时还无缝和Lucene、Solr、ElasticSearch、Luke集成。注意：word1.3需要JDK1.8
 ```
-

@@ -8,4 +8,3 @@ outline: deep
 idea使用gradle构建项目时报错从网上找到的相同报错显示的是init.gradle文件中的http应该改为https
 
 ![ex-idea-gradle-1](/java/ex-idea-gradle-1.png)
-

@@ -14,20 +14,18 @@ outline: deep
   <div ref="testDiv">测试用div</div>
 </template>
 <script>
-  
- import { ref } from 'vue'
-  
- export default {
-   name: 'test',
-   setup(){
-     const testDiv = ref(null)
-     return {
-       testDiv
-     }
-   }
- }
-</script>
+import { ref } from 'vue'
 
+export default {
+  name: 'test',
+  setup() {
+    const testDiv = ref(null)
+    return {
+      testDiv,
+    }
+  },
+}
+</script>
 ```
 
 ### vue2中使用ref获取
@@ -37,12 +35,11 @@ outline: deep
   <div ref="testDiv">测试用div</div>
 </template>
 <script>
- export default {
-   name: 'test',
-   mounted() {
-     console.log(this.$refs.testDiv)
-   }
- }
+export default {
+  name: 'test',
+  mounted() {
+    console.log(this.$refs.testDiv)
+  },
+}
 </script>
-
 ```

@@ -27,5 +27,3 @@
 `resources\locales\zh-Hans.lproj\Panel.json`
 
 修改文件中`"UNREGISTERED":"未激活"`为`"UNREGISTERED":""`
-
-

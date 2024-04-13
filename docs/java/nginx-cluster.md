@@ -64,6 +64,3 @@ nginx: configuration file /usr/local/nginx/nginx/conf/nginx.conf test is success
 ```shell
 /usr/local/nginx/sbin/nginx
 ```
-
-
-

@@ -13,4 +13,3 @@ java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you 
 ## 解决方法
 
 将测试类于Springboot的启动类的类路径保持一致
-

@@ -1,5 +1,5 @@
-import { DefaultTheme, defineConfig } from 'vitepress';
-import mermaidPlugin from './script/mermaid';
+import { DefaultTheme, defineConfig } from 'vitepress'
+import mermaidPlugin from './script/mermaid'
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -17,39 +17,52 @@ export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(mermaidPlugin)
-    }
-  }
+    },
+  },
 })
-
 
 function nav(): DefaultTheme.NavItem[] {
   return [
     { text: 'Java', link: '/java/spring-autowire', activeMatch: '/java/' },
-    { text: 'Python', link: '/python/py-version-manger', activeMatch: '/python/' },
     {
-      text: '前端', items: [
-        { text: 'Vue', link: '/vue/vite-ts-vue-electron-mysql', activeMatch: '/vue/' },
-        { text: 'React', link: '/react/react', activeMatch: '/react/' },
-      ]
+      text: 'Python',
+      link: '/python/py-version-manger',
+      activeMatch: '/python/',
     },
     {
-      text: '数据库', items: [
+      text: '前端',
+      items: [
+        {
+          text: 'Vue',
+          link: '/vue/vite-ts-vue-electron-mysql',
+          activeMatch: '/vue/',
+        },
+        { text: 'React', link: '/react/react', activeMatch: '/react/' },
+      ],
+    },
+    {
+      text: '数据库',
+      items: [
         { text: 'Mysql', link: '/mysql/mysql', activeMatch: '/mysql/' },
         { text: 'Neo4j', link: '/neo4j/cypher', activeMatch: '/neo4j/' },
         { text: 'Redis', link: '/redis/redis-cache', activeMatch: '/redis/' },
-      ]
+      ],
     },
     { text: 'Git', link: '/git/git', activeMatch: '/git/' },
     { text: 'Linux', link: '/linux/linux-command', activeMatch: '/linux/' },
     {
-      text: '容器', items: [
-        { text: 'Docker', link: '/docker/centos-outline-install-docker', activeMatch: '/docker/' },
-      ]
+      text: '容器',
+      items: [
+        {
+          text: 'Docker',
+          link: '/docker/centos-outline-install-docker',
+          activeMatch: '/docker/',
+        },
+      ],
     },
     {
-      text: '其他', items: [
-        { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }
-      ]
+      text: '其他',
+      items: [{ text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }],
     },
   ]
 }
@@ -73,9 +86,15 @@ function sidebar(): DefaultTheme.SidebarMulti {
 function sidebarJava(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Cpu时间片段', link: 'cpu-time' },
-    { text: 'Idea gradle报错:Could not resolve all dependencies...', link: 'ex-idea-gradle' },
+    {
+      text: 'Idea gradle报错:Could not resolve all dependencies...',
+      link: 'ex-idea-gradle',
+    },
     { text: '实体类与ResultMap中的属性顺序不一致的问题', link: 'result-map' },
-    { text: 'java.lang.IllegalStateException: Unable to find a...', link: 'illegal-state-exception' },
+    {
+      text: 'java.lang.IllegalStateException: Unable to find a...',
+      link: 'illegal-state-exception',
+    },
     { text: 'Spring boot validator', link: 'spring-boot-validator' },
     { text: 'ArrayList序列化', link: 'arraylist-serialize' },
     { text: 'ABA 问题', link: 'aba' },
@@ -93,22 +112,26 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
 
 function sidebarPython(): DefaultTheme.SidebarItem[] {
   return [
-    { text: '无法加载xxx.ps1,因为在此系统上禁止运行脚本', link: 'load-xxx-ps1' },
+    {
+      text: '无法加载xxx.ps1,因为在此系统上禁止运行脚本',
+      link: 'load-xxx-ps1',
+    },
     { text: 'Python 版本管理', link: 'py-version-manger' },
   ]
 }
 
 function sidebarVue(): DefaultTheme.SidebarItem[] {
   return [
-    { text: 'Vite+Ts+Vue+Electron+Mysql应用', link: 'vite-ts-vue-electron-mysql' },
-    { text: 'Vue3与Vue2', link: 'vue3-vs-vue2' }
+    {
+      text: 'Vite+Ts+Vue+Electron+Mysql应用',
+      link: 'vite-ts-vue-electron-mysql',
+    },
+    { text: 'Vue3与Vue2', link: 'vue3-vs-vue2' },
   ]
 }
 
 function sidebarReact(): DefaultTheme.SidebarItem[] {
-  return [
-    { text: 'React', link: 'react' }
-  ]
+  return [{ text: 'React', link: 'react' }]
 }
 
 function sidebarMysql(): DefaultTheme.SidebarItem[] {
@@ -128,7 +151,7 @@ function sidebarNeo4j(): DefaultTheme.SidebarItem[] {
 function sidebarRedis(): DefaultTheme.SidebarItem[] {
   return [
     { text: '使用Redis进行数据缓存', link: 'redis-cache' },
-    { text: 'Redis 数据类型', link: 'redis-data-type' }
+    { text: 'Redis 数据类型', link: 'redis-data-type' },
   ]
 }
 
@@ -145,7 +168,10 @@ function sidebarDocker(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Centos离线安装Docker', link: 'centos-outline-install-docker' },
     { text: 'Docker构建MySQL服务', link: 'docker-mysql' },
-    { text: 'Docker 部署 ElasticSearch + Kibana', link: 'docker-elasticsearch' },
+    {
+      text: 'Docker 部署 ElasticSearch + Kibana',
+      link: 'docker-elasticsearch',
+    },
   ]
 }
 
@@ -153,7 +179,7 @@ function sidebarLinux(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Shell相关', link: 'shell' },
     { text: 'Linux命令', link: 'linux-command' },
-    { text: 'Ubuntu 修改软件源', link: 'ubuntu-mirrors' }
+    { text: 'Ubuntu 修改软件源', link: 'ubuntu-mirrors' },
   ]
 }
 
@@ -162,7 +188,10 @@ function sidebarBlog(): DefaultTheme.SidebarItem[] {
     { text: '使用 VitePress 构建个人博客网站', link: 'vitepress' },
     { text: 'VitePress 支持 Mermaid', link: 'vitepress-mermaid' },
     { text: '常用特殊Ascii字符', link: 'special-ascii' },
-    { text: 'Windows 系统删除 WindowsApps 文件夹', link: 'del-windows-apps-dir' },
+    {
+      text: 'Windows 系统删除 WindowsApps 文件夹',
+      link: 'del-windows-apps-dir',
+    },
     { text: '免激活使用Typora', link: 'typora' },
   ]
 }

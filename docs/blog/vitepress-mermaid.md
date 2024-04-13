@@ -1,7 +1,7 @@
 ---
 layout: doc
 outline: deep
-title: "VitePress Mermaid"
+title: 'VitePress Mermaid'
 ---
 
 # VitePress 支持 Mermaid
@@ -9,7 +9,6 @@ title: "VitePress Mermaid"
 VitePress 的Markdown渲染是用的 `markdown-it`，所以可以通过自定义插件来支持Mermaid。
 
 这里使用`markdown-it`插件来转换Mermaid代码块为vue组件，然后在vue组件中调用mermaid渲染代码为svg。
-
 
 ### 定义插件
 
@@ -34,7 +33,6 @@ export default function mermaidPlugin(md: MarkdownIt): void {
     // 对不是我们需要的代码块的直接调用原有的函数
     return fence(tokens, idx, options, env, self)
   }
-
 }
 ```
 
@@ -51,8 +49,8 @@ import { ref, onMounted } from 'vue'
 import { render } from '../docs/.vitepress/script/mermaid'
 
 const props = defineProps({
-    id: String,
-  code: String
+  id: String,
+  code: String,
 })
 
 const render = async (id, code) => {
@@ -62,12 +60,11 @@ const render = async (id, code) => {
   return svg
 }
 // 在组件挂载后进行mermaid渲染
-onMounted( async () => {
+onMounted(async () => {
   svgRef.value = await render(props.id, decodeURIComponent(props.code))
 })
 
 const svgRef = ref('')
-
 </script>
 ```
 
@@ -80,11 +77,11 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Mermaid from '../../../components/Mermaid.vue'
 
-export default <Theme> {
-    extends: DefaultTheme,
-    enhanceApp: async ({ app }) => {
-        app.component('Mermaid', Mermaid)
-    }
+export default <Theme>{
+  extends: DefaultTheme,
+  enhanceApp: async ({ app }) => {
+    app.component('Mermaid', Mermaid)
+  },
 }
 ```
 
@@ -93,13 +90,13 @@ export default <Theme> {
 在`.vitepress/config.ts`中引入插件
 
 ```ts
-import mermaidPlugin from './script/mermaid';
+import mermaidPlugin from './script/mermaid'
 
 export default defineConfig({
   markdown: {
     config: (md) => {
       md.use(mermaidPlugin)
-    }
-  }
+    },
+  },
 })
 ```

@@ -6,6 +6,7 @@ outline: deep
 # Docker构建MySQL服务
 
 - Mysql 镜像检索
+
 ```
 [root@localhost ~]# docker search mysql
    NAME                                                   DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
@@ -39,15 +40,19 @@ outline: deep
 - 拉取镜像
 
 默认拉取最新版本
+
 ```
 [root@localhost ~]# docker pull mysql
 ```
+
 也可以指定版本
+
 ```
 [root@localhost ~]# docker pull mysql:5.7
 ```
 
 - 查看镜像
+
 ```
 [root@localhost ~]# docker images
    REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
@@ -56,6 +61,7 @@ outline: deep
 ```
 
 - 运行镜像
+
 ```powershell
 C:\Users\admin>docker run \
 			-d \	## 后台运行

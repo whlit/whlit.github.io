@@ -8,7 +8,6 @@ export async function render(id: string, code: string) {
 }
 
 export default function mermaidPlugin(md: MarkdownIt): void {
-
   const fence = md.renderer.rules.fence?.bind(md.renderer.rules)
 
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
@@ -21,5 +20,4 @@ export default function mermaidPlugin(md: MarkdownIt): void {
 
     return fence(tokens, idx, options, env, self)
   }
-
 }

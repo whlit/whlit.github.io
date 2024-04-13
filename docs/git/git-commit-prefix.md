@@ -14,5 +14,3 @@ title: Git提交信息常用前缀
 - `revert` 回滚
 - `build` 编译
 - `ci` 对CI的更改
-
-
