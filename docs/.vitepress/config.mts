@@ -2,17 +2,42 @@ import { DefaultTheme, defineConfig } from 'vitepress'
 import mermaidPlugin from './script/mermaid'
 
 export default defineConfig({
-  lang: 'zh-CN',
+  lang: 'zh-Hans',
   title: `whlit's blog`,
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   themeConfig: {
     logo: '/favicon.svg',
     search: {
       provider: 'local',
+      options: {
+        translations: {
+          button: {
+            buttonText: '搜索文档',
+            buttonAriaLabel: '搜索文档',
+          },
+          modal: {
+            footer: {
+              selectText: '选择',
+              navigateText: '切换',
+              closeText: '关闭',
+            },
+            noResultsText: '无法找到结果',
+            resetButtonTitle: '清除查询',
+            displayDetails: '显示详情',
+          },
+        },
+      },
     },
     nav: nav(),
     sidebar: sidebar(),
     socialLinks: [{ icon: 'github', link: 'https://github.com/whlit' }],
+
+    lightModeSwitchTitle: '切换到浅色模式',
+    darkModeSwitchTitle: '切换到深色模式',
+    returnToTopLabel: '回到顶部',
+    outline: {
+      label: '页面导航',
+    },
   },
   markdown: {
     config: (md) => {
@@ -107,6 +132,7 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: 'Nginx 集群搭建', link: 'nginx-cluster' },
     { text: 'Java 集合', link: 'collections' },
     { text: '分布式事务', link: 'distributed-transactions' },
+    { text: 'Spring Boot 多数据源', link: 'spring-boot-multi-datasource' },
   ]
 }
 

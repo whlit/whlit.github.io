@@ -20,14 +20,14 @@ outline: deep
 
 ::: info 可选参数
 
-- `-q, --[no-]quiet`        不打印删除的文件名称
-- `-n, --[no-]dry-run`      不实际进行删除，只进行尝试，并打印哪些文件会被删除
-- `-f, --[no-]force`        删除
-- `-i, --[no-]interactive`  交互模式进行删除
-- `-d`                      递归
+- `-q, --[no-]quiet` 不打印删除的文件名称
+- `-n, --[no-]dry-run` 不实际进行删除，只进行尝试，并打印哪些文件会被删除
+- `-f, --[no-]force` 删除
+- `-i, --[no-]interactive` 交互模式进行删除
+- `-d` 递归
 - `-e, --exclude <pattern>` 添加忽略的文件规则
-- `-x`                      也删除忽略的文件
-- `-X`                      只删除忽略的文件
+- `-x` 也删除忽略的文件
+- `-X` 只删除忽略的文件
 
 :::
 
@@ -44,7 +44,6 @@ outline: deep
 `git checkout -- filepath` 放弃对文件的修改，不要忘记`--`不然就变成了切换分支了。
 
 `git checkout .` 放弃所有文件的修改
-
 
 ## 放弃所有修改
 
@@ -70,7 +69,7 @@ outline: deep
 
 ::: info 常用命令
 
-- `git stash`    缓存修改
+- `git stash` 缓存修改
 - `git stash pop` 恢复最后一次缓存的修改，并删除这个缓存
 - `git stash list` 查看缓存的修改
 - `git stash clear` 清空所有缓存
