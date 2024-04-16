@@ -16,17 +16,17 @@ public abstract class AbstractRoutingDataSource extends AbstractDataSource imple
 
     @Override
 	public Connection getConnection() throws SQLException {
-		return determineTargetDataSource().getConnection();
+		return determineTargetDataSource().getConnection(); // [!code focus]
 	}
     protected DataSource determineTargetDataSource() {
         ...
 		Object lookupKey = determineCurrentLookupKey(); // 获取key
-		DataSource dataSource = this.resolvedDataSources.get(lookupKey); // 通过key获取对应的数据源
+		DataSource dataSource = this.resolvedDataSources.get(lookupKey); // 通过key获取对应的数据源 // [!code focus]
 		...
 		return dataSource;
 	}
     @Nullable
-	protected abstract Object determineCurrentLookupKey(); // 获取key的方法，可以通过实现该方法来自定义我们的数据源获取逻辑
+	protected abstract Object determineCurrentLookupKey(); // 获取key的方法，可以通过实现该方法来自定义我们的数据源获取逻辑 // [!code focus]
 }
 ```
 
