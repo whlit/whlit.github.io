@@ -75,13 +75,17 @@ e - 手动编辑当前的区块
 
 ### 修改远程仓库地址
 
-直接添加
+- 查看远程仓库地址
+
+`$ git remote -v`
+
+- 直接添加
 
 ```sh
 $ git remote set-url origin [url] # origin 是对远程仓库地址起的名字，如果有多个，可以起不同的名字
 ```
 
-先删除后添加
+- 先删除后添加
 
 ```sh
 $ git remote rm origin
@@ -90,7 +94,7 @@ $ git remote add origin [url]
 
 **注：origin 是对远程仓库地址起的名字，默认是这个名字，也可以取别的，本文中远程分支的名字都默认为这个**
 
-### Your branch and 'origin/main' have diverged
+### 本地与远程分支分歧
 
 本地有一个git版本控制下的项目，然后又在远程创建了一个仓库，关联到远程仓库后，使用`pull`命令出现
 `Your branch and 'origin/main' have diverged`
