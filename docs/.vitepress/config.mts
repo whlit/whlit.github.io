@@ -220,5 +220,6 @@ function sidebarBlog(): DefaultTheme.SidebarItem[] {
       link: 'del-windows-apps-dir',
     },
     { text: '免激活使用Typora', link: 'typora' },
+    { text: '重装系统，环境记录', link: 'reinstall-system' },
   ]
 }
