@@ -21,3 +21,7 @@ title: Git提交信息常用前缀
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
+
+## 设置GitHub提交邮箱地址
+
+在任何GitHub页面的右上角，点击头像，选择Settings，然后选择Emails，在右侧的Emails列表中，点击Add Email，输入你的邮箱地址，然后点击Add。然后再设置本地git的提交的邮箱地址。
