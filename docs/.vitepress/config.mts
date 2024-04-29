@@ -157,7 +157,13 @@ function sidebarVue(): DefaultTheme.SidebarItem[] {
 }
 
 function sidebarReact(): DefaultTheme.SidebarItem[] {
-  return [{ text: 'React', link: 'react' }]
+  return [
+    { text: 'React', link: 'react' },
+    {
+      text: 'Vite React TS eslint prettier 格式化',
+      link: 'vite-react-ts-eslint-prettier',
+    },
+  ]
 }
 
 function sidebarMysql(): DefaultTheme.SidebarItem[] {
