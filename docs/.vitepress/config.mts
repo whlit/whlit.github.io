@@ -163,6 +163,7 @@ function sidebarReact(): DefaultTheme.SidebarItem[] {
       text: 'Vite React TS eslint prettier 格式化',
       link: 'vite-react-ts-eslint-prettier',
     },
+    { text: '不小心修改了node_modules中包的内容', link: 'modify-node-modules' },
   ]
 }
 
