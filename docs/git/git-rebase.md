@@ -8,6 +8,16 @@ layout: doc
 
 当本地仓库提交了很多次的记录，在push前为了提交记录的简洁，想要将其中的一部分提交记录合并成一条，再push到远程仓库，可以使用git rebase
 
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit C"
+    commit id:"a"
+    commit id:"b"
+    commit id:"c"
+```
+
 将最近的三次提交合并：
 
 ```sh
@@ -58,6 +68,15 @@ pick bc623e0 c
 pick 1cfe438 a
 pick bcf5d95 b
 s bc623e0 c
+```
+
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit C"
+    commit id:"a"
+    commit id:"b"
 ```
 
 保存后会弹出新的交互界面，展示的是b和c的提交信息可以手动进行修改提交的信息，可以删除不要的提交信息，也可以直接注释掉不要的提交信息最终只会保留未注释的提交信息
@@ -151,3 +170,70 @@ gitGraph
 ```
 
 这样就保持了master分支的整洁，以及开发顺序的查看也都很容易地看出来，即便后面进行回滚也容易了
+
+## 避免合并提交
+
+当多个人共同开发一个分支时，由于其他人在这个分支上先推送了代码，导致推送代码失败，一般我们会使用`git pull`来拉取最新的代码并合并到本地，但是这样在查看提交记录的时候就会看到一个合并的提交，而且这个合并的提交是提交记录的分叉点，这样也会影响提交记录的简洁，所以需要避免这种情况的出现，可以通过rebase的方式避免，也就是`git pull --rebase`
+
+```mermaid
+%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    branch local
+    checkout local
+    commit id:"commit C"
+    checkout origin
+    commit id:"commit D"
+    checkout local
+    commit id:"commit E"
+    checkout origin
+    commit id:"commit F"
+```
+
+如果使用`git pull`，结果是这样的
+
+```mermaid
+%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    branch local
+    checkout local
+    commit id:"commit C"
+    checkout origin
+    commit id:"commit D"
+    checkout local
+    commit id:"commit E"
+    checkout origin
+    commit id:"commit F"
+    checkout local
+    merge origin id:"merge origin into local"
+```
+
+如果使用`git pull --rebase`，结果是这样的
+
+```mermaid
+%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit D"
+    commit id:"commit F"
+    branch local
+    checkout local
+    commit id:"commit C"
+    commit id:"commit E"
+```
+
+此时再进行`git push`，结果是这样的
+
+```mermaid
+gitGraph
+    commit id:"commit A"
+    commit id:"commit B"
+    commit id:"commit D"
+    commit id:"commit F"
+    commit id:"commit C"
+    commit id:"commit E"
+```
