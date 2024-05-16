@@ -136,6 +136,7 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: 'Spring Boot 使用 PageHelper', link: 'spring-boot-pagehelper' },
     { text: 'Idea 调试注解处理器Processor', link: 'idea-debug-processor' },
     { text: '自定义编译时注解处理器', link: 'custom-annotation-processor' },
+    { text: 'B树与B+树', link: 'b-plus-tree' },
   ]
 }
 
