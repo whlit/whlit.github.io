@@ -232,5 +232,6 @@ function sidebarBlog(): DefaultTheme.SidebarItem[] {
     },
     { text: '免激活使用Typora', link: 'typora' },
     { text: '重装系统，环境记录', link: 'reinstall-system' },
+    { text: 'Vscode Markdown 图片粘贴', link: 'vscode-markdown-image-paste' },
   ]
 }
