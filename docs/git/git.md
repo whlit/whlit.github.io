@@ -8,7 +8,7 @@ outline: deep
 ### 查看本地分支与远程分支的对应关系
 
 `git branch -vv`
-![image.png](/git/git-1.png)
+![image.png](images/git/git-1.png)
 
 ### 初始化仓库
 

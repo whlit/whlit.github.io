@@ -18,4 +18,4 @@ function useState<S>(initialState: S | (() => S)): [`S`, Dispatch<SetStateAction
 
 在`S`的两端添加了反引号，在使用useState时，返回的类型不是期望的
 
-![edit-node-modules](/react/edit-node-modules.png)
+![edit-node-modules](images/modify-node-modules/edit-node-modules.png)

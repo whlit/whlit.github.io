@@ -29,7 +29,7 @@ outline: deep
 
 打开cmd，输入pyenv，出现版本号即表示安装成功
 
-![image.png](/python/pvm-1.png)
+![image.png](images/py-version-manger/pvm-1.png)
 
 ## wsl ubuntu安装pyenv
 
@@ -61,7 +61,7 @@ echo 'eval "$(pyenv init -)"' >> ~/.profile
 
 pyenv install
 
-![image.png](/python/pvm-2.png)
+![image.png](images/py-version-manger/pvm-2.png)
 
 1. 列出所有可安装的python版本
 

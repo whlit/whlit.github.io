@@ -8,7 +8,7 @@ title: B树与B+树
 
 B树是一种平衡的多叉树，即查找路径不止两个。
 
-![B树](/java/b-tree-1.png)
+![B树](images/b-plus-tree/b-tree-1.png)
 [B树可视化演示](https://www.cs.usfca.edu/~galles/visualization/BTree.html)
 
 ::: tip 通常我们说m阶的B树，它必须满足如下条件：
@@ -63,13 +63,13 @@ m阶：指一个节点的子节点个数的最大值。
 
 插入后的树结构如下：
 
-![插入后](/java/b-tree-2.png)
+![插入后](images/b-plus-tree/b-tree-2.png)
 
 ## B+ 树
 
 B+树是在B树基础上进一步改近得到的。B+树的非叶子节点不存储数据，只存储指关键字的指针，所有数据都保存在叶子节点。所有的叶子节点是从小到大排列的有序链表。
 
-![B+树](/java/b-plus-tree-1.png)
+![B+树](images/b-plus-tree/b-plus-tree-1.png)
 
 ### 插入
 

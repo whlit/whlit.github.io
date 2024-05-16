@@ -7,7 +7,7 @@ outline: deep
 
 **报错信息：**
 
-![image.png](/python/load-xxx-ps1.png)
+![image.png](images/load-xxx-ps1/load-xxx-ps1.png)
 
 因为powershell默认是不允许运行任何脚本文件的，需要更改为RemoteSigned
 微软官方对于执行策略的说明：[PowerShell 执行策略](https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.4)

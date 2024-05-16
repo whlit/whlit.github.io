@@ -184,7 +184,7 @@ jobs:
 
 打开github仓库的进行配置，位置在：`Settings > Pages > Build and deployment > Source` 选择`GitHub Actions`
 
-![settings-pages-actions.png](/blog/settings-pages-actions.png)
+![settings-pages-actions.png](images/vitepress/settings-pages-actions.png)
 
 - 提交并推送代码
 

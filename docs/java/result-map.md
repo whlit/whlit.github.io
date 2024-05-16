@@ -47,7 +47,7 @@ public class Item {
 
 就会报错
 
-![image.png](/java/resultmap-1.png)
+![image.png](images/result-map/resultmap-1.png)
 
 从报错的信息中可以发现在`applyColumnOrderBasedConstructorAutomapping`方法中是使用了构造函数中的数据类型的顺序进行的数据映射
 而`[@Builder]()`生成的代码中只有全参构造函数，生成的构造函数的参数顺序又是和我们定义的类目属性的顺序是一致的，又因为name和type与resultMap中定义的映射中的顺序是不同的，所以在这里在进行数据类型的映射的时候就错误了。

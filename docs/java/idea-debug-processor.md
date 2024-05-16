@@ -25,9 +25,9 @@ outline: deep
 
 在IDEA中添加Remote Debugger，端口为8000，位置在`Run>Edit Configurations`
 
-![](/java/idea-debug-processor-1.png)
+![idea-debug-processor-1](images/idea-debug-processor/idea-debug-processor-1.png)
 
-![](/java/idea-debug-processor-2.png)
+![idea-debug-processor-2.png](images/idea-debug-processor/idea-debug-processor-2.png)
 
 - 编译
 
@@ -42,7 +42,7 @@ Listening for transport dt_socket at address: 8000
 
 添加断点，启动之前添加的Remote，使用dubug运行即可调试。
 
-![](/java/idea-debug-processor-3.png)
+![idea-debug-processor-3](images/idea-debug-processor/idea-debug-processor-3.png)
 
 ## 参考
 
