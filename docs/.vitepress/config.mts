@@ -205,6 +205,7 @@ function sidebarGit(): DefaultTheme.SidebarItem[] {
 function sidebarDocker(): DefaultTheme.SidebarItem[] {
   return [
     { text: 'Centos离线安装Docker', link: 'centos-outline-install-docker' },
+    { text: 'Ubuntu 安装Docker', link: 'ubuntu-install-docker' },
     { text: 'Docker构建MySQL服务', link: 'docker-mysql' },
     {
       text: 'Docker 部署 ElasticSearch + Kibana',
@@ -218,6 +219,9 @@ function sidebarLinux(): DefaultTheme.SidebarItem[] {
     { text: 'Shell相关', link: 'shell' },
     { text: 'Linux命令', link: 'linux-command' },
     { text: 'Ubuntu 修改软件源', link: 'ubuntu-mirrors' },
+    { text: 'Ubuntu 远程SSH连接wifi', link: 'ubuntu-ssh-wifi' },
+    { text: 'Ubuntu 修改dns', link: 'ubuntu-dns' },
+    { text: 'Ubuntu 修改主机名', link: 'ubuntu-hostname' },
   ]
 }
 
