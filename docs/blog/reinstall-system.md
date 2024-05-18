@@ -4,7 +4,9 @@ title: '重装系统，软件记录'
 
 # 重装系统，软件记录
 
-记录下个人电脑环境所用到的比较好用、重要、必要的软件，当需要重新安装系统时，可以一次性的恢复原有的环境。
+记录下个人电脑环境所用到的比较好用、重要、必要的软件，当需要重新安装系统时，可以一次性尽可能的恢复原有的环境。
+
+## 软件列表
 
 | 软件名称                                                                      | 介绍             | 是否免费    | 下载地址                                                                                       |
 | ----------------------------------------------------------------------------- | ---------------- | ----------- | ---------------------------------------------------------------------------------------------- |
@@ -35,3 +37,20 @@ title: '重装系统，软件记录'
 | [蒲公英](https://pgy.oray.com/)                                               | 异地组网         | 免费        | [下载](https://pgy.oray.com/)                                                                  |
 | [百度网盘](https://pan.baidu.com)                                             | 存储             | 免费        | [下载](https://pan.baidu.com/download)                                                         |
 | [字由](https://www.hellofont.cn/)                                             | 一些免费字体     | 免费        | [下载](https://www.hellofont.cn/)                                                              |
+
+## 环境配置
+
+### Git 配置
+
+```bash
+git config --global user.name "your name"
+git config --global user.email "your email"
+```
+
+### 环境变量
+
+```powershell
+[Environment]::SetEnvironmentVariable('JAVA_HOME', 'D:\\soft\\java\\jdk21', 'Machine')
+[Environment]::SetEnvironmentVariable('M2_HOME', 'D:\\soft\\apache-maven-3.9.4', 'Machine')
+[Environment]::SetEnvironmentVariable('PATH', $env:PATH + ';%M2_HOME%\bin;%JAVA_HOME%\bin', 'Machine')
+```
