@@ -48,12 +48,6 @@ export default defineConfig({
 
 function nav(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Java', link: '/java/spring-autowire', activeMatch: '/java/' },
-    {
-      text: 'Python',
-      link: '/python/py-version-manger',
-      activeMatch: '/python/',
-    },
     {
       text: '前端',
       items: [
@@ -63,6 +57,18 @@ function nav(): DefaultTheme.NavItem[] {
           activeMatch: '/vue/',
         },
         { text: 'React', link: '/react/react', activeMatch: '/react/' },
+      ],
+    },
+    {
+      text: '后端',
+      items: [
+        { text: 'Java', link: '/java/spring-autowire', activeMatch: '/java/' },
+        {
+          text: 'Python',
+          link: '/python/py-version-manger',
+          activeMatch: '/python/',
+        },
+        { text: 'Go', link: '/go/multiple-main-function', activeMatch: '/go/' },
       ],
     },
     {
@@ -87,10 +93,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '其他',
-      items: [
-        { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' },
-        { text: 'Go', link: '/go/multiple-main-function', activeMatch: '/go/' },
-      ],
+      items: [{ text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }],
     },
   ]
 }
