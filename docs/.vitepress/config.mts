@@ -87,7 +87,10 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '其他',
-      items: [{ text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }],
+      items: [
+        { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' },
+        { text: 'Go', link: '/go/multiple-main-function', activeMatch: '/go/' },
+      ],
     },
   ]
 }
@@ -96,6 +99,7 @@ function sidebar(): DefaultTheme.SidebarMulti {
   return {
     '/java/': { base: '/java/', items: sidebarJava() },
     '/python/': { base: '/python/', items: sidebarPython() },
+    '/go/': { base: '/go/', items: sidebarGo() },
     '/vue/': { base: '/vue/', items: sidebarVue() },
     '/react/': { base: '/react/', items: sidebarReact() },
     '/mysql/': { base: '/mysql/', items: sidebarMysql() },
@@ -138,6 +142,10 @@ function sidebarJava(): DefaultTheme.SidebarItem[] {
     { text: '自定义编译时注解处理器', link: 'custom-annotation-processor' },
     { text: 'B树与B+树', link: 'b-plus-tree' },
   ]
+}
+
+function sidebarGo(): DefaultTheme.SidebarItem[] {
+  return [{ text: '同一文件夹下多个main函数', link: 'multiple-main-function' }]
 }
 
 function sidebarPython(): DefaultTheme.SidebarItem[] {
