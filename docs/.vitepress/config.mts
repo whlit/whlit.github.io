@@ -200,7 +200,7 @@ function sidebarRedis(): DefaultTheme.SidebarItem[] {
   return [
     { text: '使用Redis进行数据缓存', link: 'redis-cache' },
     { text: 'Redis 数据类型', link: 'redis-data-type' },
-    { text: 'RedisTemplate 字符串序列化', link: 'redis-template-string-serializer' }
+    { text: 'RedisTemplate 字符串序列化', link: 'redis-template-string-serializer' },
   ]
 }
 
@@ -211,6 +211,7 @@ function sidebarGit(): DefaultTheme.SidebarItem[] {
     { text: 'Git 删除已经push的commit记录', link: 'git-delete-push' },
     { text: 'Git提交信息常用前缀', link: 'git-commit-prefix' },
     { text: 'Git 放弃修改', link: 'git-abort' },
+    { text: 'GitHub Actions 自动构建发布Release', link: 'github-actions-release' },
   ]
 }
 
@@ -249,6 +250,6 @@ function sidebarBlog(): DefaultTheme.SidebarItem[] {
     { text: '免激活使用Typora', link: 'typora' },
     { text: '重装系统，环境记录', link: 'reinstall-system' },
     { text: 'Vscode Markdown 图片粘贴', link: 'vscode-markdown-image-paste' },
-    { text: '注册国外Apple Id', link: 'register-apple-id' }
+    { text: '注册国外Apple Id', link: 'register-apple-id' },
   ]
 }

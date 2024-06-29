@@ -44,7 +44,7 @@ public void test(){
     redisTemplate.opsForValue().set("tested", "aaa");
 }
 ```
-    
+
 在使用时发现获取到的值是`"aaa"`,多了双引号,以为是存储的问题,后来发现这里注入的是我们定义的RedisTemplate,所以这个字符串也被Jackson序列化了,所以两边多了双引号。
 
 对于值类型我们确定不需要序列化，而且在使用时确实不会反序列化json的，我们可以直接使用默认的RedisTemplate，即直接注入`RedisTemplate<String, String>`。
