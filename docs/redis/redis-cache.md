@@ -1,4 +1,5 @@
 ---
+title: 使用Redis进行数据缓存
 layout: doc
 outline: deep
 ---

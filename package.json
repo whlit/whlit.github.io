@@ -8,6 +8,8 @@
   },
   "author": "whlit",
   "devDependencies": {
+    "glob": "^10.4.2",
+    "gray-matter": "^4.0.3",
     "mermaid": "^10.9.0",
     "prettier": "^3.2.5",
     "vitepress": "^1.0.1"

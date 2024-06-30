@@ -1,5 +1,5 @@
 ---
-title: 'Ubuntu SSH WiFi'
+title: Ubuntu 远程SSH连接wifi
 ---
 
 # Ubuntu 远程SSH连接wifi

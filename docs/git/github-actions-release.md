@@ -1,5 +1,7 @@
 ---
 title: 'GitHub Actions 自动构建发布Release'
+layout: doc
+outline: deep
 ---
 
 # GitHub Actions 自动构建发布Release

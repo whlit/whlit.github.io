@@ -1,4 +1,5 @@
 ---
+title: 设计模式
 layout: doc
 outline: deep
 ---

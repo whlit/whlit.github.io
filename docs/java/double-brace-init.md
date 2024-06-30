@@ -1,4 +1,5 @@
 ---
+title: 双大括号初始化
 layout: doc
 outline: deep
 ---

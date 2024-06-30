@@ -1,4 +1,5 @@
 ---
+title: Centos离线安装Docker
 layout: doc
 outline: deep
 ---

@@ -1,3 +1,7 @@
+---
+title: 免激活使用Typora
+---
+
 # 免激活使用Typora
 
 ## 下载安装Typora

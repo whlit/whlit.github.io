@@ -1,4 +1,5 @@
 ---
+title: Docker 部署 ElasticSearch + Kibana
 layout: doc
 outline: deep
 ---

@@ -1,4 +1,5 @@
 ---
+title: Spring中有两个相同id的bean会报错吗
 layout: doc
 outline: deep
 ---

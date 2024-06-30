@@ -1,4 +1,5 @@
 ---
+title: Cypher
 layout: doc
 outline: deep
 ---

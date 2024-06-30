@@ -1,7 +1,7 @@
 ---
+title: VitePress 支持 Mermaid
 layout: doc
 outline: deep
-title: 'VitePress Mermaid'
 ---
 
 # VitePress 支持 Mermaid

@@ -1,5 +1,5 @@
 ---
-title: 'Register Apple ID'
+title: 注册国外Apple ID
 ---
 
 # 注册国外Apple ID

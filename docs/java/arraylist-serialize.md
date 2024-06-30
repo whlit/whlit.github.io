@@ -1,4 +1,5 @@
 ---
+title: ArrayList序列化
 layout: doc
 outline: deep
 ---

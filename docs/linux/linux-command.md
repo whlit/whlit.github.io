@@ -1,4 +1,5 @@
 ---
+title: Linux 命令
 layout: doc
 outline: deep
 ---

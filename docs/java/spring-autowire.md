@@ -1,4 +1,5 @@
 ---
+title: Spring Xml自动装配
 layout: doc
 outline: deep
 ---

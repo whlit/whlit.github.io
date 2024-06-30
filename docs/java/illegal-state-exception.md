@@ -1,4 +1,5 @@
 ---
+title: java.lang.IllegalStateException
 layout: doc
 outline: deep
 ---

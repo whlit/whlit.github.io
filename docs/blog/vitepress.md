@@ -1,3 +1,9 @@
+---
+title: 使用VitePress搭建博客
+layout: doc
+outline: deep
+---
+
 # 使用 VitePress 构建个人博客网站
 
 ## VitePress

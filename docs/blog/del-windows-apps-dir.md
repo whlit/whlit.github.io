@@ -1,4 +1,5 @@
 ---
+title: Windows 系统删除 WindowsApps 文件夹
 outline: deep
 ---
 

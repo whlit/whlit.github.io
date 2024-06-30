@@ -1,4 +1,5 @@
 ---
+title: Vite+Ts+Vue+Electron+Mysql 应用
 layout: doc
 outline: deep
 ---

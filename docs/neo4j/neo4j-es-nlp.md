@@ -1,4 +1,5 @@
 ---
+title: Neo4j Elasticsearch NLP
 layout: doc
 outline: deep
 ---

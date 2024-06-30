@@ -1,4 +1,5 @@
 ---
+title: nginx集群搭建
 layout: doc
 outline: deep
 ---

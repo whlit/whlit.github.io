@@ -1,4 +1,5 @@
 ---
+title: Spring boot validator
 layout: doc
 outline: deep
 ---
