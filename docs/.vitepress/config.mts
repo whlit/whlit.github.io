@@ -94,7 +94,10 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       text: '其他',
-      items: [{ text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' }],
+      items: [
+        { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' },
+        { text: '面试', link: '/interview/collection', activeMatch: '/interview/' },
+      ],
     },
   ]
 }
