@@ -1,7 +1,7 @@
 ---
 title: 常用的集合
 layout: doc
-outline: deep
+outline: [2, 3]
 ---
 
 # 常用的集合

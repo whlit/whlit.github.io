@@ -1,7 +1,7 @@
 ---
 title: 设计模式
 layout: doc
-outline: deep
+outline: [2, 3]
 ---
 
 # 设计模式
