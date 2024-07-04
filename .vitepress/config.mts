@@ -6,6 +6,7 @@ export default defineConfig({
   lang: 'zh-Hans',
   title: `whlit's blog`,
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  srcDir: 'docs',
   themeConfig: {
     logo: '/favicon.svg',
     search: {
