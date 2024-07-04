@@ -4,7 +4,7 @@ layout: doc
 outline: deep
 ---
 
-### ArrayList扩容
+# ArrayList扩容
 
 - 当调用add方法新增元素时，数组elementData容量满了时会触发扩容，即`size == elementData.length`，ArrayList的大小和数组的长度是一样的说明数组中都存放了数据
 
