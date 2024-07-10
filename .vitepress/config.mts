@@ -3,7 +3,7 @@ import mermaidPlugin from './script/mermaid'
 import { sidebar } from './script/sidebar'
 
 export default defineConfig({
-  lang: 'zh-Hans',
+  lang: 'zh-CN',
   title: `whlit's blog`,
   head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
   srcDir: 'docs',
