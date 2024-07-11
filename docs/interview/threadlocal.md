@@ -50,10 +50,10 @@ ThreadLocal的相关类图如下：
 ```java
 private T get(Thread t) {
     // 获取当前线程的`threadLocals`,即ThreadLocalMap
-    ThreadLocalMap map = getMap(t); 
+    ThreadLocalMap map = getMap(t);
     if (map != null) {
         // 通过`ThreadLocal`对象去获取`ThreadLocalMap`中的`value`值
-        ThreadLocalMap.Entry e = map.getEntry(this); 
+        ThreadLocalMap.Entry e = map.getEntry(this);
         if (e != null) {
             @SuppressWarnings("unchecked")
             T result = (T) e.value;
@@ -61,9 +61,6 @@ private T get(Thread t) {
         }
     }
     // 如果没有`ThreadLocalMap`，那么就调用`setInitialValue`方法
-    return setInitialValue(t); 
+    return setInitialValue(t);
 }
 ```
-
-
-
