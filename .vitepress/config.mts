@@ -5,7 +5,10 @@ import { sidebar } from './script/sidebar'
 export default defineConfig({
   lang: 'zh-CN',
   title: `whlit's blog`,
-  head: [['link', { rel: 'icon', href: '/favicon.svg' }]],
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['meta', { name: 'google-site-verification', content: 'TXcyVysEbl1he1_f6amPGUmRYYxt7bdo7-Qd3_6Pqcs' }],
+  ],
   srcDir: 'docs',
   themeConfig: {
     logo: '/favicon.svg',
