@@ -49,6 +49,9 @@ export default defineConfig({
       md.use(mermaidPlugin)
     },
   },
+  sitemap: {
+    hostname: 'https://whlit.github.io',
+  },
 })
 
 function nav(): DefaultTheme.NavItem[] {
