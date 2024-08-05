@@ -49,8 +49,10 @@ export default defineConfig({
       md.use(mermaidPlugin)
     },
   },
+  lastUpdated: true,
   sitemap: {
     hostname: 'https://whlit.github.io',
+    lastmodDateOnly: true,
   },
 })
 
