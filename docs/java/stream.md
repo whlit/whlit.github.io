@@ -111,6 +111,7 @@ public static void main(String[] args) {
 public static void main(String[] args) {
     List<String> list = List.of("Tom", "Jack", "Lily", "July");
     List<String> list2 = list.stream().map(String::toUpperCase).toList();
+    List<Integer> list3 = list.stream().map(String::length).toList();
 }
 ```
 
@@ -220,5 +221,26 @@ public class User {
 public static void main(String[] args) {
     List<String> list = List.of("Tom", "Jack", "Lily", "July");
     String str = list.stream().collect(Collectors.joining(","));
+}
+```
+
+## 对流中的元素进行累积缩减
+
+```java
+public static void main(String[] args) {
+    List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    int sum = list.stream().reduce(0, Integer::sum);
+}
+```
+
+上面的代码相当于：
+
+```java
+public static void main(String[] args) {
+    List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+    int sum = 0;
+    for (int i : list) {
+        sum = Integer.sum(sum, i);
+    }
 }
 ```
