@@ -122,29 +122,34 @@ Executors是为我们提供了一些预定义的线程池的创建，但有时�
 
 ### 核心线程数
 
-要保留在线程池中的线程数，即使他们处于空闲状态。除非设置了`allowCoreThreadTimeOut`，否则不会被回收。
+- corePoolSize: 要保留在线程池中的线程数，即使他们处于空闲状态。除非设置了`allowCoreThreadTimeOut`，否则不会被回收。
 
 ### 最大线程数
 
-线程池中允许的最大线程数。
+- maximumPoolSize: 线程池中允许的最大线程数。
 
 ### 非核心线程最大空闲时间
 
-当线程数大于核心线程数时，多余的空闲线程在被销毁前可以存活等待任务的最大时间。这个是两个参数，一个是时间值，一个是时间单位
+- keepAliveTime: 当线程数大于核心线程数时，多余的空闲线程在被销毁前可以存活等待任务的最大时间。
+- unit: 时间单位
 
 ### 任务队列
 
-用于在执行任务前存放任务的队列。
+- workQueue: 用于在执行任务前存放任务的队列。
 
 ### 线程工厂
 
-用于创建线程的工厂。
+- threadFactory: 用于创建线程的工厂。
 
 ### 拒绝策略
 
-当任务无法被ThreadPoolExecutor执行时，会采取的拒绝策略。例如当任务队列满了，无法再添加任务时，线程池会执行该方法以处理该任务。
+- handler: 当任务无法被ThreadPoolExecutor执行时，会采取的拒绝策略。例如当任务队列满了，无法再添加任务时，线程池会执行该方法以处理该任务。
+
+::: info 四种拒绝策略：
 
 - AbortPolicy：抛出`RejectedExecutionException`异常，默认的拒绝策略
 - CallerRunsPolicy：使用调用线程来直接执行任务，一般用于任务必须被执行的情况
 - DiscardOldestPolicy：丢弃队列中最老的任务，也就是最早的未执行的任务
 - DiscardPolicy：丢弃任务
+
+:::
