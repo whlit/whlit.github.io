@@ -48,6 +48,7 @@ export default defineConfig({
     config: (md) => {
       md.use(mermaidPlugin)
     },
+    math: true,
   },
   lastUpdated: true,
   sitemap: {
