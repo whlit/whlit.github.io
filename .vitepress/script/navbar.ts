@@ -50,6 +50,7 @@ export function navbar(): DefaultTheme.NavItem[] {
       items: [
         { text: 'Blog', link: '/blog/vitepress', activeMatch: '/blog/' },
         { text: 'Nginx', link: '/nginx/nginx-cluster', activeMatch: '/nginx/' },
+        { text: '算法题', link: '/leetcode/happy-number', activeMatch: '/leetcode/' },
       ],
     },
   ]
