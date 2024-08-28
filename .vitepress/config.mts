@@ -1,7 +1,9 @@
 import { DefaultTheme, defineConfig } from 'vitepress'
 import mermaidPlugin from './script/mermaid'
-import { sidebar } from './script/sidebar'
+import { getSidebar } from './script/sidebar'
 import { navbar } from './script/navbar'
+
+const SORUCE_DIR = 'docs'
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -10,7 +12,7 @@ export default defineConfig({
     ['link', { rel: 'icon', href: '/favicon.svg' }],
     ['meta', { name: 'google-site-verification', content: 'TXcyVysEbl1he1_f6amPGUmRYYxt7bdo7-Qd3_6Pqcs' }],
   ],
-  srcDir: 'docs',
+  srcDir: SORUCE_DIR,
   themeConfig: {
     logo: '/favicon.svg',
     search: {
@@ -60,14 +62,13 @@ export default defineConfig({
 function getBar(): { sidebar: DefaultTheme.SidebarMulti; nav: DefaultTheme.NavItem[] } {
   const nav = navbar()
   const activeMatchs = getNavActiveMatchs(nav)
-  const side = sidebar(Object.keys(activeMatchs))
-
-  Object.keys(side).forEach((key) => {
-    if (activeMatchs[key]) {
+  const side = {}
+  Object.keys(activeMatchs).forEach((key) => {
+    side[key] = getSidebar(SORUCE_DIR, key)
+    if (!side[key]) {
       activeMatchs[key].link = side[key][0].link
     }
   })
-
   return {
     nav: nav,
     sidebar: side,
