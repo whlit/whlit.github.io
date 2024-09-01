@@ -65,7 +65,7 @@ function getBar(): { sidebar: DefaultTheme.SidebarMulti; nav: DefaultTheme.NavIt
   const side = {}
   Object.keys(activeMatchs).forEach((key) => {
     side[key] = getSidebar(SORUCE_DIR, key)
-    if (!side[key]) {
+    if (side[key]) {
       activeMatchs[key].link = side[key][0].link
     }
   })

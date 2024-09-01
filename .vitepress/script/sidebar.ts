@@ -1,9 +1,12 @@
 import { DefaultTheme } from 'vitepress'
 import { glob } from 'glob'
 import matter from 'gray-matter'
+import fs from 'fs-extra'
+
+const updateTimes = fs.readJSONSync('cache/timestamp.json')
 
 export function getSidebar(root: string, path: string): DefaultTheme.SidebarItem[] {
-  const sidebar: DefaultTheme.SidebarItem[] = []
+  const sidebar: { text: string; link: string; timestamp: number }[] = []
 
   root = root
     .replace(/\\/g, '/') // 统一分割符为‘/’
@@ -25,7 +28,8 @@ export function getSidebar(root: string, path: string): DefaultTheme.SidebarItem
     sidebar.push({
       text: data.title || link.split('/').pop(), // 如果没有title，则使用文件名
       link: link,
+      timestamp: updateTimes[file],
     })
   })
-  return sidebar
+  return sidebar.sort((a, b) => b.timestamp - a.timestamp)
 }

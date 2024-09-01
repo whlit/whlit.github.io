@@ -1,13 +1,16 @@
 {
   "name": "whlit.github.io",
   "scripts": {
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
-    "format": "prettier --write ."
+    "dev": "pnpm docs:dev",
+    "docs:dev": "pnpm update-time && vitepress dev",
+    "docs:build": "pnpm update-time && vitepress build",
+    "format": "prettier --write .",
+    "update-time": "node ./script/update-time.js"
   },
   "author": "whlit",
   "devDependencies": {
+    "cross-spawn": "^7.0.3",
+    "fs-extra": "^11.2.0",
     "glob": "^10.4.2",
     "gray-matter": "^4.0.3",
     "lint-staged": "^15.2.7",
