@@ -53,7 +53,7 @@ public class Tree<T> {
 
 ## 二叉树遍历
 
-二叉树的遍历一般分为四种：层次遍历、前序遍历、中序遍历和后序遍历。层次遍历也叫广度优先遍历，后三种也叫深度优先遍历，分别表示根节点在遍历中处于前、中、后的位置。
+二叉树的遍历一般分为四种：层次遍历、前序遍历、中序遍历和后序遍历。层次遍历也叫广度优先遍历，后三种也叫深度优先遍历，分别表示根节点在遍历中处于前、中、后的位置。对于深度优先的遍历，由于存储的结构优势，天生就很方便的使用递归的方式来遍历它，而对于非递归方式就一般需要借助栈来辅助了。
 
 ### 层次遍历
 
@@ -61,11 +61,104 @@ public class Tree<T> {
 
 ![binary-tree](images/binary-tree/level-traversal.drawio.svg)
 
+::: code-group
+
+```java [递归实现]
+public void levelTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    levelTraversal(List.of(root));
+}
+private void levelTraversal(List<Node<T>> nodes) {
+    if (nodes.isEmpty()) {
+        return;
+    }
+    // 保存下一层的节点
+    List<Node<T>> nextNodes = new ArrayList<>();
+    for (Node<T> node : nodes) {
+        // 打印这一层的节点
+        System.out.println(node.val);
+        // 保存下一层，先左后右
+        if (node.left != null) {
+            nextNodes.add(node.left);
+        }
+        if (node.right != null) {
+            nextNodes.add(node.right);
+        }
+    }
+    // 递归下一层
+    levelTraversal(nextNodes);
+}
+```
+
+```java [非递归实现]
+public void levelTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    // 使用队列存放遍历的节点
+    Queue<Node<T>> queue = new LinkedList<>();
+    queue.offer(root);
+    while (!queue.isEmpty()) {
+        Node<T> node = queue.poll();
+        System.out.println(node.val);
+        // 保存下一层的节点到队列尾部，先左后右
+        if (node.left != null) {
+            queue.offer(node.left);
+        }
+        if (node.right != null) {
+            queue.offer(node.right);
+        }
+    }
+}
+```
+
+:::
+
 ### 前序遍历
 
 先访问根节点，再访问左子树，再访问右子树
 
 ![binary-tree](images/binary-tree/pre-traversal.drawio.svg)
+
+::: code-group
+
+```java [递归实现]
+public void preTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    System.out.println(root.val);
+    preTraversal(root.left);
+    preTraversal(root.right);
+}
+```
+
+```java [非递归实现]
+public void preTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    // 使用栈存放遍历的节点
+    Deque<Node<T>> stack = new LinkedList<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        Node<T> node = stack.pop();
+        // 先打印节点
+        System.out.println(node.val);
+        // 因为栈是先进后出 所以先入栈右后入栈左 出的时候就会先出左再出右
+        if (node.right != null) {
+            stack.push(node.right);
+        }
+        if (node.left != null) {
+            stack.push(node.left);
+        }
+    }
+}
+```
+
+:::
 
 ### 中序遍历
 
@@ -73,8 +166,127 @@ public class Tree<T> {
 
 ![binary-tree](images/binary-tree/in-traversal.drawio.svg)
 
+::: code-group
+
+```java [递归实现]
+public void inTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    inTraversal(root.left);
+    System.out.println(root.val);
+    inTraversal(root.right);
+}
+```
+
+```java [非递归实现]
+public void inTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    Deque<Node<T>> stack = new LinkedList<>();
+    Node<T> node = root;
+    while (node != null || !stack.isEmpty()) {
+        if (node == null) {
+            // 当前节点如果为父节点的左节点，则栈顶元素就是父节点
+            // 当前节点如果为父节点的右节点，说明父节点已经访问完毕，栈顶元素就是父节点的父节点
+            // 父节点出栈
+            node = stack.pop();
+            // 打印父节点
+            System.out.println(node.val);
+            // 将节点置为右节点，遍历右节点
+            node = node.right;
+        } else {
+            // 节点不为空，需要将节点入栈，然后先遍历左节点
+            stack.push(node);
+            node = node.left;
+        }
+    }
+}
+```
+
+:::
+
 ### 后序遍历
 
 先访问左子树，再访问右子树，再访问根节点
 
 ![binary-tree](images/binary-tree/post-traversal.drawio.svg)
+
+在非递归实现中，我们在[前序遍历](#前序遍历)中的栈中存放的是**未遍历的左右子节点**，来确定遍历的次序。在[中序遍历](#中序遍历)中的栈中存放的是**已经访问过的父节点**，当左子树全部遍历完时，从栈中弹出父节点，然后访问父节点的数据。
+
+这两种遍历过程中我们的栈中存放的节点它是否遍历过我们是很清楚的，但是现在的后序遍历中，我们首先访问了父节点，但此时父节点的数据我们是不能现在访问的，需要左右子树都访问完了，才能访问父节点中的数据，而在访问左子树的时候，右子树这时候我们和前序遍历一样先存放起来，等左子树访问完了，才能访问右子树，所以现在我们有两个数据需要存放，一个是已访问过的父节点，一个是未访问的右子节点，显然存放到同一个栈中是不可能的，那样就无法区分了，在这个基础上我们可以有以下以下一种方式来解决：
+
+- 方式一：使用Map来存放节点的访问次数，已经访问过的直接获取其值，未访问的设置访问次数加一，然后将其放入栈中，再访问其左右子节点
+- 方式二：遍历的过程中将未访问的节点放入一个栈中，将访问过的节点放入另一个栈中，遍历完成时，将访问过的节点依次弹出并获取值
+
+::: code-group
+
+```java [递归实现]
+public void postTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    postTraversal(root.left);
+    postTraversal(root.right);
+    System.out.println(root.val);
+}
+```
+
+```java [非递归实现-方式一]
+public void postTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    Deque<Node<T>> stack = new LinkedList<>();
+    stack.push(root);
+    Map<Node<T>, Boolean> map = new HashMap<>();
+    while (!stack.isEmpty()) {
+        Node<T> node = stack.peek();
+        // 已经访问过，直接打印，并弹出
+        if (map.getOrDefault(node, false)) {
+            System.out.println(node.val);
+            stack.pop();
+        } else {
+            // 未访问，设置已访问
+            map.put(node, true);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+    }
+}
+```
+
+```java [非递归实现-方式二]
+public void postTraversal(Node<T> root) {
+    if (root == null) {
+        return;
+    }
+    Deque<Node<T>> stack = new LinkedList<>();
+    Deque<Node<T>> res = new LinkedList<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        Node<T> node = stack.pop();
+        // 将节点入已访问栈
+        res.push(node);
+        // 将左节点入未访问栈
+        if (node.left != null) {
+            stack.push(node.left);
+        }
+        // 将右节点入未访问栈
+        if (node.right != null) {
+            stack.push(node.right);
+        }
+    }
+    // 从已访问栈中依次弹出
+    while (!res.isEmpty()) {
+        System.out.println(res.pop().val);
+    }
+}
+```
+
+:::
