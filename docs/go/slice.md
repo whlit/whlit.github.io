@@ -70,4 +70,4 @@ type slice struct {
 
 :::
 
-![slice-append](images/slice/slice-append.excalidraw.png)
+![slice-append](images/slice/slice-append.excalidraw.svg)
