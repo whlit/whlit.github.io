@@ -14,6 +14,8 @@ String 类型是基础的`key:value`类型，key是字符串类型，value可以
 
 SET和GET是两个最基础的操作，也是Redis的基础，set操作是设置值，get操作是获取值。
 
+[![官方文档](https://img.shields.io/badge/Redis_Get-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/get/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1797,7 +1799,9 @@ System.out.println(res);  // 1710094923364
 
 ### KEYS
 
-返回所有匹配的key，支持通配符。这个命令要小心使用，如果数据量很大的话很可能会导致内存溢出。
+返回所有匹配的key，支持通配符。这个命令要小心使用，如果数据量很大的话很可能会导致内存溢出。生产环境请不要使用该方法，生产环境可以使用[SCAN](#scan)来完成对key的检索;
+
+[![官方文档](https://img.shields.io/badge/Redis_Keys-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/keys/)
 
 ::: code-group
 
@@ -1849,6 +1853,65 @@ System.out.println(keys);  // [xiaohong, xiaoming]
 ### RESTORE
 
 ### SCAN
+
+迭代Redis中的键，此命令允许增量迭代，每次调用仅返回少量的数据，所以它可以在生产环境使用，并且不会发生[KEYS](#keys)那样的长时间阻塞服务器。
+
+scan返回的是两个值组成的数组，第一个值是下次迭代的新游标值，第二个是迭代返回的元素数组。当返回的新游标值为0时表示所有元素都已经迭代完成。
+
+[![redis-scan](https://img.shields.io/badge/Redis_Scan-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/scan/)
+
+::: tip 可选参数
+
+- MATCH pattern: 在集合检索元素后，将数据返回客户端前，对结果进行模式匹配;
+- COUNT count: 每次迭代应完成的工作量，Scan并不会保证每次返回键的数量，但可以通过count来调整迭代次数，默认值为10;
+- TYPE type: 仅返回type类型的元素键，它是在检索元素之后，将数据返回客户端前，进行类型匹配，所以它并不能减少总体迭代的工作量。
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> scan 0 match xiao* count 10
+1) "14"
+2) 1) "xiaohong"
+   2) "xiao"
+127.0.0.1:6379> scan 14 match xiao* count 10
+1) "27"
+2) (empty array)
+127.0.0.1:6379> scan 27 match xiao* count 10
+1) "0"
+2) 1) "xiaoming"
+   2) "xiaolan
+```
+
+```java [jedis]
+String cursor = ScanParams.SCAN_POINTER_START;
+ScanParams params = new ScanParams();
+params.match("xiao*");
+params.count(10);
+do {
+    ScanResult<String> result = jedis.scan(cursor, params);
+    cursor = result.getCursor();
+    System.out.println(result.getResult());
+} while (!cursor.equals(ScanParams.SCAN_POINTER_START));
+
+// [xiaohong, xiao]
+// []
+// [xiaoming, xiaolan]
+```
+
+```java [spring-data-redis]
+List<String> keys = stringRedisTemplate.execute((RedisConnection connection) -> {
+    try (Cursor<byte[]> cursor = connection.scan(ScanOptions.scanOptions().match("xiao*").build())) {
+        return cursor.stream().map(String::new).collect(Collectors.toList());
+    }
+});
+System.out.println(keys);
+
+// [xiaohong, xiao, xiaoming, xiaolan]
+```
+
+:::
 
 ### SORT
 
