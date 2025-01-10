@@ -563,7 +563,7 @@ System.out.println(list2);  // [c, b, a, d, e, f]
 
 :::
 
-### LPOP & RPOP <Badge>常用</Badge>
+### LPOP & RPOP <Badge>常用</Badge> {#lpop-rpop}
 
 删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
 
@@ -621,6 +621,61 @@ System.out.println(len); // 3
 :::
 
 ### LMOVE
+
+原子地返回并删除列表地头部或者尾部元素，并将该元素推送到另一列表地头部或者尾部，取决于参数;
+
+[![官方文档](https://img.shields.io/badge/Redis_LMove-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/lmove/)
+
+::: tip 语法
+
+`LMOVE source destination <LEFT | RIGHT> <LEFT | RIGHT>`
+
+- source: 要删除地列表
+- destination: 要推送到地列表
+- LEFT | RIGHT: 从列表的头部还是尾部删除元素
+- LEFT | RIGHT: 要推送到列表地头部还是尾部
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> lpush list1 a b c d e f g
+(integer) 7
+127.0.0.1:6379> lmove list1 list2 left right
+"g"
+127.0.0.1:6379> lrange list1 0 -1
+1) "f"
+2) "e"
+3) "d"
+4) "c"
+5) "b"
+6) "a"
+127.0.0.1:6379> lrange list2 0 -1
+1) "g"
+127.0.0.1:6379> lmove list1 list2 right left
+"a"
+127.0.0.1:6379> lrange list1 0 -1
+1) "f"
+2) "e"
+3) "d"
+4) "c"
+5) "b"
+127.0.0.1:6379> lrange list2 0 -1
+1) "a"
+2) "g"
+```
+
+```java [java]
+jedis.del("list1", "list2");
+jedis.lpush("list1", "a", "b", "c", "d", "e", "f", "g");
+String s = jedis.lmove("list1", "list2", ListDirection.LEFT, ListDirection.RIGHT);
+System.out.println(s); // g
+System.out.println(jedis.lrange("list1", 0, -1)); // [f, e, d, c, b, a]
+System.out.println(jedis.lrange("list2", 0, -1)); // [g]
+```
+
+:::
 
 ### LTRIM
 
@@ -709,7 +764,43 @@ System.out.println(list4);  // []
 
 :::
 
-### BLPOP & BRPOP <Badge>常用</Badge>
+### BLPOP & BRPOP <Badge>常用</Badge> {#blpop-brpop}
+
+从指定地列表中弹出一个元素，当所有指定地列表中都没有任何元素时，会进行阻塞，它是[LPOP/RPOP](#lpop-rpop)的阻塞版本。
+
+[![官方文档](https://img.shields.io/badge/Redis_BLPop-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/blpop/)
+
+::: tip 语法
+
+`BLPOP key [key ...] timeout`
+
+- 可以指定多个列表进行顺序检查，并从第一个非空列表中弹出元素;
+- timeout: 超时时间，当阻塞等待指定时间后解除阻塞并返回null，当设置为0时，表示无限期阻塞等待;
+
+该命令返回值为双元素数组，分别代表key和value
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del list1 list2
+(integer) 2
+127.0.0.1:6379> lpush list1 a b c
+(integer) 3
+127.0.0.1:6379> blpop list1 list2 0
+1) "list1"
+2) "c"
+```
+
+```java [java]
+jedis.del("list1", "list2");
+jedis.lpush("list1", "a", "b", "c");
+List<String> res = jedis.blpop(0, "list1", "list2");
+System.out.println(res); // [list1, c]
+```
+
+:::
 
 ### BLMOVE
 
@@ -731,7 +822,9 @@ System.out.println(list4);  // []
 
 ### LSET
 
-### RPOPLPUSH
+### RPOPLPUSH <Badge type="danger">废弃</Badge> {#rpoplpush}
+
+原子地返回并删除列表地尾部元素，并将其推送到另一列表地头部；该命令应使用[LMOVE](#lmove)替代;
 
 ## Set
 
@@ -890,7 +983,7 @@ System.out.println(b);  // false
 
 :::
 
-### SRANDMEMBER <Badge>常用</Badge>
+### SRANDMEMBER <Badge>常用</Badge> {#srandmember}
 
 随机返回集合中的一个元素。
 
@@ -931,7 +1024,7 @@ System.out.println(members);  // [b, c]
 
 ### SPOP <Badge>常用</Badge>
 
-随机返回集合中的一个元素，并删除。类似于[SRANDMEMBER](#srandmember-常用)，只不过SRANDMEMBER只是返回元素但不删除。而且SRANDMEMBER返回的元素可以重复，SPOP不会重复。
+随机返回集合中的一个元素，并删除。类似于[SRANDMEMBER](#srandmember)，只不过SRANDMEMBER只是返回元素但不删除。而且SRANDMEMBER返回的元素可以重复，SPOP不会重复。
 
 [![官方文档](https://img.shields.io/badge/Redis_SPop-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/spop/)
 
