@@ -51,6 +51,9 @@ export default defineConfig({
       md.use(mermaidPlugin)
     },
     math: true,
+    image: {
+      lazyLoading: true,
+    },
   },
   lastUpdated: true,
   sitemap: {
