@@ -38,6 +38,8 @@ System.out.println(res2);  // 小红
 
 MSET和MGET是两个最基础的操作的批量操作，可以同时设置多个key，也可以同时获取多个key。
 
+[![官方文档](https://img.shields.io/badge/Redis_Mget-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/mget/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -61,6 +63,8 @@ System.out.println(list);  // [小红, 小明]
 
 以原子的方式将一个值设置为另一个值，并返回旧的值。
 
+[![官方文档](https://img.shields.io/badge/Redis_GetSet-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/getset/)
+
 ```sh [redis-cli]
 127.0.0.1:6379> SET xiaohong 小红
 OK
@@ -73,6 +77,8 @@ OK
 ### GETDEL
 
 获取值并删除，如果key不存在则返回null。
+
+[![官方文档](https://img.shields.io/badge/Redis_GetDel-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/getdel/)
 
 ::: code-group
 
@@ -97,6 +103,8 @@ System.out.println(res2);  // null
 GETRANGE 和 SETRANGE 用于获取和设置字符串的一部分。
 `getrange key start end`：返回字符串key的值从start到end的子串，包括start和end。
 `setrange key offset value`：将字符串key的值从start到end的子串替换为value，如果value长度不够则用`\x00`填充。
+
+[![官方文档](https://img.shields.io/badge/Redis_GetRange-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/getrange/)
 
 ::: code-group
 
@@ -151,6 +159,8 @@ System.out.println(res7);  // heabc worldTEST
 
 SETEX是设置key并设置过期时间（单位为秒）。
 
+[![官方文档](https://img.shields.io/badge/Redis_SetEx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/setex/)
+
 ```sh [redis-cli]
 127.0.0.1:6379> SETEX xiaohong 10 'hello world'
 OK
@@ -167,6 +177,8 @@ OK
 
 SETNX 是设置key，如果key已经存在，则不设置。
 
+[![官方文档](https://img.shields.io/badge/Redis_SetNx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/setnx/)
+
 ```sh [redis-cli]
 127.0.0.1:6379> SETNX xiaohong 'hello world'
 (integer) 1
@@ -179,6 +191,8 @@ SETNX 是设置key，如果key已经存在，则不设置。
 ### GETEX
 
 GETEX是获取key并可以设置过期时间，该命令支持一组修改过期时间的选择：
+
+[![官方文档](https://img.shields.io/badge/Redis_GetEx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/getex/)
 
 ::: tip 可选参数
 
@@ -223,9 +237,13 @@ System.out.println(ttl2);  // 10
 
 PSETEX和SETEX一样，只是这个单位是毫秒。
 
+[![官方文档](https://img.shields.io/badge/Redis_PSetEx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/psetex/)
+
 ### MSETNX
 
 批量设置键值，如果key已经存在，则不设置。但只要有一个值已经存在就不会执行操作。也就是要么都成功，要么都失败。
+
+[![官方文档](https://img.shields.io/badge/Redis_MSetNx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/msetnx/)
 
 ::: code-group
 
@@ -253,6 +271,8 @@ System.out.println(mget);  // [小红, 小明, null]
 
 APPEND是将值拼接到原有值的末尾。如果key不存在，则会创建一个key为key，值为value。
 
+[![官方文档](https://img.shields.io/badge/Redis_Append-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/append/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -276,6 +296,8 @@ System.out.println(res);  // 小红小红
 ### INCR & DECR <Badge>常用</Badge>
 
 将key的值增加1或者减少1，并返回值，如果key不存在，则会创建一个key为key，值为1。如果值不可以转为整数，则会报错。
+
+[![官方文档](https://img.shields.io/badge/Redis_Incr-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/incr/)
 
 ::: code-group
 
@@ -307,6 +329,8 @@ System.out.println(age); // 1
 
 将key的值增加或者减少指定的值，并返回值，如果key不存在，则会创建一个key为key，值为指定的值。如果值不可以转为整数，则会报错。
 
+[![官方文档](https://img.shields.io/badge/Redis_IncrBy-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/incrby/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -336,6 +360,8 @@ System.out.println(age); // 10
 ### INCRBYFLOAT
 
 将key的值增加指定的值（浮点数，如果要减少值则可以传入负数），并返回值，如果key不存在，则会创建一个key为key，值为指定的值。如果值不可以转为数字，则会报错。
+
+[![官方文档](https://img.shields.io/badge/Redis_IncrByFloat-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/incrbyfloat/)
 
 ::: code-group
 
@@ -367,6 +393,8 @@ System.out.println(res); // 19.1
 
 获取两个字符串的最长公共子串；如果两个字符串没有公共子串，则返回空字符串。
 
+[![官方文档](https://img.shields.io/badge/Redis_lcs-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/lcs/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -391,6 +419,8 @@ System.out.println(lcs.getMatchString()); // ""
 
 获取值的**字节长度**。
 
+[![官方文档](https://img.shields.io/badge/Redis_StrLen-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/strlen/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -411,6 +441,8 @@ System.out.println(len); // 6
 ### SUBSTR <Badge type="danger">废弃</Badge>
 
 获取值的子串。此命令已被废弃替换为[GETRANGE](#getrange-and-setrange)。
+
+[![官方文档](https://img.shields.io/badge/Redis_SubStr-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/substr/)
 
 ## List
 
@@ -490,6 +522,8 @@ System.out.println(res3);  // a
 
 将一个或多个值插入到列表的头部（左边）或者尾部（右边）。LPUSH: 从左边插入，RPUSH: 从右边插入。如果key不存在，则会创建一个空列表，并插入值。如果push的值类型不是列表，则会报错。
 
+[![官方文档](https://img.shields.io/badge/Redis_LPush-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/lpush/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -533,6 +567,8 @@ System.out.println(list2);  // [c, b, a, d, e, f]
 
 删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
 
+[![官方文档](https://img.shields.io/badge/Redis_LPop-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/lpop/)
+
 ::: tip 可选参数
 
 count：删除多少个元素。
@@ -565,6 +601,8 @@ System.out.println(res2);  // [d, c]
 
 获取列表的长度。
 
+[![官方文档](https://img.shields.io/badge/Redis_LLen-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/llen/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -587,6 +625,8 @@ System.out.println(len); // 3
 ### LTRIM
 
 裁剪现有的列表使其只保留指定范围的元素。
+
+[![官方文档](https://img.shields.io/badge/Redis_LTrim-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/ltrim/)
 
 ::: tip 一般用法
 
@@ -631,6 +671,8 @@ System.out.println(list2);  // [h, g, f, e, d]
 ### LRANGE <Badge>常用</Badge>
 
 返回列表中指定区间内的元素，区间以偏移量表示，如：0表示列表的第一个元素，1表示列表的第二个元素，-1表示列表的最后一个元素。偏移量可以是负数，表示倒数第几个元素。如果偏移量超出列表的长度，则视为列表的最后一个元素。如果开始索引大于末尾索引，则返回空列表。
+
+[![官方文档](https://img.shields.io/badge/Redis_LRange-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/lrange/)
 
 ::: code-group
 
@@ -699,6 +741,8 @@ Set 是无序的不重复元素的集合。
 
 向集合中添加一个或多个元素，返回添加成功的元素的个数。如果value的类型不是集合时返回错误。
 
+[![官方文档](https://img.shields.io/badge/Redis_SAdd-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sadd/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -737,6 +781,8 @@ System.out.println(set2);  // [a, b, c, d, e, f]
 
 从集合中移除指定的元素。返回移除的元素个数。如果不是集合中的元素，则返回0。如果不是集合，则返回错误。
 
+[![官方文档](https://img.shields.io/badge/Redis_SRem-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/srem/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -772,6 +818,8 @@ System.out.println(set2);  // [b]
 
 返回集合中的所有元素。
 
+[![官方文档](https://img.shields.io/badge/Redis_SMembers-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/smembers/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -796,6 +844,8 @@ System.out.println(set);  // [a, b, c, d]
 
 返回集合中元素的个数。
 
+[![官方文档](https://img.shields.io/badge/Redis_Scard-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/scard/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -816,6 +866,8 @@ System.out.println(count);  // 4
 ### SISMEMBER <Badge>常用</Badge>
 
 判断元素是否在集合中。存在返回1，不存在返回0。
+
+[![官方文档](https://img.shields.io/badge/Redis_SIsMember-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sismember/)
 
 ::: code-group
 
@@ -841,6 +893,8 @@ System.out.println(b);  // false
 ### SRANDMEMBER <Badge>常用</Badge>
 
 随机返回集合中的一个元素。
+
+[![官方文档](https://img.shields.io/badge/Redis_SRandMember-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/srandmember/)
 
 ::: tip 可选参数
 
@@ -879,6 +933,8 @@ System.out.println(members);  // [b, c]
 
 随机返回集合中的一个元素，并删除。类似于[SRANDMEMBER](#srandmember-常用)，只不过SRANDMEMBER只是返回元素但不删除。而且SRANDMEMBER返回的元素可以重复，SPOP不会重复。
 
+[![官方文档](https://img.shields.io/badge/Redis_SPop-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/spop/)
+
 ::: tip 可选参数
 
 - `count`: 随机返回指定个数的元素，并删除
@@ -915,6 +971,8 @@ System.out.println(members2);  // [b]
 
 返回多个集合的交集。
 
+[![官方文档](https://img.shields.io/badge/Redis_SInter-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sinter/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -945,6 +1003,8 @@ System.out.println(set);  // [c]
 ### SINTERSTORE <Badge>常用</Badge>
 
 此命令等同于[SINTER](#sinter-常用)，返回多个集合的交集，但是SINTERSTORE会将结果保存到指定集合中。
+
+[![官方文档](https://img.shields.io/badge/Redis_SInterStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sinterstore/)
 
 ::: code-group
 
@@ -980,6 +1040,8 @@ System.out.println(set);  // [c]
 
 返回多个集合的并集。
 
+[![官方文档](https://img.shields.io/badge/Redis_SUnion-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sunion/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1012,6 +1074,8 @@ System.out.println(set);  // [a, b, c, d]
 ### SUNIONSTORE <Badge>常用</Badge>
 
 此命令等同于[SUNION](#sunion-常用)，返回多个集合的并集，但是SUNIONSTORE会将结果保存到指定集合中。
+
+[![官方文档](https://img.shields.io/badge/Redis_SUnionStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sunionstore/)
 
 ::: code-group
 
@@ -1049,6 +1113,8 @@ System.out.println(set);  // [a, b, c, d]
 
 返回第一个集合和多个集合的差集。
 
+[![官方文档](https://img.shields.io/badge/Redis_SDiff-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sdiff/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1078,6 +1144,8 @@ System.out.println(set);  // [b]
 ### SDIFFSTORE <Badge>常用</Badge>
 
 此命令等同于[SDIFF](#sdiff-常用)，返回第一个集合和多个集合的差集，但是SDIFFSTORE会将结果保存到指定集合中。
+
+[![官方文档](https://img.shields.io/badge/Redis_SDiffStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sdiffstore/)
 
 ::: code-group
 
@@ -1122,6 +1190,8 @@ System.out.println(set);  // [b]
 
 从哈希中删除一个或多个字段。如果字段不存在则被忽略。
 
+[![官方文档](https://img.shields.io/badge/Redis_HDel-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hdel/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1149,6 +1219,8 @@ System.out.println(res2);  // 0
 
 获取哈希的字段值，如果字段不存在则返回nil。
 
+[![官方文档](https://img.shields.io/badge/Redis_HGet-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hget/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1174,6 +1246,8 @@ System.out.println(res2);  // null
 
 获取哈希的所有字段和值。
 
+[![官方文档](https://img.shields.io/badge/Redis_HGetAll-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hgetall/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1198,6 +1272,8 @@ System.out.println(map);  // {title=test, number=200}
 ### HINCRBY <Badge>常用</Badge>
 
 递增哈希指定字段的值。如果字段不存在，则初始化为0，然后再递增。
+
+[![官方文档](https://img.shields.io/badge/Redis_HIncrBy-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hincrby/)
 
 ::: code-group
 
@@ -1228,6 +1304,8 @@ System.out.println(res2);  // 10
 
 返回哈希中字段的数量。
 
+[![官方文档](https://img.shields.io/badge/Redis_HLen-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hlen/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1248,6 +1326,8 @@ System.out.println(res);  // 1
 ### HMGE & HMSET <Badge>常用</Badge>
 
 HMSET同时设置多个字段，HMGET同时获取多个字段。
+
+[![官方文档](https://img.shields.io/badge/Redis_HMGet-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/hmget/)
 
 ::: warning HMSET
 
@@ -1297,6 +1377,8 @@ System.out.println(list);  // [test, null, null]
 ### ZADD <Badge>常用</Badge>
 
 向排序集合中添加指定分数的元素。可以同时添加多个分数/元素对。如果元素已经存在，则会更新分数，并重新插入到正确的位置。分数为双精度浮点数。
+
+[![官方文档](https://img.shields.io/badge/Redis_ZAdd-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zadd/)
 
 ::: tip 可选参数
 
@@ -1363,6 +1445,8 @@ System.out.println(zset);  //[[a,1.0], [b,2.0], [c,3.0], [e,5.0], [f,6.0], [g,14
 
 返回排序集合中的元素数。
 
+[![官方文档](https://img.shields.io/badge/Redis_ZCard-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zcard/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1384,6 +1468,8 @@ System.out.println(jedis.zcard("zset"));  // 3
 ### ZCOUNT
 
 返回在指定分数范围的元素个数。
+
+[![官方文档](https://img.shields.io/badge/Redis_ZCount-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zcount/)
 
 ::: code-group
 
@@ -1410,6 +1496,8 @@ System.out.println(jedis.zcount("zset", 2, 3));  // 2
 ### ZINCRBY <Badge>常用</Badge>
 
 为指定元素增加指定的分数。如果元素不存在，则会创建一个新的元素并添加指定的分数。提供负数来减少分数。
+
+[![官方文档](https://img.shields.io/badge/Redis_ZIncrBy-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zincrby/)
 
 ::: code-group
 
@@ -1462,6 +1550,8 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 返回排序集合中指定范围的元素。
 
+[![官方文档](https://img.shields.io/badge/Redis_ZRange-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zrange/)
+
 ::: tip 语法
 
 `ZRANGE key start stop [BYSCORE | BYLEX] [REV] [LIMIT offset count] [WITHSCORES]`
@@ -1507,6 +1597,8 @@ System.out.println(zset);  // [a, b, c]
 
 从指定的排序集合中删除指定的元素。
 
+[![官方文档](https://img.shields.io/badge/Redis_ZRem-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zrem/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1550,6 +1642,8 @@ System.out.println(zset);  // [b, c]
 
 返回排序集合中元素的分数。
 
+[![官方文档](https://img.shields.io/badge/Redis_ZScore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/zscore/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1588,6 +1682,8 @@ System.out.println(zset);  // 1
 ### COPY
 
 将源key的值复制到目标key中。如果目标key存在，返回0。
+
+[![官方文档](https://img.shields.io/badge/Redis_Copy-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/copy/)
 
 ::: tip 可选参数
 
@@ -1639,6 +1735,8 @@ System.out.println(res6);  // 小红
 
 DEL操作是删除指定key。如果删除成功返回1，否则返回0。
 
+[![官方文档](https://img.shields.io/badge/Redis_Del-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/del/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1665,6 +1763,8 @@ System.out.println(res2);
 
 EXISTS操作是判断key是否存在，如果存在返回true，不存在返回false。
 
+[![官方文档](https://img.shields.io/badge/Redis_exists-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/exists/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1688,6 +1788,8 @@ System.out.println(res2);  // false
 ### EXPIRE <Badge>常用</Badge>
 
 为指定key设置过期时间，只有删除或者覆盖操作才会替换过期时间。包括DEL、SET、GETSET，例如使用INCR递增值，推送新值到list中，或者使用HSET更改哈希的字段值，都不会更改超时时间。如果已有过期时间，那么也可以刷新过期时间，将过期时间设置为新的值
+
+[![官方文档](https://img.shields.io/badge/Redis_Expire-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/expire/)
 
 ::: tip 可选参数
 
@@ -1746,6 +1848,8 @@ System.out.println(ttl4);  // 10
 
 EXPIREAT操作与[EXPIRE](#expire-常用)类似，只不过它以Unix时间戳为参数。如果是过去的时间戳，那么key就会立即删除。
 
+[![官方文档](https://img.shields.io/badge/Redis_Expireat-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/expireat/)
+
 ::: tip 可选参数
 
 - `NX`: 只有key没有过期时才设置过期时间
@@ -1779,6 +1883,8 @@ System.out.println(ttl);  // 1710094923364
 ### EXPIRETIME
 
 返回过期的unix时间戳。
+
+[![官方文档](https://img.shields.io/badge/Redis_expiretime-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/expiretime/)
 
 ::: code-group
 
@@ -1923,6 +2029,8 @@ System.out.println(keys);
 
 获取指定key的剩余过期时间（单位为秒）。
 
+[![官方文档](https://img.shields.io/badge/Redis_Ttl-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/ttl/)
+
 ::: danger
 
 在2.6及之前，如果key不存在或者key没有过期时间，则返回-1。在2.8开始，如果key不存在，则返回-2，如果没有过期时间，则返回-1。
@@ -1958,6 +2066,8 @@ System.out.println(ttl2);  // 10
 
 与[TTL](#ttl)相同，只不过返回的是毫秒。
 
+[![官方文档](https://img.shields.io/badge/Redis_Pttl-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/ttl/)
+
 ::: code-group
 
 ```sh [redis-cli]
@@ -1986,6 +2096,8 @@ System.out.println(ttl2);  // 10000
 ### TYPE
 
 返回值的类型
+
+[![官方文档](https://img.shields.io/badge/Redis_Type-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/type/)
 
 ::: code-group
 
