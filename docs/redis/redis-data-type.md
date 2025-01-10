@@ -34,6 +34,57 @@ System.out.println(res2);  // 小红
 
 :::
 
+::: tip Set 可选参数
+
+- EX: 设置过期时间，单位为秒。
+- PX: 设置过期时间，单位为毫秒。
+- EXAT: 设置指定的Unix过期时间，单位为秒。
+- PXAT: 设置指定的Unix过期时间，单位为毫秒。
+- NX: 当key不存在时才生效。
+- XX: 当key已存在时才生效。
+- KEEPTTL: 保留该key的剩余存活时间。
+- GET: 返回该key的旧值，如果key不存在则返回nil，如果值的类型不是string则返回错误并中止设置。
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> set xiaohong xh
+OK
+127.0.0.1:6379> set xiaohong haha nx
+(nil)
+127.0.0.1:6379> get xiaohong
+"xh"
+127.0.0.1:6379> set xiaohong haha xx
+OK
+127.0.0.1:6379> get xiaohong
+"haha"
+127.0.0.1:6379> set xiaohong xh ex 10
+OK
+127.0.0.1:6379> get xiaohong
+"xh"
+127.0.0.1:6379> get xiaohong
+(nil)
+```
+
+```java [java]
+jedis.set("xiaohong", "xh");
+jedis.set("xiaohong", "haha", SetParams.setParams().nx());
+System.out.println(jedis.get("xiaohong")); // xh
+
+jedis.set("xiaohong", "haha", SetParams.setParams().xx());
+System.out.println(jedis.get("xiaohong")); // haha
+
+jedis.set("xiaohong", "xh", SetParams.setParams().ex(10));
+System.out.println(jedis.get("xiaohong")); // xh
+
+Thread.sleep(10000);
+System.out.println(jedis.get("xiaohong")); // null
+```
+
+:::
+
 ### MSET & MGET <Badge>常用</Badge>
 
 MSET和MGET是两个最基础的操作的批量操作，可以同时设置多个key，也可以同时获取多个key。
