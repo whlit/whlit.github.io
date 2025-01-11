@@ -10,7 +10,7 @@ outline: deep
 
 String 类型是基础的`key:value`类型，key是字符串类型，value可以是bytes、string、序列化对象、字节数组。value最大不可超过512MB.
 
-### SET & GET <Badge>常用</Badge>
+### GET & SET <Badge>常用</Badge> {#get-and-set}
 
 SET和GET是两个最基础的操作，也是Redis的基础，set操作是设置值，get操作是获取值。
 
@@ -35,6 +35,8 @@ System.out.println(res2);  // 小红
 :::
 
 ::: tip Set 可选参数
+
+语法：`SET key value [NX | XX] [GET] [EX seconds | PX milliseconds | EXAT unix-time-seconds | PXAT unix-time-milliseconds | KEEPTTL]`
 
 - EX: 设置过期时间，单位为秒。
 - PX: 设置过期时间，单位为毫秒。
@@ -85,7 +87,7 @@ System.out.println(jedis.get("xiaohong")); // null
 
 :::
 
-### MSET & MGET <Badge>常用</Badge>
+### MSET & MGET <Badge>常用</Badge> {#mset-and-mget}
 
 MSET和MGET是两个最基础的操作的批量操作，可以同时设置多个key，也可以同时获取多个key。
 
@@ -110,9 +112,9 @@ System.out.println(list);  // [小红, 小明]
 
 :::
 
-### GETSET <Badge type="danger">废弃</Badge>
+### GETSET <Badge type="danger">废弃</Badge> {#getset}
 
-以原子的方式将一个值设置为另一个值，并返回旧的值。
+以原子的方式将一个值设置为另一个值，并返回旧的值。新的命令是[SET](#get-and-set)并使用`GET`参数。
 
 [![官方文档](https://img.shields.io/badge/Redis_GetSet-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/getset/)
 
@@ -206,9 +208,9 @@ System.out.println(res7);  // heabc worldTEST
 
 这里java代码最后打印的值其实是`heabc world\x00\x00\x00\x00\x00\x00\x00\x00\x00TEST` 中间填充有`\x00`。
 
-### SETEX <Badge type="danger">废弃</Badge>
+### SETEX <Badge type="danger">废弃</Badge> {#setex}
 
-SETEX是设置key并设置过期时间（单位为秒）。
+SETEX是设置key并设置过期时间（单位为秒）。替代命令为[SET](#get-and-set)并使用`EX`参数。
 
 [![官方文档](https://img.shields.io/badge/Redis_SetEx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/setex/)
 
@@ -224,9 +226,9 @@ OK
 (nil)
 ```
 
-### SETNX <Badge type="danger">废弃</Badge>
+### SETNX <Badge type="danger">废弃</Badge> {#setnx}
 
-SETNX 是设置key，如果key已经存在，则不设置。
+SETNX 是设置key，如果key已经存在，则不设置。替代命令为[SET](#get-and-set)并使用`NX`参数。
 
 [![官方文档](https://img.shields.io/badge/Redis_SetNx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/setnx/)
 
@@ -284,9 +286,9 @@ System.out.println(ttl2);  // 10
 
 :::
 
-### PSETEX <Badge type="danger">废弃</Badge>
+### PSETEX <Badge type="danger">废弃</Badge> {#psetex}
 
-PSETEX和SETEX一样，只是这个单位是毫秒。
+PSETEX和SETEX一样，只是这个单位是毫秒。替代命令为[SET](#get-and-set)并使用PX参数。
 
 [![官方文档](https://img.shields.io/badge/Redis_PSetEx-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/psetex/)
 
@@ -344,7 +346,7 @@ System.out.println(res);  // 小红小红
 
 :::
 
-### INCR & DECR <Badge>常用</Badge>
+### INCR & DECR <Badge>常用</Badge> {#incr-and-decr}
 
 将key的值增加1或者减少1，并返回值，如果key不存在，则会创建一个key为key，值为1。如果值不可以转为整数，则会报错。
 
@@ -376,7 +378,7 @@ System.out.println(age); // 1
 
 :::
 
-### INCRBY & DECRBY <Badge>常用</Badge>
+### INCRBY & DECRBY <Badge>常用</Badge> {#incrby-and-decrby}
 
 将key的值增加或者减少指定的值，并返回值，如果key不存在，则会创建一个key为key，值为指定的值。如果值不可以转为整数，则会报错。
 
@@ -466,7 +468,7 @@ System.out.println(lcs.getMatchString()); // ""
 
 :::
 
-### STRLEN <Badge>常用</Badge>
+### STRLEN <Badge>常用</Badge> {#strlen}
 
 获取值的**字节长度**。
 
@@ -489,7 +491,7 @@ System.out.println(len); // 6
 
 :::
 
-### SUBSTR <Badge type="danger">废弃</Badge>
+### SUBSTR <Badge type="danger">废弃</Badge> {#substr}
 
 获取值的子串。此命令已被废弃替换为[GETRANGE](#getrange-and-setrange)。
 
@@ -569,7 +571,7 @@ System.out.println(res3);  // a
 
 :::
 
-### LPUSH & RPUSH <Badge>常用</Badge>
+### LPUSH & RPUSH <Badge>常用</Badge> {#lpush-and-rpush}
 
 将一个或多个值插入到列表的头部（左边）或者尾部（右边）。LPUSH: 从左边插入，RPUSH: 从右边插入。如果key不存在，则会创建一个空列表，并插入值。如果push的值类型不是列表，则会报错。
 
@@ -614,7 +616,7 @@ System.out.println(list2);  // [c, b, a, d, e, f]
 
 :::
 
-### LPOP & RPOP <Badge>常用</Badge> {#lpop-rpop}
+### LPOP & RPOP <Badge>常用</Badge> {#lpop-and-rpop}
 
 删除并返回列表的第一个元素。如果列表没有元素，或者key不存在，则返回nil。
 
@@ -648,7 +650,7 @@ System.out.println(res2);  // [d, c]
 
 :::
 
-### LLEN <Badge>常用</Badge>
+### LLEN <Badge>常用</Badge> {#llen}
 
 获取列表的长度。
 
@@ -736,7 +738,7 @@ System.out.println(jedis.lrange("list2", 0, -1)); // [g]
 
 ::: tip 一般用法
 
-一般和[LPUSH/RPUSH](#lpush-rpush-常用)一起使用，将一个或多个值插入到列表的头部（左边）或者尾部（右边），同时确保列表不会超过指定的长度。
+一般和[LPUSH/RPUSH](#lpush-and-rpush)一起使用，将一个或多个值插入到列表的头部（左边）或者尾部（右边），同时确保列表不会超过指定的长度。
 
 :::
 
@@ -774,7 +776,7 @@ System.out.println(list2);  // [h, g, f, e, d]
 
 :::
 
-### LRANGE <Badge>常用</Badge>
+### LRANGE <Badge>常用</Badge> {#lrange}
 
 返回列表中指定区间内的元素，区间以偏移量表示，如：0表示列表的第一个元素，1表示列表的第二个元素，-1表示列表的最后一个元素。偏移量可以是负数，表示倒数第几个元素。如果偏移量超出列表的长度，则视为列表的最后一个元素。如果开始索引大于末尾索引，则返回空列表。
 
@@ -815,9 +817,9 @@ System.out.println(list4);  // []
 
 :::
 
-### BLPOP & BRPOP <Badge>常用</Badge> {#blpop-brpop}
+### BLPOP & BRPOP <Badge>常用</Badge> {#blpop-and-brpop}
 
-从指定地列表中弹出一个元素，当所有指定地列表中都没有任何元素时，会进行阻塞，它是[LPOP/RPOP](#lpop-rpop)的阻塞版本。
+从指定地列表中弹出一个元素，当所有指定地列表中都没有任何元素时，会进行阻塞，它是[LPOP/RPOP](#lpop-and-rpop)的阻塞版本。
 
 [![官方文档](https://img.shields.io/badge/Redis_BLPop-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/blpop/)
 
@@ -867,7 +869,7 @@ System.out.println(res); // [list1, c]
 
 ### LPOS
 
-### LPUSHX & RPUSHX
+### LPUSHX & RPUSHX {#lpushx-and-rpushx}
 
 ### LREM
 
@@ -881,7 +883,7 @@ System.out.println(res); // [list1, c]
 
 Set 是无序的不重复元素的集合。
 
-### SADD <Badge>常用</Badge>
+### SADD <Badge>常用</Badge> {#sadd}
 
 向集合中添加一个或多个元素，返回添加成功的元素的个数。如果value的类型不是集合时返回错误。
 
@@ -921,7 +923,7 @@ System.out.println(set2);  // [a, b, c, d, e, f]
 
 :::
 
-### SREM <Badge>常用</Badge>
+### SREM <Badge>常用</Badge> {#srem}
 
 从集合中移除指定的元素。返回移除的元素个数。如果不是集合中的元素，则返回0。如果不是集合，则返回错误。
 
@@ -958,7 +960,7 @@ System.out.println(set2);  // [b]
 
 :::
 
-### SMEMBERS <Badge>常用</Badge>
+### SMEMBERS <Badge>常用</Badge> {#smembers}
 
 返回集合中的所有元素。
 
@@ -984,7 +986,7 @@ System.out.println(set);  // [a, b, c, d]
 
 :::
 
-### SCARD <Badge>常用</Badge>
+### SCARD <Badge>常用</Badge> {#scard}
 
 返回集合中元素的个数。
 
@@ -1007,7 +1009,7 @@ System.out.println(count);  // 4
 
 :::
 
-### SISMEMBER <Badge>常用</Badge>
+### SISMEMBER <Badge>常用</Badge> {#sismember}
 
 判断元素是否在集合中。存在返回1，不存在返回0。
 
@@ -1073,7 +1075,7 @@ List<String> members = jedis.srandmember("set", 2);
 System.out.println(members);  // [b, c]
 ```
 
-### SPOP <Badge>常用</Badge>
+### SPOP <Badge>常用</Badge> {#spop}
 
 随机返回集合中的一个元素，并删除。类似于[SRANDMEMBER](#srandmember)，只不过SRANDMEMBER只是返回元素但不删除。而且SRANDMEMBER返回的元素可以重复，SPOP不会重复。
 
@@ -1111,7 +1113,7 @@ System.out.println(members2);  // [b]
 
 :::
 
-### SINTER <Badge>常用</Badge>
+### SINTER <Badge>常用</Badge> {#sinter}
 
 返回多个集合的交集。
 
@@ -1144,9 +1146,9 @@ System.out.println(set);  // [c]
 
 :::
 
-### SINTERSTORE <Badge>常用</Badge>
+### SINTERSTORE <Badge>常用</Badge> {#sinterstore}
 
-此命令等同于[SINTER](#sinter-常用)，返回多个集合的交集，但是SINTERSTORE会将结果保存到指定集合中。
+此命令等同于[SINTER](#sinter)，返回多个集合的交集，但是SINTERSTORE会将结果保存到指定集合中。
 
 [![官方文档](https://img.shields.io/badge/Redis_SInterStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sinterstore/)
 
@@ -1180,7 +1182,7 @@ System.out.println(set);  // [c]
 
 :::
 
-### SUNION <Badge>常用</Badge>
+### SUNION <Badge>常用</Badge> {#sunion}
 
 返回多个集合的并集。
 
@@ -1215,9 +1217,9 @@ System.out.println(set);  // [a, b, c, d]
 
 :::
 
-### SUNIONSTORE <Badge>常用</Badge>
+### SUNIONSTORE <Badge>常用</Badge> {#sunionstore}
 
-此命令等同于[SUNION](#sunion-常用)，返回多个集合的并集，但是SUNIONSTORE会将结果保存到指定集合中。
+此命令等同于[SUNION](#sunion)，返回多个集合的并集，但是SUNIONSTORE会将结果保存到指定集合中。
 
 [![官方文档](https://img.shields.io/badge/Redis_SUnionStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sunionstore/)
 
@@ -1253,7 +1255,7 @@ System.out.println(set);  // [a, b, c, d]
 
 :::
 
-### SDIFF <Badge>常用</Badge>
+### SDIFF <Badge>常用</Badge> {#sdiff}
 
 返回第一个集合和多个集合的差集。
 
@@ -1285,9 +1287,9 @@ System.out.println(set);  // [b]
 
 :::
 
-### SDIFFSTORE <Badge>常用</Badge>
+### SDIFFSTORE <Badge>常用</Badge> {#sdiffstore}
 
-此命令等同于[SDIFF](#sdiff-常用)，返回第一个集合和多个集合的差集，但是SDIFFSTORE会将结果保存到指定集合中。
+此命令等同于[SDIFF](#sdiff)，返回第一个集合和多个集合的差集，但是SDIFFSTORE会将结果保存到指定集合中。
 
 [![官方文档](https://img.shields.io/badge/Redis_SDiffStore-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/sdiffstore/)
 
@@ -1330,7 +1332,7 @@ System.out.println(set);  // [b]
 
 哈希是存储结构化数据的类型，用来表示对象很方便
 
-### HDEL <Badge>常用</Badge>
+### HDEL <Badge>常用</Badge> {#hdel}
 
 从哈希中删除一个或多个字段。如果字段不存在则被忽略。
 
@@ -1359,7 +1361,7 @@ System.out.println(res2);  // 0
 
 ### HEXISTS
 
-### HGET & HSET <Badge>常用</Badge>
+### HGET & HSET <Badge>常用</Badge> {#hget-and-hset}
 
 获取哈希的字段值，如果字段不存在则返回nil。
 
@@ -1386,7 +1388,7 @@ System.out.println(res2);  // null
 
 :::
 
-### HGETALL <Badge>常用</Badge>
+### HGETALL <Badge>常用</Badge> {#hgetall}
 
 获取哈希的所有字段和值。
 
@@ -1413,7 +1415,7 @@ System.out.println(map);  // {title=test, number=200}
 
 :::
 
-### HINCRBY <Badge>常用</Badge>
+### HINCRBY <Badge>常用</Badge> {#hincrby}
 
 递增哈希指定字段的值。如果字段不存在，则初始化为0，然后再递增。
 
@@ -1444,7 +1446,7 @@ System.out.println(res2);  // 10
 
 ### HKEYS
 
-### HLEN <Badge>常用</Badge>
+### HLEN <Badge>常用</Badge> {#hlen}
 
 返回哈希中字段的数量。
 
@@ -1467,7 +1469,7 @@ System.out.println(res);  // 1
 
 :::
 
-### HMGE & HMSET <Badge>常用</Badge>
+### HMGET & HMSET <Badge>常用</Badge> {#hmget-and-hmset}
 
 HMSET同时设置多个字段，HMGET同时获取多个字段。
 
@@ -1475,7 +1477,7 @@ HMSET同时设置多个字段，HMGET同时获取多个字段。
 
 ::: warning HMSET
 
-**HMSET**已经废弃，直接使用[HSET](#hget-hset-常用)
+**HMSET**已经废弃，直接使用[HSET](#hget-and-hset)
 
 :::
 
@@ -1518,7 +1520,7 @@ System.out.println(list);  // [test, null, null]
 
 ### BZPOPMIN
 
-### ZADD <Badge>常用</Badge>
+### ZADD <Badge>常用</Badge> {#zadd}
 
 向排序集合中添加指定分数的元素。可以同时添加多个分数/元素对。如果元素已经存在，则会更新分数，并重新插入到正确的位置。分数为双精度浮点数。
 
@@ -1531,7 +1533,7 @@ System.out.println(list);  // [test, null, null]
 - `LT`: 只有当分数小于当前元素的分数时才更新，不存在的元素会插入
 - `GT`: 只有当分数大于当前元素的分数时才更新，不存在的元素会插入
 - `CH`: 将返回值从新添加的元素数修改为更改的元素数，更改的元素指新添加的元素和已更新分数的元素。
-- `INCR`: 类似于[ZINCRBY](#zincrby-常用)，让元素增加指定的分数，但只能指定一个分数/元素对。
+- `INCR`: 类似于[ZINCRBY](#zincrby)，让元素增加指定的分数，但只能指定一个分数/元素对。
 
 ::: warning
 
@@ -1585,7 +1587,7 @@ System.out.println(zset);  //[[a,1.0], [b,2.0], [c,3.0], [e,5.0], [f,6.0], [g,14
 
 :::
 
-### ZCARD <Badge>常用</Badge>
+### ZCARD <Badge>常用</Badge> {#zcard}
 
 返回排序集合中的元素数。
 
@@ -1637,7 +1639,7 @@ System.out.println(jedis.zcount("zset", 2, 3));  // 2
 
 ### ZDIFFSTORE
 
-### ZINCRBY <Badge>常用</Badge>
+### ZINCRBY <Badge>常用</Badge> {#zincrby}
 
 为指定元素增加指定的分数。如果元素不存在，则会创建一个新的元素并添加指定的分数。提供负数来减少分数。
 
@@ -1674,7 +1676,7 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 ### ZINTER
 
-### ZINTERSTORE <Badge>常用</Badge>
+### ZINTERSTORE <Badge>常用</Badge> {#zinterstore}
 
 ### ZINTERCARD
 
@@ -1690,7 +1692,7 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 ### ZRANDMEMBER
 
-### ZRANGE <Badge>常用</Badge>
+### ZRANGE <Badge>常用</Badge> {#zrange}
 
 返回排序集合中指定范围的元素。
 
@@ -1704,7 +1706,13 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 ::: info
 
-从Redis6.2.0开始，此命令可以替换以下命令：[ZREVRANGE](#zrevrange-常用) [ZRANGEBYSCORE](#zrangebyscore-常用) [ZREVRANGEBYSCORE](#zrevrangebyscore-常用) [ZRANGEBYLEX](#zrangebylex-常用) [ZREVRANGEBYLEX](#zrevrangebylex-常用)
+从Redis6.2.0开始，此命令可以替换以下命令：
+
+- [ZREVRANGE](#zrevrange)
+- [ZRANGEBYSCORE](#zrangebyscore)
+- [ZREVRANGEBYSCORE](#zrevrangebyscore)
+- [ZRANGEBYLEX](#zrangebylex)
+- [ZREVRANGEBYLEX](#zrevrangebylex)
 
 :::
 
@@ -1729,7 +1737,7 @@ System.out.println(zset);  // [a, b, c]
 
 :::
 
-### ZRANGEBYLEX <Badge type="danger">废弃</Badge>
+### ZRANGEBYLEX <Badge type="danger">废弃</Badge> {#zrangebylex}
 
 ### ZRANGEBYSCORE
 
@@ -1737,7 +1745,7 @@ System.out.println(zset);  // [a, b, c]
 
 ### ZRANK
 
-### ZREM <Badge>常用</Badge>
+### ZREM <Badge>常用</Badge> {#zrem}
 
 从指定的排序集合中删除指定的元素。
 
@@ -1772,17 +1780,17 @@ System.out.println(zset);  // [b, c]
 
 ### ZREMRANGEBYSCORE
 
-### ZREVRANGE <Badge type="danger">废弃</Badge>
+### ZREVRANGE <Badge type="danger">废弃</Badge> {#zrevrange}
 
-### ZREVRANGEBYLEX <Badge>常用</Badge>
+### ZREVRANGEBYLEX <Badge>常用</Badge> {#zrevrangebylex}
 
-### ZREVRANGEBYSCORE <Badge>常用</Badge>
+### ZREVRANGEBYSCORE <Badge>常用</Badge> {#zrevrangebyscore}
 
 ### ZREVRANK
 
 ### ZSCAN
 
-### ZSCORE <Badge>常用</Badge>
+### ZSCORE <Badge>常用</Badge> {#zscore}
 
 返回排序集合中元素的分数。
 
@@ -1807,7 +1815,7 @@ System.out.println(zset);  // 1
 
 :::
 
-### ZUNIONSTORE <Badge>常用</Badge>
+### ZUNIONSTORE <Badge>常用</Badge> {#zunionstore}
 
 ### ZUNION
 
@@ -1875,7 +1883,7 @@ System.out.println(res6);  // 小红
 
 :::
 
-### DEL <Badge>常用</Badge>
+### DEL <Badge>常用</Badge> {#del}
 
 DEL操作是删除指定key。如果删除成功返回1，否则返回0。
 
@@ -1903,7 +1911,7 @@ System.out.println(res2);
 
 ### DUMP
 
-### EXISTS <Badge>常用</Badge>
+### EXISTS <Badge>常用</Badge> {#exists}
 
 EXISTS操作是判断key是否存在，如果存在返回true，不存在返回false。
 
@@ -1929,9 +1937,9 @@ System.out.println(res2);  // false
 
 :::
 
-### EXPIRE <Badge>常用</Badge>
+### EXPIRE <Badge>常用</Badge> {#expire}
 
-为指定key设置过期时间，只有删除或者覆盖操作才会替换过期时间。包括DEL、SET、GETSET，例如使用INCR递增值，推送新值到list中，或者使用HSET更改哈希的字段值，都不会更改超时时间。如果已有过期时间，那么也可以刷新过期时间，将过期时间设置为新的值
+为指定key设置过期时间，只有删除或者覆盖操作才会替换过期时间。包括[DEL](#del)、[SET](#get-and-set)、[GETSET](#getset)，例如使用[INCR](#incr-and-decr)递增值，推送新值到list中，或者使用[HSET](#hget-and-hset)更改哈希的字段值，都不会更改超时时间。如果已有过期时间，那么也可以刷新过期时间，将过期时间设置为新的值
 
 [![官方文档](https://img.shields.io/badge/Redis_Expire-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/expire/)
 
@@ -1990,7 +1998,7 @@ System.out.println(ttl4);  // 10
 
 ### EXPIREAT
 
-EXPIREAT操作与[EXPIRE](#expire-常用)类似，只不过它以Unix时间戳为参数。如果是过去的时间戳，那么key就会立即删除。
+EXPIREAT操作与[EXPIRE](#expire)类似，只不过它以Unix时间戳为参数。如果是过去的时间戳，那么key就会立即删除。
 
 [![官方文档](https://img.shields.io/badge/Redis_Expireat-官方文档-blue?logo=redis)](https://redis.io/docs/latest/commands/expireat/)
 
@@ -2169,7 +2177,7 @@ System.out.println(keys);
 
 ### TOUCH
 
-### TTL <Badge>常用</Badge>
+### TTL <Badge>常用</Badge> {#ttl}
 
 获取指定key的剩余过期时间（单位为秒）。
 
