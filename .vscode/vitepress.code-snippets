@@ -1,0 +1,42 @@
+{
+  "code-group": {
+    "scope": "markdown",
+    "prefix": "code-gruop",
+    "body": ["::: code-group\n", "```${1:language} [${2:title}]", "$0", "```\n", ":::\n"],
+  },
+  "code": {
+    "scope": "markdown",
+    "prefix": "code",
+    "body": ["```${1:language} [${2:title}]", "$0", "```\n"],
+  },
+  "tip": {
+    "scope": "markdown",
+    "prefix": "tip",
+    "body": ["::: tip ${1:title}\n", "$0", "\n:::\n"],
+  },
+  "info": {
+    "scope": "markdown",
+    "prefix": "info",
+    "body": ["::: info ${1:title}\n", "$0", "\n:::\n"],
+  },
+  "warning": {
+    "scope": "markdown",
+    "prefix": "warning",
+    "body": ["::: warning ${1:title}\n", "$0", "\n:::\n"],
+  },
+  "danger": {
+    "scope": "markdown",
+    "prefix": "danger",
+    "body": ["::: danger ${1:title}\n", "$0", "\n:::\n"],
+  },
+  "details": {
+    "scope": "markdown",
+    "prefix": "details",
+    "body": ["::: details ${1:title}\n", "$0", "\n:::\n"],
+  },
+  "redis-commands-link": {
+    "scope": "markdown",
+    "prefix": "redis-commands-link",
+    "body": ["[官方文档 Redis ${1:commands}](https://redis.io/docs/latest/commands/${1/(.*)/${1:/downcase}/}/)", "$0"],
+  },
+}

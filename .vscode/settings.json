@@ -1,0 +1,18 @@
+{
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "editor.linkedEditing": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "markdown.copyFiles.destination": {
+    "/docs/**/*.md": "images/${documentBaseName}/${fileName}"
+  },
+  "[markdown]": {
+    "editor.quickSuggestions": {
+      "other": "on",
+      "comments": "on",
+      "strings": "off"
+    },
+    "editor.suggest.showSnippets": true
+  }
+}
