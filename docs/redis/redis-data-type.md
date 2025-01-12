@@ -1808,6 +1808,38 @@ System.out.println(res2);  // 0
 
 ### HEXISTS
 
+查询指定key存储的hash结构的数据中是否存在指定字段
+
+[官方文档 Redis HEXISTS](https://redis.io/docs/latest/commands/hexists/)
+
+::: tip 语法
+
+`HEXISTS key field`
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del item
+(integer) 0
+127.0.0.1:6379> hset item name a count 10
+(integer) 2
+127.0.0.1:6379> hexists item name
+(integer) 1
+127.0.0.1:6379> hexists item age
+(integer) 0
+```
+
+```java [java]
+jedis.del("item");
+jedis.hset("item", "name", "a");
+System.out.println(jedis.hexists("item", "name")); // true
+System.out.println(jedis.hexists("item", "age")); // false
+```
+
+:::
+
 ### HGET & HSET <Badge>常用</Badge> {#hget-and-hset}
 
 获取哈希的字段值，如果字段不存在则返回nil。
@@ -1891,7 +1923,63 @@ System.out.println(res2);  // 10
 
 ### HINCRBYFLOAT
 
+将key对应存储的hash结构数据的指定field增加指定的值，如果增加值为负则为减少。
+
+[官方文档 Redis HINCRBYFLOAT](https://redis.io/docs/latest/commands/hincrbyfloat/)
+
+::: tip 语法
+
+`HINCRBYFLOAT key field increment`
+
+- key: 指定修改的key
+- field: hash结构的字段，如果该字段不存在，则在增加之前设置字段为0
+- increment: 要增加的值，类型为双精度浮点数
+
+返回值为增加后的值
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del item
+(integer) 0
+127.0.0.1:6379> hset item name a count 10
+(integer) 1
+127.0.0.1:6379> hincrbyfloat item age 5
+"5"
+127.0.0.1:6379> hincrbyfloat item age 5
+"10"
+```
+
+```java [java]
+jedis.del("item");
+jedis.hset("item", "name", "a");
+System.out.println(jedis.hincrByFloat("item", "age", 5)); // 5.0
+System.out.println(jedis.hincrByFloat("item", "age", 4.3)); // 9.3
+```
+
+:::
+
 ### HKEYS
+
+返回key对应的hash类型数据的所有字段。
+
+[官方文档 Redis HKEYS](https://redis.io/docs/latest/commands/hkeys/)
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hkeys item
+1) "name"
+2) "age"
+```
+
+```java [java]
+System.out.println(jedis.hkeys("item")); // [name, age]
+```
+
+:::
 
 ### HLEN <Badge>常用</Badge> {#hlen}
 
@@ -1949,13 +2037,169 @@ System.out.println(list);  // [test, null, null]
 
 ### HSCAN
 
+迭代返回key对应的hash结构数据的字段列表
+
+[官方文档 Redis HSCAN](https://redis.io/docs/latest/commands/hscan/)
+
+::: tip 语法
+
+`HSCAN key cursor [MATCH pattern] [COUNT count] [NOVALUES]`
+
+- key: 要迭代的hash结构数据的key
+- cursor: 迭代的游标
+- pattern: 模式匹配表达式
+- count: 参与迭代的字段个数
+- NOVALUES: 是否返回字段值，不设置则依次返回字段和值。该参数从`redis:7.6`开始支持
+
+其他信息请参考[SCAN](#scan)，不同的是SCAN是迭代的redis的key列表，HSCAN是迭代的指定key的字段列表
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hscan item 0
+1) "0"
+2) 1) "name"
+   2) "a"
+   3) "age"
+   4) "10"
+127.0.0.1:6379> hscan item 0 novalues
+1) "0"
+2) 1) "name"
+   2) "age"
+```
+
+```java [java]
+ScanParams params = new ScanParams();
+ScanResult<Map.Entry<String, String>> item = jedis.hscan("item", "0", params);
+System.out.println(item.getCursor()); // 0
+System.out.println(item.getResult()); // [name=a, age=9.3]
+ScanResult<String> result = jedis.hscanNoValues("item", "0", params);
+System.out.println(result.getCursor()); // 0
+System.out.println(result.getResult()); // [name, age]
+```
+
+:::
+
 ### HSTRLEN
+
+返回指定key的hash的指定字段的值的字符串长度。
+
+[官方文档 Redis HSTRLEN](https://redis.io/docs/latest/commands/hstrlen/)
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hscan item 0
+1) "0"
+2) 1) "name"
+   2) "a"
+   3) "age"
+   4) "10"
+127.0.0.1:6379> hstrlen item name
+(integer) 1
+127.0.0.1:6379> hstrlen item number
+(integer) 0
+```
+
+```java [java]
+System.out.println(jedis.hstrlen("item", "name")); // 1
+System.out.println(jedis.hstrlen("item", "number")); // 0
+```
+
+:::
 
 ### HVALS
 
+返回指定key的hash结构数据的所有字段的值。
+
+[官方文档 Redis HVALS](https://redis.io/docs/latest/commands/hvals/)
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hvals item
+1) "a"
+2) "10"
+```
+
+```java [java]
+System.out.println(jedis.hvals("item")); // [a, 9.3]
+```
+
+:::
+
 ### HSETNX
 
+但key对应的hash结构的值不存在指定field时，将field设置为指定的value。
+
+[官方文档 Redis HSETNX](https://redis.io/docs/latest/commands/hsetnx/)
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hscan item 0 novalues
+1) "0"
+2) 1) "name"
+   2) "age"
+127.0.0.1:6379> hsetnx item name b
+(integer) 0
+127.0.0.1:6379> hsetnx item number a1
+(integer) 1
+```
+
+```java [java]
+jedis.hsetnx("item", "name", "b");
+System.out.println(jedis.hget("item", "name")); // a
+jedis.hsetnx("item", "number", "a1");
+System.out.println(jedis.hget("item", "number")); // a1
+```
+
+:::
+
 ### HRANDFIELD
+
+返回key对应的hash类型数据的一个随机字段。
+
+[官方文档 Redis HRANDFIELD](https://redis.io/docs/latest/commands/hrandfield/)
+
+::: tip 语法
+
+`HRANDFIELD key [count [WITHVALUES]]`
+
+- count: 返回的随机字段的个数
+- WITHVALUES: 是否返回字段值
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> hrandfield item
+"age"
+127.0.0.1:6379> hrandfield item
+"age"
+127.0.0.1:6379> hrandfield item 2
+1) "age"
+2) "number"
+127.0.0.1:6379> hrandfield item 1 withvalues
+1) "name"
+2) "a"
+127.0.0.1:6379> hrandfield item 2 withvalues
+1) "name"
+2) "a"
+3) "age"
+4) "9.3"
+```
+
+```java [java]
+System.out.println(jedis.hrandfield("item")); // name
+System.out.println(jedis.hrandfield("item", 2)); // [name, age]
+System.out.println(jedis.hrandfieldWithValues("item", 2)); // [name=a, age=9.3]
+```
+
+:::
 
 ## Sorted Set
 
