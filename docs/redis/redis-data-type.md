@@ -1276,7 +1276,7 @@ System.out.println(set2);  // [b]
 
 ### SMEMBERS <Badge>常用</Badge> {#smembers}
 
-返回集合中的所有元素。
+返回集合中的所有元素。也可以使用[SINTER](#sinter)，当只有一个集合时，SINTER和SMEMBERS效果是一样的。注意这个方法会返回集合中所有的元素，如果集合非常大，建议使用[SSCAN](#sscan)来迭代元素集合
 
 [官方文档 Redis SMEMBERS](https://redis.io/docs/latest/commands/smembers/)
 
@@ -1636,11 +1636,144 @@ System.out.println(set);  // [b]
 
 ### SMOVE
 
+原子性地将元素从一个集合移动到另一个集合。
+
+[官方文档 Redis SMOVE](https://redis.io/docs/latest/commands/smove/)
+
+::: tip 语法
+
+`SMOVE source destination member`
+
+- source: 要删除元素的集合
+- destination: 要插入元素的集合
+- member: 要移动的元素
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del set1 set2
+(integer) 2
+127.0.0.1:6379> sadd set1 a b c
+(integer) 3
+127.0.0.1:6379> smove set1 set2 b
+(integer) 1
+127.0.0.1:6379> smembers set1
+1) "a"
+2) "c"
+127.0.0.1:6379> smembers set2
+1) "b"
+```
+
+```java [java]
+jedis.del("set1", "set2");
+jedis.sadd("set1", "a", "b", "c");
+jedis.smove("set1", "set2", "c");
+System.out.println(jedis.smembers("set1")); // [a, b]
+System.out.println(jedis.smembers("set2")); // [c]
+```
+
+:::
+
 ### SSCAN
+
+迭代Set类型的元素集合，可以用来替代[SMEMBERS](#smembers)，该命令会多批次少量的返回匹配的元素，而不会像SMEMBERS一样一次性返回所有的元素，可以安全地在生产环境使用。
+
+[官方文档 Redis SSCAN](https://redis.io/docs/latest/commands/sscan/)
+
+::: tip 语法
+
+`SSCAN key cursor [MATCH pattern] [COUNT count]`
+
+- key: 要迭代的Set类型集合的Key
+- cursor: 本次迭代的游标
+- pattern: 进行模式匹配的表达式
+- count: 本次迭代的元素数量
+
+其他信息请参考[SCAN](#scan)，不同的是SCAN是迭代的redis的key列表，SSCAN是迭代的指定key的set集合的元素列表
+
+:::
 
 ### SMISMEMBER
 
+返回每个元素是否存在于key所存储的set类型的集合中。
+
+[官方文档 Redis SMISMEMBER](https://redis.io/docs/latest/commands/smismember/)
+
+::: tip 语法
+
+`SMISMEMBER key member [member ...]`
+
+- key: 集合的key
+- member: 要查询的元素
+
+返回值为按给定元素顺序的存在性数组，如果元素存在于集合中返回1，否则返回0
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del set
+(integer) 1
+127.0.0.1:6379> sadd set a b c d
+(integer) 4
+127.0.0.1:6379> smismember set c e
+1) (integer) 1
+2) (integer) 0
+```
+
+```java [java]
+jedis.del("set");
+jedis.sadd("set", "a", "b", "c", "d");
+System.out.println(jedis.smismember("set", "c", "e"));
+// [true, false]
+```
+
+:::
+
 ### SINTERCARD
+
+此命令类似于[SINTER](#sinter)，不同的是SINTER返回的集合的交集，SINTERCARD返回的是集合的交集中元素的数量。
+
+[官方文档 Redis SINTERCARD](https://redis.io/docs/latest/commands/sintercard/)
+
+::: tip 语法
+
+`SINTERCARD numkeys key [key ...] [LIMIT limit]`
+
+- numkeys: 命令中集合的数量
+- limit: 计算交集时如果交集中元素个数达到了指定个数，则返回指定个数，不再进行后续交集计算
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del set1 set2
+(integer) 2
+127.0.0.1:6379> sadd set1 a b c d
+(integer) 4
+127.0.0.1:6379> sadd set2 c d e
+(integer) 3
+127.0.0.1:6379> sintercard 2 set1 set2
+(integer) 2
+127.0.0.1:6379> sintercard 2 set1 set2 limit 1
+(integer) 1
+127.0.0.1:6379> sintercard 2 set1 set2 limit 10
+(integer) 2
+```
+
+```java [java]
+jedis.del("set1", "set2");
+jedis.sadd("set1", "a", "b", "c", "d");
+jedis.sadd("set2", "c", "d", "e");
+System.out.println(jedis.sintercard("set1", "set2")); // 2
+System.out.println(jedis.sinter("set1", "set2")); // [c, d]
+```
+
+:::
 
 ## Hash
 
@@ -2430,7 +2563,7 @@ System.out.println(keys);  // [xiaohong, xiaoming]
 
 scan返回的是两个值组成的数组，第一个值是下次迭代的新游标值，第二个是迭代返回的元素数组。当返回的新游标值为0时表示所有元素都已经迭代完成。
 
-[![redis-scanRedis_Scan](https://redis.io/docs/latest/commands/scan/)
+[官方文档 Redis SCAN](https://redis.io/docs/latest/commands/scan/)
 
 ::: tip 可选参数
 
