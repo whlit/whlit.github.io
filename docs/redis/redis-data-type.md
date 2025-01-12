@@ -2510,16 +2510,6 @@ System.out.println(zset);  // 1
 
 ### ZUNION
 
-## Streams
-
-## Geospatial indexes
-
-## Bitmaps
-
-## Bitfields
-
-## HyperLogLog
-
 ## 通用命令
 
 ### COPY
@@ -2601,6 +2591,17 @@ System.out.println(res2);
 :::
 
 ### DUMP
+
+返回key对应的值以redis特定格式序列化后的结果，之后可以使用[RESTORE](#restore)进行反序列化。
+
+[官方文档 Redis DUMP](https://redis.io/docs/latest/commands/dump/)
+
+```sh [redis-cli]
+127.0.0.1:6379> set a b
+OK
+127.0.0.1:6379> dump a
+"\x00\x01b\x0b\x00\x7f\xfb\x05\xe2[|\xfb\n"
+```
 
 ### EXISTS <Badge>常用</Badge> {#exists}
 
@@ -2775,31 +2776,220 @@ System.out.println(keys);  // [xiaohong, xiaoming]
 
 ### MIGRATE
 
+原子性的将源Redis实例中的数据迁移到目标Redis实例中。实际上是在源Redis实例中执行[DUMP](#dump)+[DEL](#del)，并且在目标Redis实例上执行[RESTORE](#restore)。
+
+[官方文档 Redis MIGRATE](https://redis.io/docs/latest/commands/migrate/)
+
+::: tip 语法
+
+`MIGRATE host port <key | ""> destination-db timeout [COPY] [REPLACE] [AUTH password | AUTH2 username password] [KEYS key [key ...]]`
+
+- copy: 不从源Redis实例中删除key
+- replace: 替换目标Redis实例上已有的key
+- auth: 使用密码访问目标Redis实例
+- auth2: 使用指定的用户密码对访问目标Redis实例
+
+:::
+
 ### MOVE
+
+将key从当前数据库移动到指定的数据库
+
+[官方文档 Redis MOVE](https://redis.io/docs/latest/commands/move/)
 
 ### OBJECT ENCODING
 
+返回key对应的值对象的内部编码。
+
+[官方文档 Redis OBJECT ENCODING](https://redis.io/docs/latest/commands/object-encoding/)
+
+::: tip 语法
+
+`OBJECT ENCODING key`
+
+具体编码请参考官方文档。
+
+:::
+
 ### OBJECT FREQ
+
+返回指定key的访问频率。
+
+[官方文档 Redis OBJECT FREQ](https://redis.io/docs/latest/commands/object-freq/)
+
+::: tip 语法
+
+`OBJECT FREQ key`
+
+只有当`maxmemory-policy`设置为FLU策略之一时才可用。
+
+:::
 
 ### OBJECT IDLETIME
 
+返回指定key从上次访问之后到现在过了多少秒。
+
+[官方文档 Redis OBJECT IDLETIME](https://redis.io/docs/latest/commands/object-idletime/)
+
+::: tip 语法
+
+`OBJECT IDLETIME key`
+
+只有当`maxmemory-policy`设置为FLU策略之一时才可用。
+
+:::
+
 ### OBJECT REFCOUNT
+
+返回key处存储对象的引用计数。
+
+[官方文档 Redis OBJECT REFCOUNT](https://redis.io/docs/latest/commands/object-refcount/)
+
+::: tip 语法
+
+`OBJECT REFCOUNT key`
+
+:::
 
 ### PERSIST
 
+移除指定key上的过期时间，将其设置为永不过期
+
+[官方文档 Redis PERSIST](https://redis.io/docs/latest/commands/persist/)
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> set test hello
+OK
+127.0.0.1:6379> ttl test
+(integer) -1
+127.0.0.1:6379> expire test 30
+(integer) 1
+127.0.0.1:6379> ttl test
+(integer) 28
+127.0.0.1:6379> persist test
+(integer) 1
+127.0.0.1:6379> ttl test
+(integer) -1
+```
+
+```java [java]
+jedis.del("test");
+jedis.set("test", "hello");
+System.out.println(jedis.ttl("test")); // -1
+jedis.expire("test", 30);
+System.out.println(jedis.ttl("test")); // 30
+jedis.persist("test");
+System.out.println(jedis.ttl("test")); // -1
+```
+
+:::
+
 ### PEXPIRE
+
+设置key的过期时间，此命令与[EXPIRE](#expire)工作方式完全相同，不同的是PEXPIRE单位是毫秒。
+
+[官方文档 Redis PEXPIRE](https://redis.io/docs/latest/commands/pexpire/)
 
 ### PEXPIREAT
 
+延长key的过期时间，此命令与[EXPIREAT](#expireat)工作方式完全相同，不同的是PEXPIREAT单位是毫秒。
+
+[官方文档 Redis PEXPIREAT](https://redis.io/docs/latest/commands/pexpireat/)
+
 ### PEXPIRETIME
+
+返回过期的unix时间戳，此命令与[EXPIRETIME](#expiretime)工作方式完全相同，不同的是PEXPIREATIME单位是毫秒。
+
+[官方文档 Redis PEXPIRETIME](https://redis.io/docs/latest/commands/pexpiretime/)
 
 ### RANDOMKEY
 
+从当前数据库随机返回一个key。
+
+[官方文档 Redis RANDOMKEY](https://redis.io/docs/latest/commands/randomkey/)
+
+```sh [redis-cli]
+127.0.0.1:6379> randomkey
+"testList"
+127.0.0.1:6379> randomkey
+"set3"
+```
+
 ### RENAME
+
+将key重命名为newkey。如果key不存在则返回错误，如果newkey存在则对newkey进行覆盖。
+
+[官方文档 Redis RENAME](https://redis.io/docs/latest/commands/rename/)
+
+```sh [redis-cli]
+127.0.0.1:6379> get test
+"hello"
+127.0.0.1:6379> get test1
+(nil)
+127.0.0.1:6379> rename test test1
+OK
+127.0.0.1:6379> get test
+(nil)
+127.0.0.1:6379> get test1
+"hello"
+```
 
 ### RENAMENX
 
+将key重命名为newkey。如果key不存在则返回错误，如果newkey不存在则将key重命名为newkey。
+
+[官方文档 Redis RENAMENX](https://redis.io/docs/latest/commands/renamenx/)
+
+```sh [redis-cli]
+127.0.0.1:6379> get test
+"world"
+127.0.0.1:6379> get test1
+"hello"
+127.0.0.1:6379> renamenx test test1
+(integer) 0
+127.0.0.1:6379> get test
+"world"
+127.0.0.1:6379> get test1
+"hello"
+127.0.0.1:6379> del test1
+(integer) 1
+127.0.0.1:6379> renamenx test test1
+(integer) 1
+127.0.0.1:6379> get test
+(nil)
+127.0.0.1:6379> get test1
+"world"
+```
+
 ### RESTORE
+
+反序列化通过[DUMP](#dump)序列化的值，并设置到key中。
+
+[官方文档 Redis RESTORE](https://redis.io/docs/latest/commands/restore/)
+
+::: tip 语法
+
+`RESTORE key ttl serialized-value [REPLACE] [ABSTTL] [IDLETIME seconds] [FREQ frequency]`
+
+- ttl: 过期时间，当值为0时表示没有任何过期时间
+- serialized-value: 经[DUMP](#dump)序列化的值
+
+其他信息请参考官方文档 https://redis.io/docs/latest/commands/restore/
+
+:::
+
+```sh [redis-cli]
+127.0.0.1:6379> set a b
+OK
+127.0.0.1:6379> dump a
+"\x00\x01b\x0b\x00\x7f\xfb\x05\xe2[|\xfb\n"
+127.0.0.1:6379> restore ra 0 "\x00\x01b\x0b\x00\x7f\xfb\x05\xe2[|\xfb\n"
+OK
+127.0.0.1:6379> get ra
+"b"
+```
 
 ### SCAN
 
@@ -2864,9 +3054,33 @@ System.out.println(keys);
 
 ### SORT
 
+返回List|Set|Sorted Set排序后的结果。
+
+[官方文档 Redis SORT](https://redis.io/docs/latest/commands/sort/)
+
+::: tip 语法
+
+`SORT key [BY pattern] [LIMIT offset count] [GET pattern [GET pattern ...]] [ASC | DESC] [ALPHA] [STORE destination]`
+
+:::
+
 ### SORT_RO
 
+[SORT](#sort)的只读变体，它与SORT完全相同。
+
+[官方文档 Redis SORT_RO](https://redis.io/docs/latest/commands/sort_ro/)
+
 ### TOUCH
+
+更改key的最后访问时间。
+
+[官方文档 Redis TOUCH](https://redis.io/docs/latest/commands/touch/)
+
+::: tip 语法
+
+`TOUCH key [key ...]`
+
+:::
 
 ### TTL <Badge>常用</Badge> {#ttl}
 
@@ -2966,6 +3180,33 @@ System.out.println(jedis.type("xiaoming"));  // hash
 
 ### UNLINK
 
+该命令与[DEL](#del)非常相似，删除指定的key，不同的是UNLINK只是将key与实际的内存对象取消关联，并没有实际上进行删除，实际上的删除是在后面异步删除，所以该命令是非阻塞的，而DEL是阻塞的。
+
+[官方文档 Redis UNLINK](https://redis.io/docs/latest/commands/unlink/)
+
+::: tip 语法
+
+`UNLINK key [key ...]`
+
+:::
+
+```sh [redis-cli]
+127.0.0.1:6379> get test
+(nil)
+127.0.0.1:6379> get test1
+"world"
+127.0.0.1:6379> unlink test test1
+(integer) 1
+```
+
 ### WAIT
 
+阻塞链接直到此前所有的写入命令都已经得到指定数量的副本的确认。详情请查看官方文档
+
+[官方文档 Redis WAIT](https://redis.io/docs/latest/commands/wait/)
+
 ### WAITAOF
+
+阻塞链接直到此前所有的写入命令都已经得到本地AOF的确认 and/or 指定数量的副本的确认。详情请查看官方文档
+
+[官方文档 Redis WAITAOF](https://redis.io/docs/latest/commands/waitaof/)
