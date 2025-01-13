@@ -39,4 +39,9 @@
     "prefix": "redis-commands-link",
     "body": ["[官方文档 Redis ${1:commands}](https://redis.io/docs/latest/commands/${1/(\\s*)([A-Za-z]*)/${1:+-}${2:/downcase}/g}/)", "$0"],
   },
+  "frontmatter": {
+    "scope": "markdown",
+    "prefix": "title",
+    "body": ["---", "title: ${1:title}", "layout: ${2|doc,home,page|}", "outline: ${3|deep,3|}", "---", "", "# ${1:title}", "", "$0"],
+  },
 }
