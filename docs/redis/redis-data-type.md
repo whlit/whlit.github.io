@@ -2207,9 +2207,51 @@ System.out.println(jedis.hrandfieldWithValues("item", 2)); // [name=a, age=9.3]
 
 ### BZMPOP
 
+该命令是[ZMPOP](#zmpop)的阻塞版本，当集合包含元素时与[ZMPOP](#zmpop)完全相同，当集合为空时会阻塞当前连接直到集合中有元素添加进来或者超时。
+
+[官方文档 Redis BZMPOP](https://redis.io/docs/latest/commands/bzmpop/)
+
+::: tip 语法
+
+`BZMPOP timeout numkeys key [key ...] <MIN | MAX> [COUNT count]`
+
+- timeout: 超时时间，双精度浮点型，单位为秒
+
+其他信息请参考[ZMPOP](#zmpop)
+
+:::
+
 ### BZPOPMAX
 
+该命令是[ZPOPMAX](#zpopmax)的阻塞版本，当集合包含元素时与[ZPOPMAX](#zpopmax)完全相同，当集合为空时会阻塞当前连接直到集合中有元素添加进来或者超时。
+
+[官方文档 Redis BZPOPMAX](https://redis.io/docs/latest/commands/bzpopmax/)
+
+::: tip 语法
+
+`BZPOPMAX key [key ...] timeout`
+
+- timeout: 超时时间，双精度浮点型，单位为秒
+
+其他信息请参考[BZPOPMIN](#bzpopmin)，它们功能完全相同，唯一不同是此命令弹出最大分值的元素，而BZPOPMIN是弹出最小分值的元素。
+
+:::
+
 ### BZPOPMIN
+
+该命令是[ZPOPMIN](#zpopmin)的阻塞版本，当集合包含元素时与[ZPOPMIN](#zpopmin)完全相同，当集合为空时会阻塞当前连接直到集合中有元素添加进来或者超时。
+
+[官方文档 Redis BZPOPMIN](https://redis.io/docs/latest/commands/bzpopmin/)
+
+::: tip 语法
+
+`BZPOPMIN key [key ...] timeout`
+
+- timeout: 超时时间，双精度浮点型，单位为秒
+
+其他信息请参考[BLPOP](#blpop)，它们功能相同，不同的是返回的数据结构不同。
+
+:::
 
 ### ZADD <Badge>常用</Badge> {#zadd}
 
@@ -2328,7 +2370,84 @@ System.out.println(jedis.zcount("zset", 2, 3));  // 2
 
 ### ZDIFF
 
+返回第一个集合与其他集合的差异
+
+[官方文档 Redis ZDIFF](https://redis.io/docs/latest/commands/zdiff/)
+
+::: tip 语法
+
+`ZDIFF numkeys key [key ...] [WITHSCORES]`
+
+- numkeys: key的个数
+- withscores: 同时返回分数
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zadd zset1 1 a 2 c
+(integer) 2
+127.0.0.1:6379> zdiff 2 zset zset1
+1) "b"
+127.0.0.1:6379> zdiff 2 zset zset1 withscores
+1) "b"
+2) "2"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0));
+jedis.zadd("zset1", Map.of("a", 1.0, "c", 2.0));
+System.out.println(jedis.zdiff("zset", "zset1")); // [b]
+System.out.println(jedis.zdiffWithScores("zset", "zset1")); // [[b,2.0]]
+```
+
+:::
+
 ### ZDIFFSTORE
+
+比较第一个集合与其他集合的差异，并存入指定集合中，如果集合已经存在则进行覆盖。
+
+[官方文档 Redis ZDIFFSTORE](https://redis.io/docs/latest/commands/zdiffstore/)
+
+::: tip 语法
+
+`ZDIFFSTORE destination numkeys key [key ...]`
+
+- destination: 要存入的指定集合
+- numkeys: key的个数
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zadd zset1 1 a 2 c
+(integer) 2
+127.0.0.1:6379> zdiffstore zset2 2 zset zset1
+(integer) 1
+127.0.0.1:6379> zrange zset2 0 -1
+1) "b"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0));
+jedis.zadd("zset1", Map.of("a", 1.0, "c", 2.0));
+jedis.zdiffstore("set2", "zset", "zset1");
+System.out.println(jedis.zrange("zset2", 0, -1)); // [b]
+```
+
+:::
 
 ### ZINCRBY <Badge>常用</Badge> {#zincrby}
 
@@ -2367,21 +2486,274 @@ System.out.println(zset); // [[a,1.0], [b,2.0], [d,2.0], [c,3.0]]
 
 ### ZINTER
 
+返回多个集合的交集。该命令与[ZINTERSTORE](#zinterstore)功能相同，只不过该命令不存储结果，而是返回结果。
+
+[官方文档 Redis ZINTER](https://redis.io/docs/latest/commands/zinter/)
+
+::: tip 语法
+
+`ZINTER numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>] [WITHSCORES]`
+
+- numkeys: key的个数
+- weight: 分数权重，为每个集合指定权重，在输入给聚合函数之前会对每个集合中的每个元素的分数乘以该权重。
+- aggregate: 分数聚合方式，默认为SUM
+- withscores: 同时返回分数
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zadd zset1 1 a 2 c
+(integer) 2
+127.0.0.1:6379> zinter 2 zset zset1
+1) "a"
+2) "c"
+127.0.0.1:6379> zinter 2 zset zset1 aggregate max withscores
+1) "a"
+2) "1"
+3) "c"
+4) "3"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0));
+jedis.zadd("zset1", Map.of("a", 1.0, "c", 2.0));
+System.out.println(jedis.zinter(new ZParams(), "zset", "zset1")); // [a, c]
+System.out.println(jedis.zinterWithScores(new ZParams(), "zset", "zset1")); // [[a,2.0], [c,4.0]]
+System.out.println(jedis.zinterWithScores(new ZParams().aggregate(ZParams.Aggregate.MAX), "zset", "zset1")); // [[a,1.0], [c,3.0]]
+```
+
+:::
+
 ### ZINTERSTORE <Badge>常用</Badge> {#zinterstore}
+
+返回多个集合的交集，并存入指定集合中，如果集合已经存在则进行覆盖。
+
+[官方文档 Redis ZINTERSTORE](https://redis.io/docs/latest/commands/zinterstore/)
+
+::: tip 语法
+
+`ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>]`
+
+- destination: 要存入的指定集合
+- numkeys: key的个数
+- weight: 分数权重，为每个集合指定权重，在输入给聚合函数之前会对每个集合中的每个元素的分数乘以该权重。
+- aggregate: 分数聚合方式，默认为SUM
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zadd zset1 1 a 2 c
+(integer) 2
+127.0.0.1:6379> zinterstore zset2 2 zset zset1
+(integer) 2
+127.0.0.1:6379> zrange zset2 0 -1
+1) "a"
+2) "c"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0));
+jedis.zadd("zset1", Map.of("a", 1.0, "c", 2.0));
+jedis.zinterstore("zset2", new ZParams(), "zset", "zset1");
+System.out.println(jedis.zrange("zset2", 0, -1)); // [a, c]
+```
+
+:::
 
 ### ZINTERCARD
 
+此命令与[ZINTER](#zinter)类似，都是对集合求交集，但是此命令返回交集的元素个数，而不返回交集集合。
+
+[官方文档 Redis ZINTERCARD](https://redis.io/docs/latest/commands/zintercard/)
+
+::: tip 语法
+
+`ZINTERCARD numkeys key [key ...] [LIMIT limit]`
+
+- numkeys: key的个数
+- limit: 返回的元素个数，如果为0，则返回所有元素
+
+其他信息请参考[ZINTER](#zinter)
+
+:::
+
 ### ZLEXCOUNT
+
+当集合中的元素都以相同的分数插入时，返回排序集合中指定范围的元素个数。
+
+[官方文档 Redis ZLEXCOUNT](https://redis.io/docs/latest/commands/zlexcount/)
+
+::: tip 语法
+
+`ZLEXCOUNT key min max`
+
+:::
 
 ### ZMPOP
 
+从多个排序集合中的第一个非空排序集合中弹出一个或者多个元素。
+
+[官方文档 Redis ZMPOP](https://redis.io/docs/latest/commands/zmpop/)
+
+::: tip 语法
+
+`ZMPOP numkeys key [key ...] <MIN | MAX> [COUNT count]`
+
+- numkeys: key的个数
+- min: 弹出的元素是集合中的分数最低的。
+- max: 弹出的元素是集合中的分数最高的。
+- count: 弹出的元素个数，如果为0，则返回所有元素
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 0 a 1 b 3 c 5 d
+(integer) 4
+127.0.0.1:6379> zmpop 2 zset zset1 max count 2
+1) "zset"
+2) 1) 1) "d"
+      2) "5"
+   2) 1) "c"
+      2) "3
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0, "d", 4.0));
+System.out.println(jedis.zmpop(SortedSetOption.MAX, 2,"zset", "zset1")); // zset=[[d,4.0], [c,3.0]]
+```
+
+:::
+
 ### ZMSCORE
+
+返回排序集合中指定元素的分数。
+
+[官方文档 Redis ZMSCORE](https://redis.io/docs/latest/commands/zmscore/)
+
+::: tip 语法
+
+`ZMSCORE key member [member ...]`
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 1
+127.0.0.1:6379> zadd zset 0 a 1 b 3 c 5 d
+(integer) 4
+127.0.0.1:6379> zmscore zset a b c
+1) "0"
+2) "1"
+3) "3"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0, "d", 4.0));
+System.out.println(jedis.zmscore("zset", "a", "b", "c")); // [1.0, 2.0, 3.0]
+```
+
+:::
 
 ### ZPOPMAX
 
+弹出并返回排序集合中分数最高的count个元素。
+
+[官方文档 Redis ZPOPMAX](https://redis.io/docs/latest/commands/zpopmax/)
+
+::: tip 语法
+
+`ZPOPMAX key [count]`
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 1
+127.0.0.1:6379> zadd zset 0 a 1 b 3 c 5 d
+(integer) 4
+127.0.0.1:6379> zpopmax zset
+1) "d"
+2) "4"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0, "d", 4.0));
+System.out.println(jedis.zpopmax("zset", 2)); // [[d,4.0], [c,3.0]]
+```
+
+:::
+
 ### ZPOPMIN
 
+弹出并返回排序集合中分数最低的count个元素
+
+[官方文档 Redis ZPOPMIN](https://redis.io/docs/latest/commands/zpopmin/)
+
+::: tip 语法
+
+`ZPOPMIN key [count]`
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 1
+127.0.0.1:6379> zadd zset 0 a 1 b 3 c 5 d
+(integer) 4
+127.0.0.1:6379> zpopmin zset
+1) "a"
+2) "0"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0, "d", 4.0));
+System.out.println(jedis.zpopmin("zset", 2)); // [[a,1.0], [b,2.0]]
+```
+
+:::
+
 ### ZRANDMEMBER
+
+从排序集合中随机返回count个元素。
+
+[官方文档 Redis ZRANDMEMBER](https://redis.io/docs/latest/commands/zrandmember/)
+
+::: tip 语法
+
+`ZRANDMEMBER key [count [WITHSCORES]]`
+
+- count: 返回的元素个数，如果为0，则返回所有元素
+- WITHSCORES: 返回元素的分数
+
+:::
 
 ### ZRANGE <Badge>常用</Badge> {#zrange}
 
@@ -2430,11 +2802,88 @@ System.out.println(zset);  // [a, b, c]
 
 ### ZRANGEBYLEX <Badge type="danger">废弃</Badge> {#zrangebylex}
 
-### ZRANGEBYSCORE
+当集合中的元素都以相同的分数插入时，为了强制按字典排序，此命令返回介于min 和 max 之间，且以字典顺序排列的元素。
+
+[官方文档 Redis ZRANGEBYLEX](https://redis.io/docs/latest/commands/zrangebylex/)
+
+::: warning
+
+该命令已废弃，可以用带BYLEX参数的[ZRANGE](#zrange)命令替换。
+
+:::
+
+::: tip 语法
+
+`ZRANGEBYLEX key min max [LIMIT offset count]`
+
+:::
+
+### ZRANGEBYSCORE <Badge type="danger">废弃</Badge> {#zrangebyscore}
+
+返回排序集合中分数在指定范围的元素。
+
+[官方文档 Redis ZRANGEBYSCORE](https://redis.io/docs/latest/commands/zrangebyscore/)
+
+::: warning
+
+该命令已废弃，可以用带BYSCORE参数的[ZRANGE](#zrange)命令替换。
+
+:::
+
+::: tip 语法
+
+`ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]`
+
+:::
 
 ### ZRANGESTORE
 
+将排序集合中指定范围的元素存储到目标排序集合中。与[ZRANGE](#zrange)命令一样，只是此命令会存储到目标排序集合中，而不是返回结果。
+
+[官方文档 Redis ZRANGESTORE](https://redis.io/docs/latest/commands/zrangestore/)
+
+::: tip 语法
+
+`ZRANGESTORE dst src min max [BYSCORE | BYLEX] [REV] [LIMIT offset count]`
+
+- dst: 目标排序集合
+- src: 源排序集合
+
+其他信息请参考[ZRANGE](#zrange)。
+
+:::
+
 ### ZRANK
+
+返回排序集合中指定元素的排名，分数从低到高排列，排名从0开始
+
+[官方文档 Redis ZRANK](https://redis.io/docs/latest/commands/zrank/)
+
+::: tip 语法
+
+`ZRANK key member [WITHSCORE]`
+
+- member: 指定的元素
+- WITHSCORE: 返回元素的分数
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zrank zset a
+(integer) 0
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0, "d", 4.0));
+System.out.println(jedis.zrank("zset", "b")); // 1
+```
+
+:::
 
 ### ZREM <Badge>常用</Badge> {#zrem}
 
@@ -2467,19 +2916,133 @@ System.out.println(zset);  // [b, c]
 
 ### ZREMRANGEBYLEX
 
+当集合中的元素都以相同的分数插入时，此命令删除介于min 和 max 之间，且以字典顺序排列的元素。
+
+[官方文档 Redis ZREMRANGEBYLEX](https://redis.io/docs/latest/commands/zremrangebylex/)
+
+::: tip 语法
+
+`ZREMRANGEBYLEX key min max`
+
+:::
+
 ### ZREMRANGEBYRANK
+
+删除排序集合中排名在指定范围内的元素。排名请参阅[ZRANK](#zrank)
+
+[官方文档 Redis ZREMRANGEBYRANK](https://redis.io/docs/latest/commands/zremrangebyrank/)
+
+::: tip 语法
+
+`ZREMRANGEBYRANK key start stop`
+
+:::
 
 ### ZREMRANGEBYSCORE
 
+删除排序集合中分数在指定范围内的元素。
+
+[官方文档 Redis ZREMRANGEBYSCORE](https://redis.io/docs/latest/commands/zremrangebyscore/)
+
+::: tip 语法
+
+`ZREMRANGEBYSCORE key min max`
+
+:::
+
 ### ZREVRANGE <Badge type="danger">废弃</Badge> {#zrevrange}
 
-### ZREVRANGEBYLEX <Badge>常用</Badge> {#zrevrangebylex}
+返回排序集合中指定范围的元素，这些元素默认是以分数从高到低排序的。
 
-### ZREVRANGEBYSCORE <Badge>常用</Badge> {#zrevrangebyscore}
+::: warning
+
+该命令已废弃，可以用带REV参数的[ZRANGE](#zrange)命令替换。
+
+:::
+
+[官方文档 Redis ZREVRANGE](https://redis.io/docs/latest/commands/zrevrange/)
+
+::: tip 语法
+
+`ZREVRANGE key start stop [WITHSCORES]`
+
+:::
+
+### ZREVRANGEBYLEX <Badge type="danger">废弃</Badge> {#zrevrangebylex}
+
+当集合中的元素都以相同的分数插入时，为了强制按字典排序，此命令返回介于max 和 min 之间范围的元素。
+
+::: warning
+
+该命令已废弃，可以用带REV和BYLEX参数的[ZRANGE](#zrange)命令替换。
+
+:::
+
+[官方文档 Redis ZREVRANGEBYLEX](https://redis.io/docs/latest/commands/zrevrangebylex/)
+
+::: tip 语法
+
+`ZREVRANGEBYLEX key max min [LIMIT offset count]`
+
+- max: 最大值，可以是字符串或者数字，如果为-，则表示负无穷大
+- min: 最小值，可以是字符串或者数字，如果为+，则表示正无穷大
+- offset: 返回的元素偏移量，从0开始
+- count: 返回的元素个数，如果为0，则返回所有元素
+
+该命令与[ZRANGEBYLEX](#zrangebylex)类似，区别只是排序顺序相反。
+
+:::
+
+### ZREVRANGEBYSCORE <Badge type="danger">废弃</Badge> {#zrevrangebyscore}
+
+返回排序集合中分数在指定范围的元素，这些元素默认以分数从高到低排序。
+
+::: warning
+
+该命令已废弃，可以用带REV和BYSCORE参数的[ZRANGE](#zrange)命令替换。
+
+:::
+
+[官方文档 Redis ZREVRANGEBYSCORE](https://redis.io/docs/latest/commands/zrevrangebyscore/)
+
+::: tip 语法
+
+`ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]`
+
+:::
 
 ### ZREVRANK
 
+返回排序集合中指定元素的排名，分数从高到低排列，排名从0开始。该命令与[ZRANK](#zrank)相同不同的是ZRANK命令的排序顺序相反。
+
+[官方文档 Redis ZREVRANK](https://redis.io/docs/latest/commands/zrevrank/)
+
+::: tip 语法
+
+`ZREVRANK key member [WITHSCORE]`
+
+- member: 指定的元素
+- WITHSCORE: 返回元素的分数
+
+:::
+
 ### ZSCAN
+
+迭代排序集合中的元素。
+
+[官方文档 Redis ZSCAN](https://redis.io/docs/latest/commands/zscan/)
+
+::: tip 语法
+
+`ZSCAN key cursor [MATCH pattern] [COUNT count]`
+
+- cursor: 游标，用于迭代集合中的元素，从0开始
+- match: 匹配模式，如果为空，则匹配所有元素
+- count: 返回的元素个数，如果为0，则返回所有元素
+
+其他信息请参考[SCAN](#scan)，不同的是SCAN是迭代的redis的key列表，ZSCAN是迭代的指定key的排序集合的元素列表及分数
+
+:::
 
 ### ZSCORE <Badge>常用</Badge> {#zscore}
 
@@ -2508,7 +3071,68 @@ System.out.println(zset);  // 1
 
 ### ZUNIONSTORE <Badge>常用</Badge> {#zunionstore}
 
+对多个集合求并集，并将结果保存到目标集合中。
+
+[官方文档 Redis ZUNIONSTORE](https://redis.io/docs/latest/commands/zunionstore/)
+
+::: tip 语法
+
+`ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>]`
+
+- destination: 目标集合
+- numkeys: key的个数
+- weights: 每个key的权重，如果为空，则默认为1
+- aggregate: 合并方式，默认为SUM，可选SUM、MIN、MAX
+
+:::
+
+::: code-group
+
+```sh [redis-cli]
+127.0.0.1:6379> del zset zset1 zset2
+(integer) 3
+127.0.0.1:6379> zadd zset 1 a 2 b 3 c
+(integer) 3
+127.0.0.1:6379> zadd zset1 1 a 2 c
+(integer) 2
+127.0.0.1:6379> zunionstore zset2 2 zset zset1
+(integer) 3
+127.0.0.1:6379> zrange zset2 0 -1 withscores
+1) "a"
+2) "2"
+3) "b"
+4) "2"
+5) "c"
+6) "5"
+```
+
+```java [java]
+jedis.del("zset", "zset1", "zset2");
+jedis.zadd("zset", Map.of("a", 1.0, "b", 2.0, "c", 3.0));
+jedis.zadd("zset1", Map.of("a", 1.0, "c", 2.0));
+jedis.zunionstore("zset2", new ZParams(), "zset", "zset1");
+System.out.println(jedis.zrangeWithScores("zset2", 0, -1)); // [[a,2.0], [b,2.0], [c,5.0]]
+```
+
+:::
+
 ### ZUNION
+
+对多个集合求并集，功能上与[ZUNIONSTORE](#zunionstore)类似，只不过该命令不存储结果，而是返回并集。
+
+[官方文档 Redis ZUNION](https://redis.io/docs/latest/commands/zunion/)
+
+::: tip 语法
+
+`ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE <SUM | MIN | MAX>] [WITHSCORES]`
+
+- numkeys: key的个数
+- weights: 每个key的权重，如果为空，则默认为1
+- aggregate: 合并方式，默认为SUM，可选SUM、MIN、MAX
+
+其他信息请参考[ZUNIONSTORE](#zunionstore)。
+
+:::
 
 ## 通用命令
 

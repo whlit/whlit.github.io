@@ -44,4 +44,9 @@
     "prefix": "title",
     "body": ["---", "title: ${1:title}", "layout: ${2|doc,home,page|}", "outline: ${3|deep,3|}", "---", "", "# ${1:title}", "", "$0"],
   },
+  "redis-code-grouop": {
+    "scope": "markdown",
+    "prefix": "redis-code-grouop",
+    "body": ["::: code-group", "", "```sh [redis-cli]", "$0", "```", "", "```java [java]", "", "```", "", ":::", ""],
+  },
 }
