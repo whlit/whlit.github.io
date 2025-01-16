@@ -1,0 +1,10 @@
+.VPContent.is-home::before {
+  width: 100%;
+  height: -webkit-fill-available;
+  background-image: url(/my-motherland.svg);
+  background-size: 100% 100%;
+  z-index: -1;
+  position: absolute;
+  content: '';
+  opacity: 0.03;
+}
