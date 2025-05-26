@@ -27,30 +27,43 @@ function getGitTimestamp(file) {
   })
 }
 
-function updateTimestamp() {
+function getCommitFiles() {
+  return new Promise((resolve, reject) => {
+    const child = spawn('git', ['diff', '--name-only', 'HEAD', 'HEAD~'], { cwd: process.cwd() })
+
+    let output = ''
+    child.stdout.on('data', (d) => (output += String(d)))
+
+    child.on('close', () => {
+      resolve(output.split('\n').filter(Boolean))
+    })
+    child.on('error', reject)
+  })
+}
+
+async function updateTimestamp() {
   const promises = []
-  const times = {}
+  let times = {}
+  const files = []
+  if (fs.existsSync('cache/timestamp.json')) {
+    const reg = /\.md$/
+    const commitFiles = await getCommitFiles()
+    files.push(...commitFiles.filter((file) => reg.test(file)))
+    times = fs.readJSONSync('cache/timestamp.json')
+  } else {
+    files.push(...glob.sync(`docs/**/*.md`))
+  }
   // 遍历docs目录
-  glob.sync(`docs/**/*.md`).forEach((file) => {
+  for (let file of files) {
     // 替换斜杠，统一分割符为‘/’
     file = file.replace(/\\/g, '/')
-    const time = getGitTimestamp(file)
-    promises.push(time)
-    time.then((data) => {
-      times[file] = data
-    })
-  })
+    times[file] = await getGitTimestamp(file)
+  }
 
-  Promise.all(promises)
-    .then(() => {
-      if (!fs.existsSync('cache')) {
-        fs.mkdirSync('cache')
-      }
-      fs.writeJSONSync('cache/timestamp.json', times, { spaces: 2 })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  if (!fs.existsSync('cache')) {
+    fs.mkdirSync('cache')
+  }
+  fs.writeJSONSync('cache/timestamp.json', times, { spaces: 2 })
 }
 
 updateTimestamp()

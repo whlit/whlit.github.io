@@ -1,11 +1,11 @@
 {
   "name": "whlit.github.io",
   "scripts": {
-    "dev": "pnpm docs:dev",
-    "docs:dev": "pnpm update-time && vitepress dev",
+    "dev": "vitepress dev",
     "docs:build": "pnpm update-time && vitepress build",
     "format": "prettier --write .",
-    "update-time": "node ./script/update-time.js"
+    "update-time": "node ./script/update-time.js",
+    "postinstall": "simple-git-hooks && pnpm update-time"
   },
   "author": "whlit",
   "devDependencies": {
@@ -21,7 +21,8 @@
     "vitepress": "^1.0.1"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged",
+    "post-commit": "pnpm update-time"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
