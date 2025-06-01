@@ -22,14 +22,13 @@ outline: deep
 
 示例git提交记录，其中在修改d文件时不小心提交了账号密码的配置，并且已经push到远程仓库。暂存区中有创建f文件的修改，工作区有对d文件的修改。
 
-```mermaid
-gitGraph
-    commit
-    commit
-    commit id: "创建c文件"
-    commit id: "创建d文件"
-    commit id: "修改d文件" type: HIGHLIGHT
-    commit id: "创建e文件"
+```git-graph
+[origin/dev]
+commit6 'change file c.md'
+commit5 'change file d.md' 提交了密码
+commit3 'change file c.md'
+commit2 'change file b.md'
+commit1 'change file a.md'
 ```
 
 ```bash
@@ -56,12 +55,11 @@ Changes not staged for commit:
 
 `git reset --soft HEAD^^`
 
-```mermaid
-gitGraph
-    commit
-    commit
-    commit id: "创建c文件"
-    commit id: "创建d文件"
+```git-graph
+[origin/dev]
+commit3 'change file c.md'
+commit2 'change file b.md'
+commit1 'change file a.md'
 ```
 
 ```bash
@@ -89,14 +87,6 @@ Changes not staged for commit:
 
 `git reset --mixed HEAD^^` 或者 `git reset HEAD^^`
 
-```mermaid
-gitGraph
-    commit
-    commit
-    commit id: "创建c文件"
-    commit id: "创建d文件"
-```
-
 ```bash
 $ git status
 On branch main
@@ -120,14 +110,6 @@ Untracked files:
 `--hard`参数指定回退到某一个版本，撤销所有修改，工作区和暂存区都会清空所作的修改。
 
 `git reset --hard HEAD^^`
-
-```mermaid
-gitGraph
-    commit
-    commit
-    commit id: "创建c文件"
-    commit id: "创建d文件"
-```
 
 ```bash
 $ git status

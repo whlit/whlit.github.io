@@ -1,7 +1,7 @@
 import { DefaultTheme, defineConfig } from 'vitepress'
-import mermaidPlugin from './script/mermaid'
 import { getSidebar } from './script/sidebar'
 import { navbar } from './script/navbar'
+import { GitGraphPlugin } from 'markdown-it-git-graph'
 
 const SORUCE_DIR = 'docs'
 
@@ -48,7 +48,7 @@ export default defineConfig({
   },
   markdown: {
     config: (md) => {
-      md.use(mermaidPlugin)
+      md.use(GitGraphPlugin)
     },
     math: true,
     image: {
@@ -78,7 +78,7 @@ function getBar(): { sidebar: DefaultTheme.SidebarMulti; nav: DefaultTheme.NavIt
   }
 }
 
-function getNavActiveMatchs(navs: DefaultTheme.NavItem[]): { [key: string]: DefaultTheme.NavItemWithLink } {
+function getNavActiveMatchs(navs: (DefaultTheme.NavItemChildren | DefaultTheme.NavItemWithLink)[]): { [key: string]: DefaultTheme.NavItemWithLink } {
   const activeMatchs: { [key: string]: DefaultTheme.NavItemWithLink } = {}
   navs.forEach((nav) => {
     if (nav.items) {

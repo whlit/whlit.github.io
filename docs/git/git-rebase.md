@@ -9,14 +9,13 @@ layout: doc
 
 当本地仓库提交了很多次的记录，在push前为了提交记录的简洁，想要将其中的一部分提交记录合并成一条，再push到远程仓库，可以使用git rebase
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit C"
-    commit id:"a"
-    commit id:"b"
-    commit id:"c"
+```git-graph
+commit6 id:"c"
+commit5 id:"b"
+commit4 id:"a"
+commit3 id:"commit C"
+commit2 id:"commit B"
+commit1 id:"commit A"
 ```
 
 将最近的三次提交合并：
@@ -71,13 +70,12 @@ pick bcf5d95 b
 s bc623e0 c
 ```
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit C"
-    commit id:"a"
-    commit id:"b"
+```git-graph
+commit5 id:"b"
+commit4 id:"a"
+commit3 id:"commit C"
+commit2 id:"commit B"
+commit1 id:"commit A"
 ```
 
 保存后会弹出新的交互界面，展示的是b和c的提交信息可以手动进行修改提交的信息，可以删除不要的提交信息，也可以直接注释掉不要的提交信息最终只会保留未注释的提交信息
@@ -109,20 +107,16 @@ c
 
 在日常开发中经常是多条分支开发，在进行合并时不可避免的发生提交记录的分叉
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    branch dev
-    checkout dev
-    commit id:"commit C"
-    checkout main
-    commit id:"commit D"
-    checkout dev
-    commit id:"commit E"
-    checkout main
-    merge dev
-    commit id:"commit F"
+```git-graph
+[main]
+g<e 'merge feature to main' 7
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
+[dev]
+e 'commit E' 5
+c<b 'commit C' 3
 ```
 
 例如上面这样的情况，就是直接merge形成的，有了分叉既看着不美观，同时如果后面对代码进行回滚也不好操作
@@ -137,15 +131,15 @@ $ git rebase master
 
 上面的示例如果使用这种方式的话，结果就是这样的
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit D"
-    commit id:"commit F"
-    branch dev
-    commit id:"commit C"
-    commit id:"commit E"
+```git-graph
+[main]
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
+[dev]
+e 'commit E' 5
+c<f 'commit C' 3
 ```
 
 可以看到C和E出现在了F之后，提交信息的hash值变了，但是整个分支的提交记录简洁了
@@ -160,83 +154,70 @@ $ git merge feature
 
 merge后的master分支的提交记录如下
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit D"
-    commit id:"commit F"
-    commit id:"commit C"
-    commit id:"commit E"
+```git-graph
+[main]
+e 'commit E' 5
+c 'commit C' 3
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
 ```
 
-这样就保持了master分支的整洁，以及开发顺序的查看也都很容易地看出来，即便后面进行回滚也容易了
+这样就保持了master分支的整洁，同时也不会存在merge提交记录
 
 ## 避免合并提交
 
 当多个人共同开发一个分支时，由于其他人在这个分支上先推送了代码，导致推送代码失败，一般我们会使用`git pull`来拉取最新的代码并合并到本地，但是这样在查看提交记录的时候就会看到一个合并的提交，而且这个合并的提交是提交记录的分叉点，这样也会影响提交记录的简洁，所以需要避免这种情况的出现，可以通过rebase的方式避免，也就是`git pull --rebase`
 
-```mermaid
-%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    branch local
-    checkout local
-    commit id:"commit C"
-    checkout origin
-    commit id:"commit D"
-    checkout local
-    commit id:"commit E"
-    checkout origin
-    commit id:"commit F"
+```git-graph
+[origin/dev]
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
+[dev]
+e 'commit E' 5
+c<b 'commit C' 3
 ```
 
 如果使用`git pull`，结果是这样的
 
-```mermaid
-%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    branch local
-    checkout local
-    commit id:"commit C"
-    checkout origin
-    commit id:"commit D"
-    checkout local
-    commit id:"commit E"
-    checkout origin
-    commit id:"commit F"
-    checkout local
-    merge origin id:"merge origin into local"
+```git-graph
+[origin/dev]
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
+[dev]
+g<f 'merge origin/dev to dev' 7
+e 'commit E' 5
+c<b 'commit C' 3
 ```
 
 如果使用`git pull --rebase`，结果是这样的
 
-```mermaid
-%%{init: {'gitGraph': {'mainBranchName': 'origin'}} }%%
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit D"
-    commit id:"commit F"
-    branch local
-    checkout local
-    commit id:"commit C"
-    commit id:"commit E"
+```git-graph
+[origin/dev]
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
+[dev]
+e 'commit E' 5
+c<f 'commit C' 3
 ```
 
 此时再进行`git push`，结果是这样的
 
-```mermaid
-gitGraph
-    commit id:"commit A"
-    commit id:"commit B"
-    commit id:"commit D"
-    commit id:"commit F"
-    commit id:"commit C"
-    commit id:"commit E"
+```git-graph
+[origin/dev]
+e 'commit E' 5
+c 'commit C' 3
+f 'commit F' 6
+d 'commit D' 4
+b 'commit B' 2
+a 'commit A' 1
 ```
 
 ## 从spring仓库看rebase的使用

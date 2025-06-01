@@ -1,6 +1,6 @@
 import { DefaultTheme } from 'vitepress'
 
-export function navbar(): DefaultTheme.NavItem[] {
+export function navbar(): (DefaultTheme.NavItemChildren | DefaultTheme.NavItemWithLink)[] {
   return [
     {
       text: '前端',
